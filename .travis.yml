@@ -11,6 +11,6 @@ script: # Executed after tests pass
 deploy:
   provider: script
   script:
-    - echo "test"
+    - npm publish
   on:
     tags: true # Only deploy to NPM on tagged commits (new versions)
