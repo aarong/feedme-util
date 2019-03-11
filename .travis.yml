@@ -8,3 +8,9 @@ node_js:
 sudo: false
 script: # Executed after tests pass
   - npm run build
+deploy:
+  provider: script
+  script:
+    - echo "test"
+  on:
+    tags: true # Only deploy to NPM on tagged commits (new versions)
