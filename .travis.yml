@@ -10,6 +10,7 @@ script: # Executed after tests pass
   - npm run build
 deploy:
   provider: script
+  skip_cleanup: true # Preserve the build so it can be published
   script:
     - echo "filecontents" >> somefile.txt
     - cat somefile.txt
