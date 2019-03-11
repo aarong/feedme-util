@@ -1,6 +1,6 @@
 {
   "name": "feedme-util",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Utilities shared by the Feedme client and server.",
   "main": "index.js",
   "scripts": {
