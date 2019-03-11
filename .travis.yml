@@ -12,7 +12,7 @@ deploy:
   provider: script
   skip_cleanup: true # Preserve the build so it can be published
   script:
-    - echo "PUBLISHING"
+    - bash echo "PUBLISHING"
     - npm publish build # Publish the build folder.
   on:
     tags: true # Only deploy to NPM on tagged commits (new versions)
