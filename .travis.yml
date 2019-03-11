@@ -11,6 +11,6 @@ script: # Executed after tests pass
 deploy:
   provider: script
   script:
-    - npm publish
+    - npm publish build # Publish the build folder.
   on:
     tags: true # Only deploy to NPM on tagged commits (new versions)
