@@ -1,0 +1,50 @@
+{
+  "name": "feedme-util",
+  "version": "0.0.1",
+  "description": "Utilities shared by the Feedme client and server.",
+  "main": "src/index.js",
+  "scripts": {
+    "lint": "./node_modules/.bin/eslint src/**",
+    "pretest": "npm run lint",
+    "test": "./node_modules/.bin/jest",
+    "coverage": "./node_modules/.bin/jest --coverage",
+    "docs": "./node_modules/.bin/documentation build src/index.js -f html -o docs --access public --access private --access undefined --sort-order alpha"
+  },
+  "dependencies": {
+    "check-types": "^7.4.0",
+    "crypto-js": "^3.1.9-1",
+    "debug": "^4.1.1",
+    "lodash": "^4.17.4"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.2.3",
+    "babel-core": "^7.0.0-bridge.0",
+    "documentation": "^9.1.1",
+    "eslint": "^5.12.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-config-prettier": "^3.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-prettier": "^3.0.1",
+    "jest": "^23.6.0",
+    "jest-cli": "^23.6.0",
+    "prettier": "^1.14.3"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{js}",
+      "!<rootDir>/node_modules/",
+      "!<rootDir>/src/jestextend.js"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aarong/feedme-util.git"
+  },
+  "author": "Aaron G",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/aarong/feedme-util/issues"
+  },
+  "homepage": "https://github.com/aarong/feedme-util#readme"
+}
