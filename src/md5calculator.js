@@ -2,7 +2,6 @@ import check from "check-types";
 import _keys from "lodash/keys";
 import md5 from "crypto-js/md5";
 import base64 from "crypto-js/enc-base64";
-import error from "./error";
 
 /**
  * Calculates MD5 hashes for feed data objects in the manner prescribed by
@@ -15,12 +14,12 @@ export default md5Calculator;
  * Calculate an MD5 hash for a given feed data object.
  * @param {object} feedData The post-delta feed data object
  * @returns {string} Base64 representation of the calculated hash
- * @throws {Error} err.name === "INVALID_ARGUMENT"
+ * @throws {Error} Error("INVALID_ARGUMENT: ...")
  */
 md5Calculator.calculate = function calculate(feedData) {
   // Object?
   if (!check.object(feedData)) {
-    throw error("INVALID_ARGUMENT", "Feed data must be an object.");
+    throw new Error("INVALID_ARGUMENT: Feed data must be an object.");
   }
 
   // Get the canonical JSON

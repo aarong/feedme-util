@@ -1,7 +1,4 @@
-import jestExtender from "../jestextender";
 import deltaWriter from "../deltawriter";
-
-jestExtender.extend(expect);
 
 /* global expect:false, it:false, describe: false */
 
@@ -15,18 +12,20 @@ describe("The deltaWriter._walkTo() function", () => {
   it("should throw if accessing an element of a non-array", () => {
     expect(() => {
       deltaWriter._walkTo({ num: 1 }, ["num", 0]);
-    }).toThrowCustom(
-      "INVALID_PATH",
-      "Path references an element of a non-array or a member of a non-object."
+    }).toThrow(
+      new Error(
+        "INVALID_PATH: Path references an element of a non-array or a member of a non-object."
+      )
     );
   });
 
   it("should throw if accessing a child of a non-object", () => {
     expect(() => {
       deltaWriter._walkTo({ num: 1 }, ["num", "foo"]);
-    }).toThrowCustom(
-      "INVALID_PATH",
-      "Path references an element of a non-array or a member of a non-object."
+    }).toThrow(
+      new Error(
+        "INVALID_PATH: Path references an element of a non-array or a member of a non-object."
+      )
     );
   });
 
@@ -34,18 +33,20 @@ describe("The deltaWriter._walkTo() function", () => {
     it("should throw if referencing a non-existing node", () => {
       expect(() => {
         deltaWriter._walkTo({}, ["foo"]);
-      }).toThrowCustom(
-        "INVALID_PATH",
-        "Path references a non-existent location in the feed data."
+      }).toThrow(
+        new Error(
+          "INVALID_PATH: Path references a non-existent location in the feed data."
+        )
       );
     });
 
     it("should throw if referencing array element of root", () => {
       expect(() => {
         deltaWriter._walkTo({}, [0]);
-      }).toThrowCustom(
-        "INVALID_PATH",
-        "Path references a non-existent location in the feed data."
+      }).toThrow(
+        new Error(
+          "INVALID_PATH: Path references a non-existent location in the feed data."
+        )
       );
     });
 
@@ -60,18 +61,20 @@ describe("The deltaWriter._walkTo() function", () => {
     it("should throw if referencing non-existing root grandchild", () => {
       expect(() => {
         deltaWriter._walkTo({ child: {} }, ["child", "foo"]);
-      }).toThrowCustom(
-        "INVALID_PATH",
-        "Path references a non-existent location in the feed data."
+      }).toThrow(
+        new Error(
+          "INVALID_PATH: Path references a non-existent location in the feed data."
+        )
       );
     });
 
     it("should throw if referencing array element of root child", () => {
       expect(() => {
         deltaWriter._walkTo({ child: {} }, ["child", 0]);
-      }).toThrowCustom(
-        "INVALID_PATH",
-        "Path references a non-existent location in the feed data."
+      }).toThrow(
+        new Error(
+          "INVALID_PATH: Path references a non-existent location in the feed data."
+        )
       );
     });
 
@@ -86,9 +89,10 @@ describe("The deltaWriter._walkTo() function", () => {
     it("should throw if referencing a non-existing array element", () => {
       expect(() => {
         deltaWriter._walkTo({ arr: [] }, ["arr", 0]);
-      }).toThrowCustom(
-        "INVALID_PATH",
-        "Path references a non-existent location in the feed data."
+      }).toThrow(
+        new Error(
+          "INVALID_PATH: Path references a non-existent location in the feed data."
+        )
       );
     });
 
@@ -103,9 +107,10 @@ describe("The deltaWriter._walkTo() function", () => {
     it("should throw if referencing a non-existing array element", () => {
       expect(() => {
         deltaWriter._walkTo({ child: { arr: [] } }, ["child", "arr", 0]);
-      }).toThrowCustom(
-        "INVALID_PATH",
-        "Path references a non-existent location in the feed data."
+      }).toThrow(
+        new Error(
+          "INVALID_PATH: Path references a non-existent location in the feed data."
+        )
       );
     });
 
@@ -120,9 +125,10 @@ describe("The deltaWriter._walkTo() function", () => {
     it("should throw if referencing a non-existing array element", () => {
       expect(() => {
         deltaWriter._walkTo({ arr: [[]] }, ["arr", 0, 0]);
-      }).toThrowCustom(
-        "INVALID_PATH",
-        "Path references a non-existent location in the feed data."
+      }).toThrow(
+        new Error(
+          "INVALID_PATH: Path references a non-existent location in the feed data."
+        )
       );
     });
 
@@ -138,9 +144,8 @@ describe("The deltaWriter._containerPath() function", () => {
   it("should throw for root", () => {
     expect(() => {
       deltaWriter._containerPath([]);
-    }).toThrowCustom(
-      "INVALID_PATH",
-      "The feed data root does not have a container."
+    }).toThrow(
+      new Error("INVALID_PATH: The feed data root does not have a container.")
     );
   });
 
@@ -156,22 +161,21 @@ describe("The deltaWrite.apply() function", () => {
   it("should throw if feedData argument is invalid", () => {
     expect(() => {
       deltaWriter.apply(1, { Operation: "Set", Path: [], Value: 1 });
-    }).toThrowCustom("INVALID_ARGUMENT", "Invalid feed data object.");
+    }).toThrow(new Error("INVALID_ARGUMENT: Invalid feed data object."));
   });
 
   it("should throw if delta argument is invalid", () => {
     expect(() => {
       deltaWriter.apply({}, 1);
-    }).toThrowCustom("INVALID_ARGUMENT", "Invalid delta object.");
+    }).toThrow(new Error("INVALID_ARGUMENT: Invalid delta object."));
   });
 
   describe("when invoked with a Set delta operation", () => {
     it("should throw if path references root and value is non-object", () => {
       expect(() => {
         deltaWriter.apply({}, { Operation: "Set", Path: [], Value: 1 });
-      }).toThrowCustom(
-        "INVALID_DELTA",
-        "The feed data root must be an object."
+      }).toThrow(
+        new Error("INVALID_DELTA: The feed data root must be an object.")
       );
     });
 
@@ -202,9 +206,10 @@ describe("The deltaWrite.apply() function", () => {
           { myArray: [] },
           { Operation: "Set", Path: ["myArray", 1], Value: 1 }
         );
-      }).toThrowCustom(
-        "INVALID_DELTA",
-        "Cannot write non-contiguous elements to an array."
+      }).toThrow(
+        new Error(
+          "INVALID_DELTA: Cannot write non-contiguous elements to an array."
+        )
       );
     });
 
@@ -239,7 +244,7 @@ describe("The deltaWrite.apply() function", () => {
     it("should throw if path references root", () => {
       expect(() => {
         deltaWriter.apply({}, { Operation: "Delete", Path: [] });
-      }).toThrowCustom("INVALID_DELTA", "Cannot delete the feed data root.");
+      }).toThrow(new Error("INVALID_DELTA: Cannot delete the feed data root."));
     });
 
     it("should throw if path references something other than an array element or object child", () => {
@@ -248,18 +253,20 @@ describe("The deltaWrite.apply() function", () => {
           { foo: 1 },
           { Operation: "Delete", Path: ["foo", "bar"] }
         );
-      }).toThrowCustom(
-        "INVALID_DELTA",
-        "Can only delete object children and arrray elements."
+      }).toThrow(
+        new Error(
+          "INVALID_DELTA: Can only delete object children and arrray elements."
+        )
       );
     });
 
     it("should throw if path references a non-existent array element or object child", () => {
       expect(() => {
         deltaWriter.apply({}, { Operation: "Delete", Path: ["foo"] });
-      }).toThrowCustom(
-        "INVALID_DELTA",
-        "Cannot delete a non-existent array element or object child."
+      }).toThrow(
+        new Error(
+          "INVALID_DELTA: Cannot delete a non-existent array element or object child."
+        )
       );
     });
 
@@ -291,9 +298,8 @@ describe("The deltaWrite.apply() function", () => {
           { foo: 1 },
           { Operation: "DeleteValue", Path: ["foo"], Value: 123 }
         );
-      }).toThrowCustom(
-        "INVALID_DELTA",
-        "Can only delete from arrays and objects."
+      }).toThrow(
+        new Error("INVALID_DELTA: Can only delete from arrays and objects.")
       );
     });
 
@@ -327,7 +333,7 @@ describe("The deltaWrite.apply() function", () => {
           { foo: 1 },
           { Operation: "Prepend", Path: ["foo"], Value: "bar" }
         );
-      }).toThrowCustom("INVALID_DELTA", "Can only prepend to strings.");
+      }).toThrow(new Error("INVALID_DELTA: Can only prepend to strings."));
     });
 
     it("should return updated feed data", () => {
@@ -349,7 +355,7 @@ describe("The deltaWrite.apply() function", () => {
           { foo: 1 },
           { Operation: "Append", Path: ["foo"], Value: "bar" }
         );
-      }).toThrowCustom("INVALID_DELTA", "Can only append to strings.");
+      }).toThrow(new Error("INVALID_DELTA: Can only append to strings."));
     });
 
     it("should return updated feed data", () => {
@@ -371,7 +377,7 @@ describe("The deltaWrite.apply() function", () => {
           { foo: "abc" },
           { Operation: "Increment", Path: ["foo"], Value: 1 }
         );
-      }).toThrowCustom("INVALID_DELTA", "Can only increment numbers.");
+      }).toThrow(new Error("INVALID_DELTA: Can only increment numbers."));
     });
 
     it("should return updated feed data", () => {
@@ -393,7 +399,7 @@ describe("The deltaWrite.apply() function", () => {
           { foo: "abc" },
           { Operation: "Decrement", Path: ["foo"], Value: 1 }
         );
-      }).toThrowCustom("INVALID_DELTA", "Can only decrement numbers.");
+      }).toThrow(new Error("INVALID_DELTA: Can only decrement numbers."));
     });
 
     it("should return updated feed data", () => {
@@ -415,7 +421,7 @@ describe("The deltaWrite.apply() function", () => {
           { foo: "abc" },
           { Operation: "Toggle", Path: ["foo"] }
         );
-      }).toThrowCustom("INVALID_DELTA", "Can only toggle booleans.");
+      }).toThrow(new Error("INVALID_DELTA: Can only toggle booleans."));
     });
 
     it("should return updated feed data", () => {
@@ -436,7 +442,7 @@ describe("The deltaWrite.apply() function", () => {
           { foo: "abc" },
           { Operation: "InsertFirst", Path: ["foo"], Value: 1 }
         );
-      }).toThrowCustom("INVALID_DELTA", "Can only insert into arrays.");
+      }).toThrow(new Error("INVALID_DELTA: Can only insert into arrays."));
     });
 
     it("should return updated feed data", () => {
@@ -458,7 +464,7 @@ describe("The deltaWrite.apply() function", () => {
           { foo: "abc" },
           { Operation: "InsertLast", Path: ["foo"], Value: 1 }
         );
-      }).toThrowCustom("INVALID_DELTA", "Can only insert into arrays.");
+      }).toThrow(new Error("INVALID_DELTA: Can only insert into arrays."));
     });
 
     it("should return updated feed data", () => {
@@ -480,7 +486,7 @@ describe("The deltaWrite.apply() function", () => {
           { foo: "abc" },
           { Operation: "InsertBefore", Path: ["foo"], Value: 1 }
         );
-      }).toThrowCustom("INVALID_DELTA", "Can only insert into arrays.");
+      }).toThrow(new Error("INVALID_DELTA: Can only insert into arrays."));
     });
 
     it("should throw if path references a non-existent array element", () => {
@@ -489,9 +495,8 @@ describe("The deltaWrite.apply() function", () => {
           { myArray: [1] },
           { Operation: "InsertBefore", Path: ["myArray", 2], Value: 1 }
         );
-      }).toThrowCustom(
-        "INVALID_DELTA",
-        "Can only insert before an existing element."
+      }).toThrow(
+        new Error("INVALID_DELTA: Can only insert before an existing element.")
       );
     });
 
@@ -514,7 +519,7 @@ describe("The deltaWrite.apply() function", () => {
           { foo: "abc" },
           { Operation: "InsertAfter", Path: ["foo"], Value: 1 }
         );
-      }).toThrowCustom("INVALID_DELTA", "Can only insert into arrays.");
+      }).toThrow(new Error("INVALID_DELTA: Can only insert into arrays."));
     });
 
     it("should throw if path references a non-existent array element", () => {
@@ -523,9 +528,8 @@ describe("The deltaWrite.apply() function", () => {
           { myArray: [1] },
           { Operation: "InsertAfter", Path: ["myArray", 2], Value: 1 }
         );
-      }).toThrowCustom(
-        "INVALID_DELTA",
-        "Can only insert after an existing element."
+      }).toThrow(
+        new Error("INVALID_DELTA: Can only insert after an existing element.")
       );
     });
 
@@ -548,9 +552,8 @@ describe("The deltaWrite.apply() function", () => {
           { foo: "abc" },
           { Operation: "DeleteFirst", Path: ["foo"] }
         );
-      }).toThrowCustom(
-        "INVALID_DELTA",
-        "Can only delete elements from arrays."
+      }).toThrow(
+        new Error("INVALID_DELTA: Can only delete elements from arrays.")
       );
     });
 
@@ -560,9 +563,8 @@ describe("The deltaWrite.apply() function", () => {
           { myArray: [] },
           { Operation: "DeleteFirst", Path: ["myArray"] }
         );
-      }).toThrowCustom(
-        "INVALID_DELTA",
-        "Cannot delete elements from empty arrays."
+      }).toThrow(
+        new Error("INVALID_DELTA: Cannot delete elements from empty arrays.")
       );
     });
 
@@ -584,9 +586,8 @@ describe("The deltaWrite.apply() function", () => {
           { foo: "abc" },
           { Operation: "DeleteLast", Path: ["foo"] }
         );
-      }).toThrowCustom(
-        "INVALID_DELTA",
-        "Can only delete elements from arrays."
+      }).toThrow(
+        new Error("INVALID_DELTA: Can only delete elements from arrays.")
       );
     });
 
@@ -596,9 +597,8 @@ describe("The deltaWrite.apply() function", () => {
           { myArray: [] },
           { Operation: "DeleteLast", Path: ["myArray"] }
         );
-      }).toThrowCustom(
-        "INVALID_DELTA",
-        "Cannot delete elements from empty arrays."
+      }).toThrow(
+        new Error("INVALID_DELTA: Cannot delete elements from empty arrays.")
       );
     });
 
