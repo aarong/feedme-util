@@ -1,7 +1,4 @@
-import jestExtender from "../jestextender";
 import feedSerializer from "../feedserializer";
-
-jestExtender.extend(expect);
 
 /* global expect:false, describe:false, it:false */
 
@@ -9,19 +6,19 @@ describe("the .serialize() function", () => {
   it("should throw if feed name is invalid", () => {
     expect(() => {
       feedSerializer.serialize(1, {});
-    }).toThrowCustom("INVALID_ARGUMENT", "Invalid feed name.");
+    }).toThrow(new Error("INVALID_ARGUMENT: Invalid feed name."));
   });
 
   it("should throw if feed args is invalid", () => {
     expect(() => {
       feedSerializer.serialize("someFeed", 1);
-    }).toThrowCustom("INVALID_ARGUMENT", "Invalid feed arguments object.");
+    }).toThrow(new Error("INVALID_ARGUMENT: Invalid feed arguments object."));
   });
 
   it("should throw if feed args is invalid", () => {
     expect(() => {
       feedSerializer.serialize("someFeed", { arg: 1 });
-    }).toThrowCustom("INVALID_ARGUMENT", "Invalid feed arguments object.");
+    }).toThrow(new Error("INVALID_ARGUMENT: Invalid feed arguments object."));
   });
 
   it("should return correctly", () => {

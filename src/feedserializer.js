@@ -1,6 +1,5 @@
 import _each from "lodash/each";
 import check from "check-types";
-import error from "./error";
 
 /**
  * Translates feed name-argument combinations into canonicalized serializations
@@ -22,12 +21,12 @@ export default feedSerializer;
 feedSerializer.serialize = function serialize(name, args) {
   // Check name
   if (!check.string(name)) {
-    throw error("INVALID_ARGUMENT", "Invalid feed name.");
+    throw new Error("INVALID_ARGUMENT: Invalid feed name.");
   }
 
   // Check args
   if (!check.object(args)) {
-    throw error("INVALID_ARGUMENT", "Invalid feed arguments object.");
+    throw new Error("INVALID_ARGUMENT: Invalid feed arguments object.");
   }
   let ok = true;
   _each(args, val => {
@@ -36,7 +35,7 @@ feedSerializer.serialize = function serialize(name, args) {
     }
   });
   if (!ok) {
-    throw error("INVALID_ARGUMENT", "Invalid feed arguments object.");
+    throw new Error("INVALID_ARGUMENT: Invalid feed arguments object.");
   }
 
   // Get ordered list of arg names
