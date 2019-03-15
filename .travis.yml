@@ -20,6 +20,8 @@ jobs:
       deploy: # Can't use npm provider because you need to publish the build folder
         provider: script
         skip_cleanup: true # Preserve the build so it can be published
-        script: echo "$NPMRC" >> $HOME/.npmrc && npm publish build # Publish the build folder
+        script:
+          echo "//registry.npmjs.org/:_authToken=$NPM_AUTH_TOKEN" >>
+          $HOME/.npmrc && npm publish build
         on:
           tags: true # Only deploy to NPM on tagged commits (new versions)
