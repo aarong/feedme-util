@@ -13,16 +13,15 @@ jobs:
       language: node_js
       node_js: "10"
       script: npm run build # tests run first
-    - stage: Deploy
-      language: node_js
-      node_js: "6"
-      script: npm run build
-      deploy: # Can't use npm provider because you need to publish the build folder
-        provider: script
-        skip_cleanup: true # Preserve the build so it can be published
-        script:
-          - echo "$NPMRC" >> $HOME/.npmrc
-          - npm publish build # Publish the build folder
-        on:
-          tags: true # Only deploy to NPM on tagged commits (new versions)
-
+    # - stage: Deploy
+    #   language: node_js
+    #   node_js: "6"
+    #   script: npm run build
+    #   deploy: # Can't use npm provider because you need to publish the build folder
+    #     provider: script
+    #     skip_cleanup: true # Preserve the build so it can be published
+    #     script:
+    #       - echo "$NPMRC" >> $HOME/.npmrc
+    #       - npm publish build # Publish the build folder
+    #     on:
+    #       tags: true # Only deploy to NPM on tagged commits (new versions)
