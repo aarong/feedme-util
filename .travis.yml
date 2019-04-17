@@ -13,9 +13,9 @@ jobs:
       language: node_js
       node_js: "10"
       script: npm run build
-    - stage: Deploy
+    - stage: Deploy # Runs on each build, but only publishes on new tax
       language: node_js
-      node_js: "6"
+      node_js: "6" # Maximum compatibility
       script: npm run build
       deploy: # Can't use npm provider because you need to publish the build folder
         provider: script
