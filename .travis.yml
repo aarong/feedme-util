@@ -1,18 +1,18 @@
 sudo: false
 jobs:
   include:
-    - stage: Test # Don't test widely unless target v6 works.
+    - stage: Test
       language: node_js
       node_js: "6"
-      script: npm run build # tests run first
+      script: npm run build
     - stage: Test
       language: node_js
       node_js: "8"
-      script: npm run build # tests run first
+      script: npm run build
     - stage: Test
       language: node_js
       node_js: "10"
-      script: npm run build # tests run first
+      script: npm run build
     - stage: Deploy
       language: node_js
       node_js: "6"
