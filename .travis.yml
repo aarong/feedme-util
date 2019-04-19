@@ -17,7 +17,7 @@ jobs:
       language: node_js
       node_js: "10"
       script: npm run build
-    - stage: Deploy # Runs on each build, but only publishes on new version
+    - stage: Deploy # Runs on each build, but only publishes on new version tag
       language: node_js
       node_js: "6" # Maximum compatibility
       script: npm run build
