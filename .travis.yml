@@ -1,4 +1,8 @@
 sudo: false
+branches:
+  only:
+    - master
+    - /^v.*$/ # Tagged builds (Travis branch name = tag name)
 jobs:
   include:
     - stage: Test
