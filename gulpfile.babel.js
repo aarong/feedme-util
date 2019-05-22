@@ -11,7 +11,7 @@ const bld = () =>
     .pipe(gulp.dest("build/"));
 
 const copy = () =>
-  gulp.src("./{package.json,LICENSE}").pipe(gulp.dest("build/"));
+  gulp.src("./{package.json,LICENSE,README.md}").pipe(gulp.dest("build/"));
 
 // Gulp build task
 export const build = gulp.series(clean, bld, copy); // eslint-disable-line import/prefer-default-export
