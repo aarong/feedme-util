@@ -16,7 +16,7 @@ export default feedSerializer;
  * @param {string} name
  * @param {object} args
  * @returns {string}
- * @throws {Error} Error("INVALID_ARGUMENT: ...")
+ * @throws {Error} err.message === "INVALID_ARGUMENT: ..."
  */
 feedSerializer.serialize = function serialize(name, args) {
   // Check name
