@@ -8,6 +8,7 @@
     "pretest": "npm run lint",
     "test": "./node_modules/.bin/jest",
     "coverage": "./node_modules/.bin/jest --coverage",
+    "coveralls": "jest --coverage --coverageReporters=text-lcov | coveralls",
     "docs": "./node_modules/.bin/documentation build src/index.js -f html -o docs --access public --access private --access undefined --sort-order alpha",
     "prebuild": "npm run test",
     "build": "./node_modules/.bin/gulp build"
@@ -23,6 +24,7 @@
     "@babel/preset-env": "^7.2.3",
     "@babel/register": "^7.0.0",
     "babel-core": "^7.0.0-bridge.0",
+    "coveralls": "^3.0.3",
     "del": "^4.0.0",
     "documentation": "^9.1.1",
     "eslint": "^5.12.0",
