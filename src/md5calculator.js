@@ -12,7 +12,7 @@ export default md5Calculator;
 
 /**
  * Calculate an MD5 hash for a given feed data object.
- * @param {object} feedData The post-delta feed data object
+ * @param {Object} feedData The post-delta feed data object
  * @returns {string} Base64 representation of the calculated hash
  * @throws {Error} "INVALID_ARGUMENT: ..."
  */

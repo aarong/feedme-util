@@ -14,7 +14,7 @@ export default feedSerializer;
 /**
  * Serialize a feed.
  * @param {string} name
- * @param {object} args
+ * @param {Object} args
  * @returns {string}
  * @throws {Error} "INVALID_ARGUMENT: ..."
  */
@@ -57,7 +57,7 @@ feedSerializer.serialize = function serialize(name, args) {
 /**
  * Unserialize a feed.
  * @param {string} serialization
- * @returns {object} { feedName: "string", feedArgs: { arg1: "string", ...} }
+ * @returns {Object} { feedName: "string", feedArgs: { arg1: "string", ...} }
  */
 feedSerializer.unserialize = function unserialize(serial) {
   const arr = JSON.parse(serial);

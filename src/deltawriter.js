@@ -15,9 +15,9 @@ export default deltaWriter;
  * Throws an error if the path endpoint does not exist.
  * @memberof deltaWriter
  * @private
- * @param {object} feedData The feed data to navigate
- * @param {array} path The path to walk to
- * @returns {object} Reference to the path endpoint
+ * @param {Object} feedData The feed data to navigate
+ * @param {Array} path The path to walk to
+ * @returns {Object} Reference to the path endpoint
  * @throws {Error} "INVALID_PATH: ..."
  */
 deltaWriter._walkTo = function _walkTo(feedData, path) {
@@ -48,8 +48,8 @@ deltaWriter._walkTo = function _walkTo(feedData, path) {
  * of the array with the last element chopped, or an error on empty input).
  * @memberof deltaWriter
  * @private
- * @param {array} path The path to the contained data.
- * @returns {array} The path to the container.
+ * @param {Array} path The path to the contained data.
+ * @returns {Array} The path to the container.
  * @throws {Error} "INVALID_PATH: ..."
  */
 deltaWriter._containerPath = function _containerPath(path) {
@@ -65,11 +65,11 @@ deltaWriter._containerPath = function _containerPath(path) {
  * Apply a delta operation to feed data, throwing an error if the delta
  * is not valid given the current state of the feed data.
  * @memberof deltaWriter
- * @param {object} feedData The current feed data.
- * @param {object} delta A schema-valid feed delta is assumed (not checked).
+ * @param {Object} feedData The current feed data.
+ * @param {Object} delta A schema-valid feed delta is assumed (not checked).
  *                       The operation may or may
  *                       not be valid given the current state of the feed data.
- * @returns {object} The post-operation feed data. This will be a reference
+ * @returns {Object} The post-operation feed data. This will be a reference
  *                   to feedData unless the root is being set, in which case
  *                   a reference to delta.
  * @throws {Error}    "INVALID_ARGUMENT: ..."
