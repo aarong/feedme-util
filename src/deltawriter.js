@@ -18,7 +18,7 @@ export default deltaWriter;
  * @param {object} feedData The feed data to navigate
  * @param {array} path The path to walk to
  * @returns {object} Reference to the path endpoint
- * @throws {Error} err.message === "INVALID_PATH: ..."
+ * @throws {Error} "INVALID_PATH: ..."
  */
 deltaWriter._walkTo = function _walkTo(feedData, path) {
   if (path.length === 0) {
@@ -50,7 +50,7 @@ deltaWriter._walkTo = function _walkTo(feedData, path) {
  * @private
  * @param {array} path The path to the contained data.
  * @returns {array} The path to the container.
- * @throws {Error} err.message === "INVALID_PATH: ..."
+ * @throws {Error} "INVALID_PATH: ..."
  */
 deltaWriter._containerPath = function _containerPath(path) {
   if (path.length === 0) {
@@ -72,8 +72,8 @@ deltaWriter._containerPath = function _containerPath(path) {
  * @returns {object} The post-operation feed data. This will be a reference
  *                   to feedData unless the root is being set, in which case
  *                   a reference to delta.
- * @throws {Error}    err.message === "INVALID_ARGUMENT: ..."
- *                    err.message === "INVALID_DELTA: ..." (delta invalid given state of the feed data)
+ * @throws {Error}    "INVALID_ARGUMENT: ..."
+ *                    "INVALID_DELTA: ..." (delta invalid given state of the feed data)
  */
 deltaWriter.apply = function apply(feedData, delta) {
   // Check feed data arg
