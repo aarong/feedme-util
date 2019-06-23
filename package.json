@@ -32,6 +32,7 @@
     "eslint-config-prettier": "^3.1.0",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-prettier": "^3.0.1",
+    "ghooks": "^2.0.4",
     "gulp": "^4.0.0",
     "gulp-babel": "^8.0.0",
     "jest": "^23.6.0",
@@ -54,5 +55,10 @@
   "bugs": {
     "url": "https://github.com/aarong/feedme-util/issues"
   },
-  "homepage": "https://github.com/aarong/feedme-util#readme"
+  "homepage": "https://github.com/aarong/feedme-util#readme",
+  "config": {
+    "ghooks": {
+      "pre-commit": "npm run build"
+    }
+  }
 }
