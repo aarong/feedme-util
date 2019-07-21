@@ -14,7 +14,7 @@ describe("The deltaWriter._walkTo() function", () => {
       deltaWriter._walkTo({ num: 1 }, ["num", 0]);
     }).toThrow(
       new Error(
-        "INVALID_PATH: Path references an element of a non-array or a member of a non-object."
+        "INVALID_DELTA: Path references an element of a non-array or a member of a non-object."
       )
     );
   });
@@ -24,7 +24,7 @@ describe("The deltaWriter._walkTo() function", () => {
       deltaWriter._walkTo({ num: 1 }, ["num", "foo"]);
     }).toThrow(
       new Error(
-        "INVALID_PATH: Path references an element of a non-array or a member of a non-object."
+        "INVALID_DELTA: Path references an element of a non-array or a member of a non-object."
       )
     );
   });
@@ -35,7 +35,7 @@ describe("The deltaWriter._walkTo() function", () => {
         deltaWriter._walkTo({}, ["foo"]);
       }).toThrow(
         new Error(
-          "INVALID_PATH: Path references a non-existent location in the feed data."
+          "INVALID_DELTA: Path references a non-existent location in the feed data."
         )
       );
     });
@@ -45,7 +45,7 @@ describe("The deltaWriter._walkTo() function", () => {
         deltaWriter._walkTo({}, [0]);
       }).toThrow(
         new Error(
-          "INVALID_PATH: Path references a non-existent location in the feed data."
+          "INVALID_DELTA: Path references a non-existent location in the feed data."
         )
       );
     });
@@ -63,7 +63,7 @@ describe("The deltaWriter._walkTo() function", () => {
         deltaWriter._walkTo({ child: {} }, ["child", "foo"]);
       }).toThrow(
         new Error(
-          "INVALID_PATH: Path references a non-existent location in the feed data."
+          "INVALID_DELTA: Path references a non-existent location in the feed data."
         )
       );
     });
@@ -73,7 +73,7 @@ describe("The deltaWriter._walkTo() function", () => {
         deltaWriter._walkTo({ child: {} }, ["child", 0]);
       }).toThrow(
         new Error(
-          "INVALID_PATH: Path references a non-existent location in the feed data."
+          "INVALID_DELTA: Path references a non-existent location in the feed data."
         )
       );
     });
@@ -91,7 +91,7 @@ describe("The deltaWriter._walkTo() function", () => {
         deltaWriter._walkTo({ arr: [] }, ["arr", 0]);
       }).toThrow(
         new Error(
-          "INVALID_PATH: Path references a non-existent location in the feed data."
+          "INVALID_DELTA: Path references a non-existent location in the feed data."
         )
       );
     });
@@ -109,7 +109,7 @@ describe("The deltaWriter._walkTo() function", () => {
         deltaWriter._walkTo({ child: { arr: [] } }, ["child", "arr", 0]);
       }).toThrow(
         new Error(
-          "INVALID_PATH: Path references a non-existent location in the feed data."
+          "INVALID_DELTA: Path references a non-existent location in the feed data."
         )
       );
     });
@@ -127,7 +127,7 @@ describe("The deltaWriter._walkTo() function", () => {
         deltaWriter._walkTo({ arr: [[]] }, ["arr", 0, 0]);
       }).toThrow(
         new Error(
-          "INVALID_PATH: Path references a non-existent location in the feed data."
+          "INVALID_DELTA: Path references a non-existent location in the feed data."
         )
       );
     });
@@ -145,7 +145,7 @@ describe("The deltaWriter._containerPath() function", () => {
     expect(() => {
       deltaWriter._containerPath([]);
     }).toThrow(
-      new Error("INVALID_PATH: The feed data root does not have a container.")
+      new Error("INVALID_DELTA: The feed data root does not have a container.")
     );
   });
 
@@ -247,25 +247,12 @@ describe("The deltaWrite.apply() function", () => {
       }).toThrow(new Error("INVALID_DELTA: Cannot delete the feed data root."));
     });
 
-    it("should throw if path references something other than an array element or object child", () => {
-      expect(() => {
-        deltaWriter.apply(
-          { foo: 1 },
-          { Operation: "Delete", Path: ["foo", "bar"] }
-        );
-      }).toThrow(
-        new Error(
-          "INVALID_DELTA: Can only delete object children and arrray elements."
-        )
-      );
-    });
-
-    it("should throw if path references a non-existent array element or object child", () => {
+    it("should throw if the path reference does not exist", () => {
       expect(() => {
         deltaWriter.apply({}, { Operation: "Delete", Path: ["foo"] });
       }).toThrow(
         new Error(
-          "INVALID_DELTA: Cannot delete a non-existent array element or object child."
+          "INVALID_DELTA: Path references a non-existent location in the feed data."
         )
       );
     });
@@ -292,6 +279,16 @@ describe("The deltaWrite.apply() function", () => {
   });
 
   describe("when invoked with a DeleteValue delta operation", () => {
+    it("should throw if the path reference does not exist", () => {
+      expect(() => {
+        deltaWriter.apply({}, { Operation: "DeleteValue", Path: ["foo"] });
+      }).toThrow(
+        new Error(
+          "INVALID_DELTA: Path references a non-existent location in the feed data."
+        )
+      );
+    });
+
     it("should throw if path references something other than an array or object", () => {
       expect(() => {
         deltaWriter.apply(
@@ -327,6 +324,19 @@ describe("The deltaWrite.apply() function", () => {
   });
 
   describe("when invoked with a Prepend delta operation", () => {
+    it("should throw if the path reference does not exist", () => {
+      expect(() => {
+        deltaWriter.apply(
+          {},
+          { Operation: "Prepend", Path: ["foo"], Value: "bar" }
+        );
+      }).toThrow(
+        new Error(
+          "INVALID_DELTA: Path references a non-existent location in the feed data."
+        )
+      );
+    });
+
     it("should throw if path references something other than a string", () => {
       expect(() => {
         deltaWriter.apply(
@@ -349,6 +359,19 @@ describe("The deltaWrite.apply() function", () => {
   });
 
   describe("when invoked with a Append delta operation", () => {
+    it("should throw if the path reference does not exist", () => {
+      expect(() => {
+        deltaWriter.apply(
+          {},
+          { Operation: "Append", Path: ["foo"], Value: "bar" }
+        );
+      }).toThrow(
+        new Error(
+          "INVALID_DELTA: Path references a non-existent location in the feed data."
+        )
+      );
+    });
+
     it("should throw if path references something other than a string", () => {
       expect(() => {
         deltaWriter.apply(
@@ -371,6 +394,19 @@ describe("The deltaWrite.apply() function", () => {
   });
 
   describe("when invoked with a Increment delta operation", () => {
+    it("should throw if the path reference does not exist", () => {
+      expect(() => {
+        deltaWriter.apply(
+          {},
+          { Operation: "Increment", Path: ["foo"], Value: 10 }
+        );
+      }).toThrow(
+        new Error(
+          "INVALID_DELTA: Path references a non-existent location in the feed data."
+        )
+      );
+    });
+
     it("should throw if path references something other than a number", () => {
       expect(() => {
         deltaWriter.apply(
@@ -393,6 +429,19 @@ describe("The deltaWrite.apply() function", () => {
   });
 
   describe("when invoked with a Decrement delta operation", () => {
+    it("should throw if the path reference does not exist", () => {
+      expect(() => {
+        deltaWriter.apply(
+          {},
+          { Operation: "Decrement", Path: ["foo"], Value: 10 }
+        );
+      }).toThrow(
+        new Error(
+          "INVALID_DELTA: Path references a non-existent location in the feed data."
+        )
+      );
+    });
+
     it("should throw if path references something other than a number", () => {
       expect(() => {
         deltaWriter.apply(
@@ -415,7 +464,17 @@ describe("The deltaWrite.apply() function", () => {
   });
 
   describe("when invoked with a Toggle delta operation", () => {
-    it("should throw if path references something other than a number", () => {
+    it("should throw if the path reference does not exist", () => {
+      expect(() => {
+        deltaWriter.apply({}, { Operation: "Toggle", Path: ["foo"] });
+      }).toThrow(
+        new Error(
+          "INVALID_DELTA: Path references a non-existent location in the feed data."
+        )
+      );
+    });
+
+    it("should throw if path references something other than a boolean", () => {
       expect(() => {
         deltaWriter.apply(
           { foo: "abc" },
@@ -436,6 +495,19 @@ describe("The deltaWrite.apply() function", () => {
   });
 
   describe("when invoked with a InsertFirst delta operation", () => {
+    it("should throw if the path reference does not exist", () => {
+      expect(() => {
+        deltaWriter.apply(
+          {},
+          { Operation: "InsertFirst", Path: ["foo"], Value: "abc" }
+        );
+      }).toThrow(
+        new Error(
+          "INVALID_DELTA: Path references a non-existent location in the feed data."
+        )
+      );
+    });
+
     it("should throw if path references something other than an array", () => {
       expect(() => {
         deltaWriter.apply(
@@ -458,6 +530,19 @@ describe("The deltaWrite.apply() function", () => {
   });
 
   describe("when invoked with a InsertLast delta operation", () => {
+    it("should throw if the path reference does not exist", () => {
+      expect(() => {
+        deltaWriter.apply(
+          {},
+          { Operation: "InsertLast", Path: ["foo"], Value: "abc" }
+        );
+      }).toThrow(
+        new Error(
+          "INVALID_DELTA: Path references a non-existent location in the feed data."
+        )
+      );
+    });
+
     it("should throw if path references something other than an array", () => {
       expect(() => {
         deltaWriter.apply(
@@ -480,6 +565,32 @@ describe("The deltaWrite.apply() function", () => {
   });
 
   describe("when invoked with a InsertBefore delta operation", () => {
+    it("should throw if the path container reference does not exist", () => {
+      expect(() => {
+        deltaWriter.apply(
+          {},
+          { Operation: "InsertBefore", Path: ["foo", 0], Value: "abc" }
+        );
+      }).toThrow(
+        new Error(
+          "INVALID_DELTA: Path references a non-existent location in the feed data."
+        )
+      );
+    });
+
+    it("should throw if the path reference does not exist", () => {
+      expect(() => {
+        deltaWriter.apply(
+          { foo: [1, 2, 3] },
+          { Operation: "InsertBefore", Path: ["foo", 3], Value: "abc" }
+        );
+      }).toThrow(
+        new Error(
+          "INVALID_DELTA: Path references a non-existent location in the feed data."
+        )
+      );
+    });
+
     it("should throw if path references something other than an array element", () => {
       expect(() => {
         deltaWriter.apply(
@@ -487,17 +598,6 @@ describe("The deltaWrite.apply() function", () => {
           { Operation: "InsertBefore", Path: ["foo"], Value: 1 }
         );
       }).toThrow(new Error("INVALID_DELTA: Can only insert into arrays."));
-    });
-
-    it("should throw if path references a non-existent array element", () => {
-      expect(() => {
-        deltaWriter.apply(
-          { myArray: [1] },
-          { Operation: "InsertBefore", Path: ["myArray", 2], Value: 1 }
-        );
-      }).toThrow(
-        new Error("INVALID_DELTA: Can only insert before an existing element.")
-      );
     });
 
     it("should return updated feed data", () => {
@@ -513,6 +613,32 @@ describe("The deltaWrite.apply() function", () => {
   });
 
   describe("when invoked with a InsertAfter delta operation", () => {
+    it("should throw if the path container reference does not exist", () => {
+      expect(() => {
+        deltaWriter.apply(
+          {},
+          { Operation: "InsertAfter", Path: ["foo", 0], Value: "abc" }
+        );
+      }).toThrow(
+        new Error(
+          "INVALID_DELTA: Path references a non-existent location in the feed data."
+        )
+      );
+    });
+
+    it("should throw if the path reference does not exist", () => {
+      expect(() => {
+        deltaWriter.apply(
+          { foo: [1, 2, 3] },
+          { Operation: "InsertAfter", Path: ["foo", 3], Value: "abc" }
+        );
+      }).toThrow(
+        new Error(
+          "INVALID_DELTA: Path references a non-existent location in the feed data."
+        )
+      );
+    });
+
     it("should throw if path references something other than an array element", () => {
       expect(() => {
         deltaWriter.apply(
@@ -520,17 +646,6 @@ describe("The deltaWrite.apply() function", () => {
           { Operation: "InsertAfter", Path: ["foo"], Value: 1 }
         );
       }).toThrow(new Error("INVALID_DELTA: Can only insert into arrays."));
-    });
-
-    it("should throw if path references a non-existent array element", () => {
-      expect(() => {
-        deltaWriter.apply(
-          { myArray: [1] },
-          { Operation: "InsertAfter", Path: ["myArray", 2], Value: 1 }
-        );
-      }).toThrow(
-        new Error("INVALID_DELTA: Can only insert after an existing element.")
-      );
     });
 
     it("should return updated feed data", () => {
@@ -546,6 +661,16 @@ describe("The deltaWrite.apply() function", () => {
   });
 
   describe("when invoked with a DeleteFirst delta operation", () => {
+    it("should throw if the path reference does not exist", () => {
+      expect(() => {
+        deltaWriter.apply({}, { Operation: "DeleteFirst", Path: ["foo"] });
+      }).toThrow(
+        new Error(
+          "INVALID_DELTA: Path references a non-existent location in the feed data."
+        )
+      );
+    });
+
     it("should throw if path references something other than an array", () => {
       expect(() => {
         deltaWriter.apply(
@@ -580,6 +705,16 @@ describe("The deltaWrite.apply() function", () => {
   });
 
   describe("when invoked with a DeleteLast delta operation", () => {
+    it("should throw if the path reference does not exist", () => {
+      expect(() => {
+        deltaWriter.apply({}, { Operation: "DeleteLast", Path: ["foo"] });
+      }).toThrow(
+        new Error(
+          "INVALID_DELTA: Path references a non-existent location in the feed data."
+        )
+      );
+    });
+
     it("should throw if path references something other than an array", () => {
       expect(() => {
         deltaWriter.apply(
