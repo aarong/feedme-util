@@ -18,7 +18,7 @@ export default deltaWriter;
  * @param {Object} feedData The feed data to navigate
  * @param {Array} path The path to walk to
  * @returns {Object} Reference to the path endpoint
- * @throws {Error} "INVALID_DELTA: ..."
+ * @throws {Error} "INVALID_OPERATION: ..."
  */
 deltaWriter._walkTo = function _walkTo(feedData, path) {
   if (path.length === 0) {
@@ -29,12 +29,12 @@ deltaWriter._walkTo = function _walkTo(feedData, path) {
   path.forEach(pathElement => {
     if (!check.array(node) && !check.object(node)) {
       throw new Error(
-        "INVALID_DELTA: Path references an element of a non-array or a member of a non-object."
+        "INVALID_OPERATION: Path references an element of a non-array or a member of a non-object."
       );
     }
     if (check.undefined(node[pathElement])) {
       throw new Error(
-        "INVALID_DELTA: Path references a non-existent location in the feed data."
+        "INVALID_OPERATION: Path references a non-existent location in the feed data."
       );
     }
     node = node[pathElement];
@@ -50,12 +50,12 @@ deltaWriter._walkTo = function _walkTo(feedData, path) {
  * @private
  * @param {Array} path The path to the contained data.
  * @returns {Array} The path to the container.
- * @throws {Error} "INVALID_DELTA: ..."
+ * @throws {Error} "INVALID_OPERATION: ..."
  */
 deltaWriter._containerPath = function _containerPath(path) {
   if (path.length === 0) {
     throw new Error(
-      "INVALID_DELTA: The feed data root does not have a container."
+      "INVALID_OPERATION: The feed data root does not have a container."
     );
   }
   return _filter(path, (val, idx) => idx < path.length - 1); // Don't modify original
@@ -73,7 +73,8 @@ deltaWriter._containerPath = function _containerPath(path) {
  *                   to feedData unless the root is being set, in which case
  *                   a reference to delta.
  * @throws {Error}    "INVALID_ARGUMENT: ..."
- *                    "INVALID_DELTA: ..."
+ *                    "INVALID_OPERATION: ..."
+ *                    "INVALID_OPERATION: ..."
  */
 deltaWriter.apply = function apply(feedData, delta) {
   // Check feed data arg
@@ -106,7 +107,9 @@ deltaWriter._operations = {};
 deltaWriter._operations.set = function set(feedData, delta) {
   if (delta.Path.length === 0) {
     if (!check.object(delta.Value)) {
-      throw new Error("INVALID_DELTA: The feed data root must be an object.");
+      throw new Error(
+        "INVALID_OPERATION: The feed data root must be an object."
+      );
     }
     return delta.Value;
   }
@@ -117,7 +120,7 @@ deltaWriter._operations.set = function set(feedData, delta) {
   );
   if (check.array(containerNode) && pathEndpoint > containerNode.length) {
     throw new Error(
-      "INVALID_DELTA: Cannot write non-contiguous elements to an array."
+      "INVALID_OPERATION: Cannot write non-contiguous elements to an array."
     );
   }
   containerNode[pathEndpoint] = delta.Value;
@@ -131,7 +134,7 @@ deltaWriter._operations.set = function set(feedData, delta) {
  */
 deltaWriter._operations.delete = function delete_(feedData, delta) {
   if (delta.Path.length === 0) {
-    throw new Error("INVALID_DELTA: Cannot delete the feed data root.");
+    throw new Error("INVALID_OPERATION: Cannot delete the feed data root.");
   }
   const pathEndpoint = delta.Path[delta.Path.length - 1];
   const containerNode = deltaWriter._walkTo(
@@ -140,7 +143,7 @@ deltaWriter._operations.delete = function delete_(feedData, delta) {
   );
   if (check.undefined(containerNode[pathEndpoint])) {
     throw new Error(
-      "INVALID_DELTA: Path references a non-existent location in the feed data."
+      "INVALID_OPERATION: Path references a non-existent location in the feed data."
     );
   }
   // pathEndpoint exists, so we know containerNode is an object/array
@@ -168,7 +171,9 @@ deltaWriter._operations.deleteValue = function deleteValue(feedData, delta) {
       }
     });
   } else {
-    throw new Error("INVALID_DELTA: Can only delete from arrays and objects.");
+    throw new Error(
+      "INVALID_OPERATION: Can only delete from arrays and objects."
+    );
   }
   return feedData;
 };
@@ -186,12 +191,12 @@ deltaWriter._operations.prepend = function prepend(feedData, delta) {
   const pathEndpoint = delta.Path[delta.Path.length - 1];
   if (check.undefined(containerNode[pathEndpoint])) {
     throw new Error(
-      "INVALID_DELTA: Path references a non-existent location in the feed data."
+      "INVALID_OPERATION: Path references a non-existent location in the feed data."
     );
   } else if (check.string(containerNode[pathEndpoint])) {
     containerNode[pathEndpoint] = delta.Value + containerNode[pathEndpoint];
   } else {
-    throw new Error("INVALID_DELTA: Can only prepend to strings.");
+    throw new Error("INVALID_OPERATION: Can only prepend to strings.");
   }
   return feedData;
 };
@@ -209,12 +214,12 @@ deltaWriter._operations.append = function append(feedData, delta) {
   const pathEndpoint = delta.Path[delta.Path.length - 1];
   if (check.undefined(containerNode[pathEndpoint])) {
     throw new Error(
-      "INVALID_DELTA: Path references a non-existent location in the feed data."
+      "INVALID_OPERATION: Path references a non-existent location in the feed data."
     );
   } else if (check.string(containerNode[pathEndpoint])) {
     containerNode[pathEndpoint] += delta.Value;
   } else {
-    throw new Error("INVALID_DELTA: Can only append to strings.");
+    throw new Error("INVALID_OPERATION: Can only append to strings.");
   }
   return feedData;
 };
@@ -232,12 +237,12 @@ deltaWriter._operations.increment = function increment(feedData, delta) {
   const pathEndpoint = delta.Path[delta.Path.length - 1];
   if (check.undefined(containerNode[pathEndpoint])) {
     throw new Error(
-      "INVALID_DELTA: Path references a non-existent location in the feed data."
+      "INVALID_OPERATION: Path references a non-existent location in the feed data."
     );
   } else if (check.number(containerNode[pathEndpoint])) {
     containerNode[pathEndpoint] += delta.Value;
   } else {
-    throw new Error("INVALID_DELTA: Can only increment numbers.");
+    throw new Error("INVALID_OPERATION: Can only increment numbers.");
   }
   return feedData;
 };
@@ -255,12 +260,12 @@ deltaWriter._operations.decrement = function decrement(feedData, delta) {
   const pathEndpoint = delta.Path[delta.Path.length - 1];
   if (check.undefined(containerNode[pathEndpoint])) {
     throw new Error(
-      "INVALID_DELTA: Path references a non-existent location in the feed data."
+      "INVALID_OPERATION: Path references a non-existent location in the feed data."
     );
   } else if (check.number(containerNode[pathEndpoint])) {
     containerNode[pathEndpoint] -= delta.Value;
   } else {
-    throw new Error("INVALID_DELTA: Can only decrement numbers.");
+    throw new Error("INVALID_OPERATION: Can only decrement numbers.");
   }
   return feedData;
 };
@@ -278,12 +283,12 @@ deltaWriter._operations.toggle = function toggle(feedData, delta) {
   const pathEndpoint = delta.Path[delta.Path.length - 1];
   if (check.undefined(containerNode[pathEndpoint])) {
     throw new Error(
-      "INVALID_DELTA: Path references a non-existent location in the feed data."
+      "INVALID_OPERATION: Path references a non-existent location in the feed data."
     );
   } else if (check.boolean(containerNode[pathEndpoint])) {
     containerNode[pathEndpoint] = !containerNode[pathEndpoint];
   } else {
-    throw new Error("INVALID_DELTA: Can only toggle booleans.");
+    throw new Error("INVALID_OPERATION: Can only toggle booleans.");
   }
   return feedData;
 };
@@ -298,7 +303,7 @@ deltaWriter._operations.insertFirst = function insertFirst(feedData, delta) {
   if (check.array(containerNode)) {
     containerNode.unshift(delta.Value);
   } else {
-    throw new Error("INVALID_DELTA: Can only insert into arrays.");
+    throw new Error("INVALID_OPERATION: Can only insert into arrays.");
   }
   return feedData;
 };
@@ -313,7 +318,7 @@ deltaWriter._operations.insertLast = function insertLast(feedData, delta) {
   if (check.array(containerNode)) {
     containerNode.push(delta.Value);
   } else {
-    throw new Error("INVALID_DELTA: Can only insert into arrays.");
+    throw new Error("INVALID_OPERATION: Can only insert into arrays.");
   }
   return feedData;
 };
@@ -331,11 +336,11 @@ deltaWriter._operations.insertBefore = function insertBefore(feedData, delta) {
   const pathEndpoint = delta.Path[delta.Path.length - 1];
   if (check.undefined(containerNode[pathEndpoint])) {
     throw new Error(
-      "INVALID_DELTA: Path references a non-existent location in the feed data."
+      "INVALID_OPERATION: Path references a non-existent location in the feed data."
     );
   }
   if (!check.array(containerNode)) {
-    throw new Error("INVALID_DELTA: Can only insert into arrays.");
+    throw new Error("INVALID_OPERATION: Can only insert into arrays.");
   }
   containerNode.splice(pathEndpoint, 0, delta.Value);
   return feedData;
@@ -354,11 +359,11 @@ deltaWriter._operations.insertAfter = function insertAfter(feedData, delta) {
   const pathEndpoint = delta.Path[delta.Path.length - 1];
   if (check.undefined(containerNode[pathEndpoint])) {
     throw new Error(
-      "INVALID_DELTA: Path references a non-existent location in the feed data."
+      "INVALID_OPERATION: Path references a non-existent location in the feed data."
     );
   }
   if (!check.array(containerNode)) {
-    throw new Error("INVALID_DELTA: Can only insert into arrays.");
+    throw new Error("INVALID_OPERATION: Can only insert into arrays.");
   }
   containerNode.splice(pathEndpoint + 1, 0, delta.Value);
   return feedData;
@@ -374,12 +379,12 @@ deltaWriter._operations.deleteFirst = function deleteFirst(feedData, delta) {
   if (check.array(containerNode)) {
     if (containerNode.length === 0) {
       throw new Error(
-        "INVALID_DELTA: Cannot delete elements from empty arrays."
+        "INVALID_OPERATION: Cannot delete elements from empty arrays."
       );
     }
     containerNode.shift(containerNode);
   } else {
-    throw new Error("INVALID_DELTA: Can only delete elements from arrays.");
+    throw new Error("INVALID_OPERATION: Can only delete elements from arrays.");
   }
   return feedData;
 };
@@ -394,12 +399,12 @@ deltaWriter._operations.deleteLast = function deleteLast(feedData, delta) {
   if (check.array(containerNode)) {
     if (containerNode.length === 0) {
       throw new Error(
-        "INVALID_DELTA: Cannot delete elements from empty arrays."
+        "INVALID_OPERATION: Cannot delete elements from empty arrays."
       );
     }
     containerNode.pop(containerNode);
   } else {
-    throw new Error("INVALID_DELTA: Can only delete elements from arrays.");
+    throw new Error("INVALID_OPERATION: Can only delete elements from arrays.");
   }
   return feedData;
 };

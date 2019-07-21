@@ -14,7 +14,7 @@ describe("The deltaWriter._walkTo() function", () => {
       deltaWriter._walkTo({ num: 1 }, ["num", 0]);
     }).toThrow(
       new Error(
-        "INVALID_DELTA: Path references an element of a non-array or a member of a non-object."
+        "INVALID_OPERATION: Path references an element of a non-array or a member of a non-object."
       )
     );
   });
@@ -24,7 +24,7 @@ describe("The deltaWriter._walkTo() function", () => {
       deltaWriter._walkTo({ num: 1 }, ["num", "foo"]);
     }).toThrow(
       new Error(
-        "INVALID_DELTA: Path references an element of a non-array or a member of a non-object."
+        "INVALID_OPERATION: Path references an element of a non-array or a member of a non-object."
       )
     );
   });
@@ -35,7 +35,7 @@ describe("The deltaWriter._walkTo() function", () => {
         deltaWriter._walkTo({}, ["foo"]);
       }).toThrow(
         new Error(
-          "INVALID_DELTA: Path references a non-existent location in the feed data."
+          "INVALID_OPERATION: Path references a non-existent location in the feed data."
         )
       );
     });
@@ -45,7 +45,7 @@ describe("The deltaWriter._walkTo() function", () => {
         deltaWriter._walkTo({}, [0]);
       }).toThrow(
         new Error(
-          "INVALID_DELTA: Path references a non-existent location in the feed data."
+          "INVALID_OPERATION: Path references a non-existent location in the feed data."
         )
       );
     });
@@ -63,7 +63,7 @@ describe("The deltaWriter._walkTo() function", () => {
         deltaWriter._walkTo({ child: {} }, ["child", "foo"]);
       }).toThrow(
         new Error(
-          "INVALID_DELTA: Path references a non-existent location in the feed data."
+          "INVALID_OPERATION: Path references a non-existent location in the feed data."
         )
       );
     });
@@ -73,7 +73,7 @@ describe("The deltaWriter._walkTo() function", () => {
         deltaWriter._walkTo({ child: {} }, ["child", 0]);
       }).toThrow(
         new Error(
-          "INVALID_DELTA: Path references a non-existent location in the feed data."
+          "INVALID_OPERATION: Path references a non-existent location in the feed data."
         )
       );
     });
@@ -91,7 +91,7 @@ describe("The deltaWriter._walkTo() function", () => {
         deltaWriter._walkTo({ arr: [] }, ["arr", 0]);
       }).toThrow(
         new Error(
-          "INVALID_DELTA: Path references a non-existent location in the feed data."
+          "INVALID_OPERATION: Path references a non-existent location in the feed data."
         )
       );
     });
@@ -109,7 +109,7 @@ describe("The deltaWriter._walkTo() function", () => {
         deltaWriter._walkTo({ child: { arr: [] } }, ["child", "arr", 0]);
       }).toThrow(
         new Error(
-          "INVALID_DELTA: Path references a non-existent location in the feed data."
+          "INVALID_OPERATION: Path references a non-existent location in the feed data."
         )
       );
     });
@@ -127,7 +127,7 @@ describe("The deltaWriter._walkTo() function", () => {
         deltaWriter._walkTo({ arr: [[]] }, ["arr", 0, 0]);
       }).toThrow(
         new Error(
-          "INVALID_DELTA: Path references a non-existent location in the feed data."
+          "INVALID_OPERATION: Path references a non-existent location in the feed data."
         )
       );
     });
@@ -145,7 +145,9 @@ describe("The deltaWriter._containerPath() function", () => {
     expect(() => {
       deltaWriter._containerPath([]);
     }).toThrow(
-      new Error("INVALID_DELTA: The feed data root does not have a container.")
+      new Error(
+        "INVALID_OPERATION: The feed data root does not have a container."
+      )
     );
   });
 
@@ -175,7 +177,7 @@ describe("The deltaWrite.apply() function", () => {
       expect(() => {
         deltaWriter.apply({}, { Operation: "Set", Path: [], Value: 1 });
       }).toThrow(
-        new Error("INVALID_DELTA: The feed data root must be an object.")
+        new Error("INVALID_OPERATION: The feed data root must be an object.")
       );
     });
 
@@ -208,7 +210,7 @@ describe("The deltaWrite.apply() function", () => {
         );
       }).toThrow(
         new Error(
-          "INVALID_DELTA: Cannot write non-contiguous elements to an array."
+          "INVALID_OPERATION: Cannot write non-contiguous elements to an array."
         )
       );
     });
@@ -244,7 +246,9 @@ describe("The deltaWrite.apply() function", () => {
     it("should throw if path references root", () => {
       expect(() => {
         deltaWriter.apply({}, { Operation: "Delete", Path: [] });
-      }).toThrow(new Error("INVALID_DELTA: Cannot delete the feed data root."));
+      }).toThrow(
+        new Error("INVALID_OPERATION: Cannot delete the feed data root.")
+      );
     });
 
     it("should throw if the path reference does not exist", () => {
@@ -252,7 +256,7 @@ describe("The deltaWrite.apply() function", () => {
         deltaWriter.apply({}, { Operation: "Delete", Path: ["foo"] });
       }).toThrow(
         new Error(
-          "INVALID_DELTA: Path references a non-existent location in the feed data."
+          "INVALID_OPERATION: Path references a non-existent location in the feed data."
         )
       );
     });
@@ -284,7 +288,7 @@ describe("The deltaWrite.apply() function", () => {
         deltaWriter.apply({}, { Operation: "DeleteValue", Path: ["foo"] });
       }).toThrow(
         new Error(
-          "INVALID_DELTA: Path references a non-existent location in the feed data."
+          "INVALID_OPERATION: Path references a non-existent location in the feed data."
         )
       );
     });
@@ -296,7 +300,7 @@ describe("The deltaWrite.apply() function", () => {
           { Operation: "DeleteValue", Path: ["foo"], Value: 123 }
         );
       }).toThrow(
-        new Error("INVALID_DELTA: Can only delete from arrays and objects.")
+        new Error("INVALID_OPERATION: Can only delete from arrays and objects.")
       );
     });
 
@@ -332,7 +336,7 @@ describe("The deltaWrite.apply() function", () => {
         );
       }).toThrow(
         new Error(
-          "INVALID_DELTA: Path references a non-existent location in the feed data."
+          "INVALID_OPERATION: Path references a non-existent location in the feed data."
         )
       );
     });
@@ -343,7 +347,7 @@ describe("The deltaWrite.apply() function", () => {
           { foo: 1 },
           { Operation: "Prepend", Path: ["foo"], Value: "bar" }
         );
-      }).toThrow(new Error("INVALID_DELTA: Can only prepend to strings."));
+      }).toThrow(new Error("INVALID_OPERATION: Can only prepend to strings."));
     });
 
     it("should return updated feed data", () => {
@@ -367,7 +371,7 @@ describe("The deltaWrite.apply() function", () => {
         );
       }).toThrow(
         new Error(
-          "INVALID_DELTA: Path references a non-existent location in the feed data."
+          "INVALID_OPERATION: Path references a non-existent location in the feed data."
         )
       );
     });
@@ -378,7 +382,7 @@ describe("The deltaWrite.apply() function", () => {
           { foo: 1 },
           { Operation: "Append", Path: ["foo"], Value: "bar" }
         );
-      }).toThrow(new Error("INVALID_DELTA: Can only append to strings."));
+      }).toThrow(new Error("INVALID_OPERATION: Can only append to strings."));
     });
 
     it("should return updated feed data", () => {
@@ -402,7 +406,7 @@ describe("The deltaWrite.apply() function", () => {
         );
       }).toThrow(
         new Error(
-          "INVALID_DELTA: Path references a non-existent location in the feed data."
+          "INVALID_OPERATION: Path references a non-existent location in the feed data."
         )
       );
     });
@@ -413,7 +417,7 @@ describe("The deltaWrite.apply() function", () => {
           { foo: "abc" },
           { Operation: "Increment", Path: ["foo"], Value: 1 }
         );
-      }).toThrow(new Error("INVALID_DELTA: Can only increment numbers."));
+      }).toThrow(new Error("INVALID_OPERATION: Can only increment numbers."));
     });
 
     it("should return updated feed data", () => {
@@ -437,7 +441,7 @@ describe("The deltaWrite.apply() function", () => {
         );
       }).toThrow(
         new Error(
-          "INVALID_DELTA: Path references a non-existent location in the feed data."
+          "INVALID_OPERATION: Path references a non-existent location in the feed data."
         )
       );
     });
@@ -448,7 +452,7 @@ describe("The deltaWrite.apply() function", () => {
           { foo: "abc" },
           { Operation: "Decrement", Path: ["foo"], Value: 1 }
         );
-      }).toThrow(new Error("INVALID_DELTA: Can only decrement numbers."));
+      }).toThrow(new Error("INVALID_OPERATION: Can only decrement numbers."));
     });
 
     it("should return updated feed data", () => {
@@ -469,7 +473,7 @@ describe("The deltaWrite.apply() function", () => {
         deltaWriter.apply({}, { Operation: "Toggle", Path: ["foo"] });
       }).toThrow(
         new Error(
-          "INVALID_DELTA: Path references a non-existent location in the feed data."
+          "INVALID_OPERATION: Path references a non-existent location in the feed data."
         )
       );
     });
@@ -480,7 +484,7 @@ describe("The deltaWrite.apply() function", () => {
           { foo: "abc" },
           { Operation: "Toggle", Path: ["foo"] }
         );
-      }).toThrow(new Error("INVALID_DELTA: Can only toggle booleans."));
+      }).toThrow(new Error("INVALID_OPERATION: Can only toggle booleans."));
     });
 
     it("should return updated feed data", () => {
@@ -503,7 +507,7 @@ describe("The deltaWrite.apply() function", () => {
         );
       }).toThrow(
         new Error(
-          "INVALID_DELTA: Path references a non-existent location in the feed data."
+          "INVALID_OPERATION: Path references a non-existent location in the feed data."
         )
       );
     });
@@ -514,7 +518,7 @@ describe("The deltaWrite.apply() function", () => {
           { foo: "abc" },
           { Operation: "InsertFirst", Path: ["foo"], Value: 1 }
         );
-      }).toThrow(new Error("INVALID_DELTA: Can only insert into arrays."));
+      }).toThrow(new Error("INVALID_OPERATION: Can only insert into arrays."));
     });
 
     it("should return updated feed data", () => {
@@ -538,7 +542,7 @@ describe("The deltaWrite.apply() function", () => {
         );
       }).toThrow(
         new Error(
-          "INVALID_DELTA: Path references a non-existent location in the feed data."
+          "INVALID_OPERATION: Path references a non-existent location in the feed data."
         )
       );
     });
@@ -549,7 +553,7 @@ describe("The deltaWrite.apply() function", () => {
           { foo: "abc" },
           { Operation: "InsertLast", Path: ["foo"], Value: 1 }
         );
-      }).toThrow(new Error("INVALID_DELTA: Can only insert into arrays."));
+      }).toThrow(new Error("INVALID_OPERATION: Can only insert into arrays."));
     });
 
     it("should return updated feed data", () => {
@@ -573,7 +577,7 @@ describe("The deltaWrite.apply() function", () => {
         );
       }).toThrow(
         new Error(
-          "INVALID_DELTA: Path references a non-existent location in the feed data."
+          "INVALID_OPERATION: Path references a non-existent location in the feed data."
         )
       );
     });
@@ -586,7 +590,7 @@ describe("The deltaWrite.apply() function", () => {
         );
       }).toThrow(
         new Error(
-          "INVALID_DELTA: Path references a non-existent location in the feed data."
+          "INVALID_OPERATION: Path references a non-existent location in the feed data."
         )
       );
     });
@@ -597,7 +601,7 @@ describe("The deltaWrite.apply() function", () => {
           { foo: "abc" },
           { Operation: "InsertBefore", Path: ["foo"], Value: 1 }
         );
-      }).toThrow(new Error("INVALID_DELTA: Can only insert into arrays."));
+      }).toThrow(new Error("INVALID_OPERATION: Can only insert into arrays."));
     });
 
     it("should return updated feed data", () => {
@@ -621,7 +625,7 @@ describe("The deltaWrite.apply() function", () => {
         );
       }).toThrow(
         new Error(
-          "INVALID_DELTA: Path references a non-existent location in the feed data."
+          "INVALID_OPERATION: Path references a non-existent location in the feed data."
         )
       );
     });
@@ -634,7 +638,7 @@ describe("The deltaWrite.apply() function", () => {
         );
       }).toThrow(
         new Error(
-          "INVALID_DELTA: Path references a non-existent location in the feed data."
+          "INVALID_OPERATION: Path references a non-existent location in the feed data."
         )
       );
     });
@@ -645,7 +649,7 @@ describe("The deltaWrite.apply() function", () => {
           { foo: "abc" },
           { Operation: "InsertAfter", Path: ["foo"], Value: 1 }
         );
-      }).toThrow(new Error("INVALID_DELTA: Can only insert into arrays."));
+      }).toThrow(new Error("INVALID_OPERATION: Can only insert into arrays."));
     });
 
     it("should return updated feed data", () => {
@@ -666,7 +670,7 @@ describe("The deltaWrite.apply() function", () => {
         deltaWriter.apply({}, { Operation: "DeleteFirst", Path: ["foo"] });
       }).toThrow(
         new Error(
-          "INVALID_DELTA: Path references a non-existent location in the feed data."
+          "INVALID_OPERATION: Path references a non-existent location in the feed data."
         )
       );
     });
@@ -678,7 +682,7 @@ describe("The deltaWrite.apply() function", () => {
           { Operation: "DeleteFirst", Path: ["foo"] }
         );
       }).toThrow(
-        new Error("INVALID_DELTA: Can only delete elements from arrays.")
+        new Error("INVALID_OPERATION: Can only delete elements from arrays.")
       );
     });
 
@@ -689,7 +693,9 @@ describe("The deltaWrite.apply() function", () => {
           { Operation: "DeleteFirst", Path: ["myArray"] }
         );
       }).toThrow(
-        new Error("INVALID_DELTA: Cannot delete elements from empty arrays.")
+        new Error(
+          "INVALID_OPERATION: Cannot delete elements from empty arrays."
+        )
       );
     });
 
@@ -710,7 +716,7 @@ describe("The deltaWrite.apply() function", () => {
         deltaWriter.apply({}, { Operation: "DeleteLast", Path: ["foo"] });
       }).toThrow(
         new Error(
-          "INVALID_DELTA: Path references a non-existent location in the feed data."
+          "INVALID_OPERATION: Path references a non-existent location in the feed data."
         )
       );
     });
@@ -722,7 +728,7 @@ describe("The deltaWrite.apply() function", () => {
           { Operation: "DeleteLast", Path: ["foo"] }
         );
       }).toThrow(
-        new Error("INVALID_DELTA: Can only delete elements from arrays.")
+        new Error("INVALID_OPERATION: Can only delete elements from arrays.")
       );
     });
 
@@ -733,7 +739,9 @@ describe("The deltaWrite.apply() function", () => {
           { Operation: "DeleteLast", Path: ["myArray"] }
         );
       }).toThrow(
-        new Error("INVALID_DELTA: Cannot delete elements from empty arrays.")
+        new Error(
+          "INVALID_OPERATION: Cannot delete elements from empty arrays."
+        )
       );
     });
 
