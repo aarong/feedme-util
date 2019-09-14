@@ -3,4 +3,13 @@
 
 # Feedme Utilities
 
-Utilities shared by the Feedme client and server. ESNext.
+Utilities shared by the Feedme [client](https://github.com/aarong/feedme-client)
+and [server](https://github.com/aarong/feedme-server).
+
+- Validate Feedme messages
+- Serialize feed name/arg combinations into canonical strings
+- Calculate MD5 hashes for feed data
+- Apply deltas to feed data
+
+The NPM package is ESNext, which enables downstream tree-shaking. Transpilation
+occurs downstream.
