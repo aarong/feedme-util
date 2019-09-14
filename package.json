@@ -1,7 +1,7 @@
 {
   "name": "feedme-util",
   "version": "0.0.26",
-  "description": "Utilities shared by the Feedme client and server.",
+  "description": "Various Javascript utilities related to the Feedme specification.",
   "main": "index.js",
   "scripts": {
     "lint": "./node_modules/.bin/eslint src/**",
