@@ -12,5 +12,3 @@ Includes functionality to:
 - Serialize feed name/argument combinations into canonical strings
 - Calculate MD5 hashes for feed data
 - Apply deltas to feed data
-
-The published NPM package is in ESNext, which enables downstream tree-shaking.
