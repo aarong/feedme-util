@@ -1,6 +1,6 @@
 {
   "name": "feedme-util",
-  "version": "0.0.26",
+  "version": "0.1.0",
   "description": "Various Javascript utilities related to the Feedme specification.",
   "main": "index.js",
   "scripts": {
