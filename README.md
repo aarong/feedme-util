@@ -4,7 +4,7 @@
 # Feedme Utilities
 
 Various Javascript utilities related to the
-[Feedme specification](https://github.com/aarong/feedme-client).
+[Feedme specification](https://github.com/aarong/feedme-spec).
 
 Includes functionality to:
 
@@ -14,4 +14,3 @@ Includes functionality to:
 - Apply deltas to feed data
 
 The published NPM package is in ESNext, which enables downstream tree-shaking.
-Transpilation occurs downstream.
