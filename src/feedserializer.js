@@ -28,15 +28,11 @@ feedSerializer.serialize = function serialize(name, args) {
   if (!check.object(args)) {
     throw new Error("INVALID_ARGUMENT: Invalid feed arguments object.");
   }
-  let ok = true;
   _each(args, val => {
     if (!check.string(val)) {
-      ok = false;
+      throw new Error("INVALID_ARGUMENT: Invalid feed arguments object.");
     }
   });
-  if (!ok) {
-    throw new Error("INVALID_ARGUMENT: Invalid feed arguments object.");
-  }
 
   // Get ordered list of arg names
   const argNames = [];
