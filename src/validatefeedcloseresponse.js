@@ -1,4 +1,5 @@
 import Ajv from "ajv";
+import checkt from "check-types";
 
 /**
  * The validateFeedCloseResponse.check() function determines whether some object
@@ -43,11 +44,17 @@ const validator = ajv.compile(
  * @memberof validateFeedCloseResponse
  * @param {Object} msg
  * @returns {void}
- * @throws {Error} "INVALID: ..."
+ * @throws {Error} "INVALID_ARGUMENT: ..."
+ * @throws {Error} "INVALID_MESSAGE: ..."
  */
 validateFeedCloseResponse.check = function check(msg) {
+  // Validate msg
+  if (!checkt.object(msg) || msg.MessageType !== "FeedCloseResponse") {
+    throw new Error("INVALID_ARGUMENT: Not an object or invalid MessageType.");
+  }
+
   // Validate against the schema for this message type
   if (!validator(msg)) {
-    throw new Error("INVALID: Schema validation failed.");
+    throw new Error("INVALID_MESSAGE: Schema validation failed.");
   }
 };

@@ -3,11 +3,35 @@ import validateActionRevelation from "../validateactionrevelation";
 /* global expect:false, it:false, describe: false */
 
 describe("The validateActionRevelation.check() function", () => {
+  it("should throw on invalid type", () => {
+    expect(() => {
+      validateActionRevelation.check(123);
+    }).toThrow(
+      new Error("INVALID_ARGUMENT: Not an object or invalid MessageType.")
+    );
+  });
+
+  it("should throw on invalid MessageType", () => {
+    expect(() => {
+      validateActionRevelation.check({ MessageType: "junk" });
+    }).toThrow(
+      new Error("INVALID_ARGUMENT: Not an object or invalid MessageType.")
+    );
+  });
+
+  it("should throw on invalid checkJsonExpressible", () => {
+    expect(() => {
+      validateActionRevelation.check({ MessageType: "ActionRevelation" }, 123);
+    }).toThrow(
+      new Error("INVALID_ARGUMENT: Invalid checkJsonExpressible argument.")
+    );
+  });
+
   it("should throw on schema violation", () => {
     // Throw on non-object
     expect(() => {
       validateActionRevelation.check({ MessageType: "ActionRevelation" }, true);
-    }).toThrow(new Error("INVALID: Schema validation failed."));
+    }).toThrow(new Error("INVALID_MESSAGE: Schema validation failed."));
   });
 
   describe("if not checking JSON-expressibility", () => {
@@ -105,7 +129,9 @@ describe("The validateActionRevelation.check() function", () => {
           },
           true
         );
-      }).toThrow(new Error("INVALID: Action data is not JSON-expressible."));
+      }).toThrow(
+        new Error("INVALID_MESSAGE: Action data is not JSON-expressible.")
+      );
     });
 
     it("should throw if delta operation value is not JSON-expressible", () => {
@@ -124,7 +150,7 @@ describe("The validateActionRevelation.check() function", () => {
           },
           true
         );
-      }).toThrow(new Error("INVALID: Delta value is not JSON-expressible."));
+      }).toThrow(new Error("INVALID_MESSAGE: Invalid delta."));
     });
   });
 });

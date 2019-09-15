@@ -3,10 +3,34 @@ import validateAction from "../validateaction";
 /* global expect:false, it:false, describe: false */
 
 describe("The validateAction.check() function", () => {
+  it("should throw on invalid type", () => {
+    expect(() => {
+      validateAction.check(123);
+    }).toThrow(
+      new Error("INVALID_ARGUMENT: Not an object or invalid MessageType.")
+    );
+  });
+
+  it("should throw on invalid MessageType", () => {
+    expect(() => {
+      validateAction.check({ MessageType: "junk" });
+    }).toThrow(
+      new Error("INVALID_ARGUMENT: Not an object or invalid MessageType.")
+    );
+  });
+
+  it("should throw on invalid checkJsonExpressible", () => {
+    expect(() => {
+      validateAction.check({ MessageType: "Action" }, 123);
+    }).toThrow(
+      new Error("INVALID_ARGUMENT: Invalid checkJsonExpressible argument.")
+    );
+  });
+
   it("should throw on schema violation", () => {
     expect(() => {
       validateAction.check({ MessageType: "Action" }, false);
-    }).toThrow(new Error("INVALID: Schema validation failed."));
+    }).toThrow(new Error("INVALID_MESSAGE: Schema validation failed."));
   });
 
   it("if not checking JSON-expressibility, should succeed on valid message", () => {
@@ -63,7 +87,7 @@ describe("The validateAction.check() function", () => {
         true
       );
     }).toThrow(
-      new Error("INVALID: Action arguments are not JSON-expressible.")
+      new Error("INVALID_MESSAGE: Action arguments are not JSON-expressible.")
     );
   });
 });

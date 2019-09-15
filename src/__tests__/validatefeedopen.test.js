@@ -3,10 +3,26 @@ import validateFeedOpen from "../validatefeedopen";
 /* global expect:false, it:false, describe: false */
 
 describe("The validateFeedOpen.check() function", () => {
+  it("should throw on invalid type", () => {
+    expect(() => {
+      validateFeedOpen.check(123);
+    }).toThrow(
+      new Error("INVALID_ARGUMENT: Not an object or invalid MessageType.")
+    );
+  });
+
+  it("should throw on invalid MessageType", () => {
+    expect(() => {
+      validateFeedOpen.check({ MessageType: "junk" });
+    }).toThrow(
+      new Error("INVALID_ARGUMENT: Not an object or invalid MessageType.")
+    );
+  });
+
   it("should throw on schema violation", () => {
     expect(() => {
       validateFeedOpen.check({ MessageType: "FeedOpen" });
-    }).toThrow(new Error("INVALID: Schema validation failed."));
+    }).toThrow(new Error("INVALID_MESSAGE: Schema validation failed."));
   });
 
   it("should succeed on valid message", () => {

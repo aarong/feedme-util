@@ -3,13 +3,37 @@ import validateFeedOpenResponse from "../validatefeedopenresponse";
 /* global expect:false, it:false, describe: false */
 
 describe("The validateFeedOpenResponse.check() function", () => {
+  it("should throw on invalid type", () => {
+    expect(() => {
+      validateFeedOpenResponse.check(123);
+    }).toThrow(
+      new Error("INVALID_ARGUMENT: Not an object or invalid MessageType.")
+    );
+  });
+
+  it("should throw on invalid MessageType", () => {
+    expect(() => {
+      validateFeedOpenResponse.check({ MessageType: "junk" });
+    }).toThrow(
+      new Error("INVALID_ARGUMENT: Not an object or invalid MessageType.")
+    );
+  });
+
+  it("should throw on invalid checkJsonExpressible", () => {
+    expect(() => {
+      validateFeedOpenResponse.check({ MessageType: "FeedOpenResponse" }, 123);
+    }).toThrow(
+      new Error("INVALID_ARGUMENT: Invalid checkJsonExpressible argument.")
+    );
+  });
+
   it("should throw on schema violation", () => {
     expect(() => {
       validateFeedOpenResponse.check(
         { MessageType: "FeedOpenResponse" },
         false
       );
-    }).toThrow(new Error("INVALID: Schema validation failed."));
+    }).toThrow(new Error("INVALID_MESSAGE: Schema validation failed."));
   });
 
   describe("if not checking JSON-expressibility", () => {
@@ -120,7 +144,9 @@ describe("The validateFeedOpenResponse.check() function", () => {
           },
           true
         );
-      }).toThrow(new Error("INVALID: Feed data is not JSON-expressible."));
+      }).toThrow(
+        new Error("INVALID_MESSAGE: Feed data is not JSON-expressible.")
+      );
     });
 
     it("should throw on non-expressible response failure", () => {
@@ -136,7 +162,9 @@ describe("The validateFeedOpenResponse.check() function", () => {
           },
           true
         );
-      }).toThrow(new Error("INVALID: Error data is not JSON-expressible."));
+      }).toThrow(
+        new Error("INVALID_MESSAGE: Error data is not JSON-expressible.")
+      );
     });
   });
 });

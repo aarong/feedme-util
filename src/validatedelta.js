@@ -558,13 +558,21 @@ const validators = {
  * @param {*} value
  * @param {bool} checkJsonExpressible Toggles expressiblity check on delta.Value (if required)
  * @returns {void}
- * @throws {Error} "INVALID: ..."
+ * @throws {Error} "INVALID_ARGUMENT: ..."
+ * @throws {Error} "INVALID_DELTA: ..."
  */
 validateDelta.check = function check(value, checkJsonExpressible) {
+  // Check value type
   if (!checkt.object(value)) {
-    throw new Error("INVALID: Not an object.");
+    throw new Error("INVALID_ARGUMENT: Not an object.");
   }
 
+  // Validate checkJsonExpressible
+  if (!checkt.boolean(checkJsonExpressible)) {
+    throw new Error("INVALID_ARGUMENT: Invalid checkJsonExpressible argument.");
+  }
+
+  // Check delta operation
   if (
     value.Operation !== "Set" &&
     value.Operation !== "Delete" &&
@@ -581,12 +589,12 @@ validateDelta.check = function check(value, checkJsonExpressible) {
     value.Operation !== "DeleteFirst" &&
     value.Operation !== "DeleteLast"
   ) {
-    throw new Error("INVALID: Invalid delta operation.");
+    throw new Error("INVALID_DELTA: Invalid delta operation.");
   }
 
   // Validate against the schema for this delta operation
   if (!validators[value.Operation](value)) {
-    throw new Error("INVALID: Schema validation failed.");
+    throw new Error("INVALID_DELTA: Schema validation failed.");
   }
 
   // If desired, check whether the value is JSON-expressible
@@ -600,6 +608,6 @@ validateDelta.check = function check(value, checkJsonExpressible) {
       value.Operation === "InsertAfter") &&
     !jsonExpressible(value.Value)
   ) {
-    throw new Error("INVALID: Delta value is not JSON-expressible.");
+    throw new Error("INVALID_DELTA: Delta value is not JSON-expressible.");
   }
 };

@@ -1,5 +1,6 @@
 import Ajv from "ajv";
 import jsonExpressible from "json-expressible";
+import checkt from "check-types";
 import validateDelta from "./validatedelta";
 
 /**
@@ -71,21 +72,36 @@ const validator = ajv.compile(
  * @param {Object} msg
  * @param {bool} checkJsonExpressible Toggles expressiblity check on msg.ActionData and delta values
  * @returns {void}
- * @throws {Error} "INVALID: ..."
+ * @throws {Error} "INVALID_ARGUMENT: ..."
+ * @throws {Error} "INVALID_MESSAGE: ..."
  */
 validateActionRevelation.check = function check(msg, checkJsonExpressible) {
+  // Validate msg
+  if (!checkt.object(msg) || msg.MessageType !== "ActionRevelation") {
+    throw new Error("INVALID_ARGUMENT: Not an object or invalid MessageType.");
+  }
+
+  // Validate checkJsonExpressible
+  if (!checkt.boolean(checkJsonExpressible)) {
+    throw new Error("INVALID_ARGUMENT: Invalid checkJsonExpressible argument.");
+  }
+
   // Validate against the schema for this message type
   if (!validator(msg)) {
-    throw new Error("INVALID: Schema validation failed.");
+    throw new Error("INVALID_MESSAGE: Schema validation failed.");
   }
 
   // Validate all deltas (includes JSON-expressibility check if desired)
   msg.FeedDeltas.forEach(delta => {
-    validateDelta.check(delta, checkJsonExpressible);
+    try {
+      validateDelta.check(delta, checkJsonExpressible);
+    } catch (e) {
+      throw new Error("INVALID_MESSAGE: Invalid delta.");
+    }
   });
 
   // If desired, check whether action data is JSON-expressible
   if (checkJsonExpressible && !jsonExpressible(msg.ActionData)) {
-    throw new Error("INVALID: Action data is not JSON-expressible.");
+    throw new Error("INVALID_MESSAGE: Action data is not JSON-expressible.");
   }
 };

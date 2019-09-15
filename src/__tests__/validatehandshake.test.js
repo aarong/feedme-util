@@ -3,10 +3,26 @@ import validateHandshake from "../validatehandshake";
 /* global expect:false, it:false, describe: false */
 
 describe("The validateHandshake.check() function", () => {
+  it("should throw on invalid type", () => {
+    expect(() => {
+      validateHandshake.check(123);
+    }).toThrow(
+      new Error("INVALID_ARGUMENT: Not an object or invalid MessageType.")
+    );
+  });
+
+  it("should throw on invalid MessageType", () => {
+    expect(() => {
+      validateHandshake.check({ MessageType: "junk" });
+    }).toThrow(
+      new Error("INVALID_ARGUMENT: Not an object or invalid MessageType.")
+    );
+  });
+
   it("should throw on schema violation", () => {
     expect(() => {
       validateHandshake.check({ MessageType: "Handshake" });
-    }).toThrow(new Error("INVALID: Schema validation failed."));
+    }).toThrow(new Error("INVALID_MESSAGE: Schema validation failed."));
   });
 
   it("should succeed on valid message", () => {

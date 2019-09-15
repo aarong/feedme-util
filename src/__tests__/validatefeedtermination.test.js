@@ -3,10 +3,34 @@ import validateFeedTermination from "../validatefeedtermination";
 /* global expect:false, it:false, describe: false */
 
 describe("The validateFeedTermination.check() function", () => {
+  it("should throw on invalid type", () => {
+    expect(() => {
+      validateFeedTermination.check(123);
+    }).toThrow(
+      new Error("INVALID_ARGUMENT: Not an object or invalid MessageType.")
+    );
+  });
+
+  it("should throw on invalid MessageType", () => {
+    expect(() => {
+      validateFeedTermination.check({ MessageType: "junk" });
+    }).toThrow(
+      new Error("INVALID_ARGUMENT: Not an object or invalid MessageType.")
+    );
+  });
+
+  it("should throw on invalid checkJsonExpressible", () => {
+    expect(() => {
+      validateFeedTermination.check({ MessageType: "FeedTermination" }, 123);
+    }).toThrow(
+      new Error("INVALID_ARGUMENT: Invalid checkJsonExpressible argument.")
+    );
+  });
+
   it("should throw on schema violation", () => {
     expect(() => {
       validateFeedTermination.check({ MessageType: "FeedTermination" }, false);
-    }).toThrow(new Error("INVALID: Schema validation failed."));
+    }).toThrow(new Error("INVALID_MESSAGE: Schema validation failed."));
   });
 
   it("if not checking JSON-expressibility, should succeed if expressible", () => {
@@ -66,6 +90,8 @@ describe("The validateFeedTermination.check() function", () => {
         },
         true
       );
-    }).toThrow(new Error("INVALID: Error data is not JSON-expressible."));
+    }).toThrow(
+      new Error("INVALID_MESSAGE: Error data is not JSON-expressible.")
+    );
   });
 });

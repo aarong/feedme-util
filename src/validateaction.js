@@ -1,5 +1,6 @@
 import Ajv from "ajv";
 import jsonExpressible from "json-expressible";
+import checkt from "check-types";
 
 /**
  * The validateAction.check() function determines whether some object
@@ -46,16 +47,29 @@ const validator = ajv.compile(
  * @param {Object} msg
  * @param {bool} checkJsonExpressible Toggles expressiblity check on msg.ActionArgs
  * @returns {void}
- * @throws {Error} "INVALID: ..."
+ * @throws {Error} "INVALID_ARGUMENT: ..."
+ * @throws {Error} "INVALID_MESSAGE: ..."
  */
 validateAction.check = function check(msg, checkJsonExpressible) {
+  // Validate msg
+  if (!checkt.object(msg) || msg.MessageType !== "Action") {
+    throw new Error("INVALID_ARGUMENT: Not an object or invalid MessageType.");
+  }
+
+  // Validate checkJsonExpressible
+  if (!checkt.boolean(checkJsonExpressible)) {
+    throw new Error("INVALID_ARGUMENT: Invalid checkJsonExpressible argument.");
+  }
+
   // Validate against the schema for this message type
   if (!validator(msg)) {
-    throw new Error("INVALID: Schema validation failed.");
+    throw new Error("INVALID_MESSAGE: Schema validation failed.");
   }
 
   // If desired, check whether action arguments are JSON-expressible
   if (checkJsonExpressible && !jsonExpressible(msg.ActionArgs)) {
-    throw new Error("INVALID: Action arguments are not JSON-expressible.");
+    throw new Error(
+      "INVALID_MESSAGE: Action arguments are not JSON-expressible."
+    );
   }
 };

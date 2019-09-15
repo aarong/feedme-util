@@ -3,10 +3,34 @@ import validateActionResponse from "../validateactionresponse";
 /* global expect:false, it:false, describe: false */
 
 describe("The validateActionResponse.check() function", () => {
-  it("should return correctly", () => {
+  it("should throw on invalid type", () => {
+    expect(() => {
+      validateActionResponse.check(123);
+    }).toThrow(
+      new Error("INVALID_ARGUMENT: Not an object or invalid MessageType.")
+    );
+  });
+
+  it("should throw on invalid MessageType", () => {
+    expect(() => {
+      validateActionResponse.check({ MessageType: "junk" });
+    }).toThrow(
+      new Error("INVALID_ARGUMENT: Not an object or invalid MessageType.")
+    );
+  });
+
+  it("should throw on invalid checkJsonExpressible", () => {
+    expect(() => {
+      validateActionResponse.check({ MessageType: "ActionResponse" }, 123);
+    }).toThrow(
+      new Error("INVALID_ARGUMENT: Invalid checkJsonExpressible argument.")
+    );
+  });
+
+  it("should throw on schema violation", () => {
     expect(() => {
       validateActionResponse.check({ MessageType: "ActionResponse" }, false);
-    }).toThrow(new Error("INVALID: Schema validation failed."));
+    }).toThrow(new Error("INVALID_MESSAGE: Schema validation failed."));
   });
 
   describe("if not checking JSON-expressibility", () => {
@@ -110,7 +134,9 @@ describe("The validateActionResponse.check() function", () => {
           },
           true
         );
-      }).toThrow(new Error("INVALID: Action data is not JSON-expressible."));
+      }).toThrow(
+        new Error("INVALID_MESSAGE: Action data is not JSON-expressible.")
+      );
     });
 
     it("should throw on non-expressible response failure", () => {
@@ -125,7 +151,9 @@ describe("The validateActionResponse.check() function", () => {
           },
           true
         );
-      }).toThrow(new Error("INVALID: Error data is not JSON-expressible."));
+      }).toThrow(
+        new Error("INVALID_MESSAGE: Error data is not JSON-expressible.")
+      );
     });
   });
 });

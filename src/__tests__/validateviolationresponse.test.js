@@ -3,13 +3,40 @@ import validateViolationResponse from "../validateviolationresponse";
 /* global expect:false, it:false, describe: false */
 
 describe("The validateViolationResponse.check() function", () => {
+  it("should throw on invalid type", () => {
+    expect(() => {
+      validateViolationResponse.check(123);
+    }).toThrow(
+      new Error("INVALID_ARGUMENT: Not an object or invalid MessageType.")
+    );
+  });
+
+  it("should throw on invalid MessageType", () => {
+    expect(() => {
+      validateViolationResponse.check({ MessageType: "junk" });
+    }).toThrow(
+      new Error("INVALID_ARGUMENT: Not an object or invalid MessageType.")
+    );
+  });
+
+  it("should throw on invalid checkJsonExpressible", () => {
+    expect(() => {
+      validateViolationResponse.check(
+        { MessageType: "ViolationResponse" },
+        123
+      );
+    }).toThrow(
+      new Error("INVALID_ARGUMENT: Invalid checkJsonExpressible argument.")
+    );
+  });
+
   it("should throw on schema violation", () => {
     expect(() => {
       validateViolationResponse.check(
         { MessageType: "ViolationResponse" },
         false
       );
-    }).toThrow(new Error("INVALID: Schema validation failed."));
+    }).toThrow(new Error("INVALID_MESSAGE: Schema validation failed."));
   });
 
   it("if not checking JSON-expressibility, should succeed if expressible", () => {
@@ -57,6 +84,8 @@ describe("The validateViolationResponse.check() function", () => {
         },
         true
       );
-    }).toThrow(new Error("INVALID: Diagnostics are not JSON-expressible."));
+    }).toThrow(
+      new Error("INVALID_MESSAGE: Diagnostics are not JSON-expressible.")
+    );
   });
 });
