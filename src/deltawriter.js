@@ -74,7 +74,6 @@ deltaWriter._containerPath = function _containerPath(path) {
  *                   a reference to delta.
  * @throws {Error}    "INVALID_ARGUMENT: ..."
  *                    "INVALID_OPERATION: ..."
- *                    "INVALID_OPERATION: ..."
  */
 deltaWriter.apply = function apply(feedData, delta) {
   // Check feed data arg
