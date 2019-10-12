@@ -1,5 +1,5 @@
 import _each from "lodash/each";
-import check from "check-types";
+import feedValidator from "./feedvalidator";
 
 /**
  * Translates feed name-argument combinations into canonicalized serializations
@@ -19,20 +19,8 @@ export default feedSerializer;
  * @throws {Error} "INVALID_ARGUMENT: ..."
  */
 feedSerializer.serialize = function serialize(name, args) {
-  // Check name
-  if (!check.string(name)) {
-    throw new Error("INVALID_ARGUMENT: Invalid feed name.");
-  }
-
-  // Check args
-  if (!check.object(args)) {
-    throw new Error("INVALID_ARGUMENT: Invalid feed arguments object.");
-  }
-  _each(args, val => {
-    if (!check.string(val)) {
-      throw new Error("INVALID_ARGUMENT: Invalid feed arguments object.");
-    }
-  });
+  // Check args and relay errors
+  feedValidator.validate(name, args);
 
   // Get ordered list of arg names
   const argNames = [];
