@@ -3,9 +3,15 @@ import feedValidator from "../feedvalidator";
 /* global expect:false, describe:false, it:false */
 
 describe("the .validate() function", () => {
-  it("should throw if feed name is invalid", () => {
+  it("should throw if feed name is bad type", () => {
     expect(() => {
       feedValidator.validate(1, {});
+    }).toThrow(new Error("INVALID_ARGUMENT: Invalid feed name."));
+  });
+
+  it("should throw if feed name is empty string", () => {
+    expect(() => {
+      feedValidator.validate("", {});
     }).toThrow(new Error("INVALID_ARGUMENT: Invalid feed name."));
   });
 
