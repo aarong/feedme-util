@@ -8,6 +8,7 @@ Various Javascript utilities related to the
 
 Includes functionality to:
 
+- Validate feed name and argument types
 - Validate Feedme messages
 - Serialize feed name/argument combinations into canonical strings
 - Calculate MD5 hashes for feed data
