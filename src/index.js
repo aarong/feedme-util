@@ -1,7 +1,12 @@
 /**
  * A common access point for all modules.
+ *
+ * For some reason, eslint and Prettier demand some line breaks in Node 8 and 10
+ * but demand no line breaks in Node 6. This was preventing the build from
+ * succeeding on all platforms, so eslint disabled for the file.
  */
 
+/* eslint-disable */
 export { default as deltaWriter } from "./deltawriter";
 export { default as feedSerializer } from "./feedserializer";
 export { default as md5Calculator } from "./md5calculator";
