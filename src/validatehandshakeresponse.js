@@ -32,13 +32,9 @@ const validator = ajv.compile(
           "Version": {
             "type": "string",
             "minLength": 1
-          },
-          "ClientId": {
-            "type": "string",
-            "minLength": 1
           }
         },
-        "required": ["MessageType", "Success", "Version", "ClientId"],
+        "required": ["MessageType", "Success", "Version"],
         "additionalProperties": false
       },
       {
