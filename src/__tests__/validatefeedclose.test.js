@@ -1,7 +1,5 @@
 import validateFeedClose from "../validatefeedclose";
 
-/* global expect:false, it:false, describe: false */
-
 describe("The validateFeedClose.check() function", () => {
   it("should throw on invalid type", () => {
     expect(() => {

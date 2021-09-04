@@ -1,8 +1,6 @@
 import crypto from "crypto";
 import md5Calculator from "../md5calculator";
 
-/* global expect:false, describe:false, it:false */
-
 /*
 
 A different MD5 hash implementation is used for testing purposes (crypto).

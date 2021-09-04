@@ -1,7 +1,5 @@
 import feedValidator from "../feedvalidator";
 
-/* global expect:false, describe:false, it:false */
-
 describe("the .validate() function", () => {
   it("should throw if feed name is bad type", () => {
     expect(() => {

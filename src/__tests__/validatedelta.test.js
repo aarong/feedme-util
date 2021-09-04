@@ -1,7 +1,5 @@
 import validateDelta from "../validatedelta";
 
-/* global expect:false, it:false, describe: false */
-
 describe("The validateDelta.check() function", () => {
   it("should throw on non-object", () => {
     // Throw on non-object

@@ -1,7 +1,5 @@
 import validateFeedOpenResponse from "../validatefeedopenresponse";
 
-/* global expect:false, it:false, describe: false */
-
 describe("The validateFeedOpenResponse.check() function", () => {
   it("should throw on invalid type", () => {
     expect(() => {

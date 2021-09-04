@@ -1,7 +1,5 @@
 import validateAction from "../validateaction";
 
-/* global expect:false, it:false, describe: false */
-
 describe("The validateAction.check() function", () => {
   it("should throw on invalid type", () => {
     expect(() => {

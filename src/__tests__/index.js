@@ -1,8 +1,6 @@
 import check from "check-types";
 import * as index from "..";
 
-/* global expect:false, it:false, describe: false */
-
 describe("The index module", () => {
   it("should export all modules", () => {
     expect(check.object(index.deltaWriter)).toBe(true);

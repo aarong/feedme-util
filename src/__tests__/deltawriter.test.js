@@ -1,7 +1,5 @@
 import deltaWriter from "../deltawriter";
 
-/* global expect:false, it:false, describe: false */
-
 describe("The deltaWriter._walkTo() function", () => {
   it("should return correctly when path references root", () => {
     const feedData = {};

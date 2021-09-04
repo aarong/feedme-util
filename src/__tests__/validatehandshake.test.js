@@ -1,7 +1,5 @@
 import validateHandshake from "../validatehandshake";
 
-/* global expect:false, it:false, describe: false */
-
 describe("The validateHandshake.check() function", () => {
   it("should throw on invalid type", () => {
     expect(() => {

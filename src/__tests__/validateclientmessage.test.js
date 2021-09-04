@@ -1,7 +1,5 @@
 import validateClientMessage from "../validateclientmessage";
 
-/* global expect:false, it:false, describe: false */
-
 describe("The validateClientMessage() function", () => {
   it("should throw on non-object", () => {
     expect(() => {

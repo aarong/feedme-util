@@ -1,7 +1,5 @@
 import validateViolationResponse from "../validateviolationresponse";
 
-/* global expect:false, it:false, describe: false */
-
 describe("The validateViolationResponse.check() function", () => {
   it("should throw on invalid type", () => {
     expect(() => {

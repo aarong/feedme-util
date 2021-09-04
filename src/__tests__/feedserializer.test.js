@@ -1,7 +1,5 @@
 import feedSerializer from "../feedserializer";
 
-/* global expect:false, describe:false, it:false */
-
 describe("the .serialize() function", () => {
   it("should throw if feed name is invalid", () => {
     expect(() => {

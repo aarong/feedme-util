@@ -1,7 +1,5 @@
 import validateServerMessage from "../validateservermessage";
 
-/* global expect:false, it:false, describe: false */
-
 describe("The validateServerMessage.check() function", () => {
   it("should throw on non-object", () => {
     expect(() => {

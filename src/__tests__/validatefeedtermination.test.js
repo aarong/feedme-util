@@ -1,7 +1,5 @@
 import validateFeedTermination from "../validatefeedtermination";
 
-/* global expect:false, it:false, describe: false */
-
 describe("The validateFeedTermination.check() function", () => {
   it("should throw on invalid type", () => {
     expect(() => {
