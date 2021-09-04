@@ -3,7 +3,7 @@
 
 # Feedme Utilities
 
-Javascript utilities related to the
+Various Javascript utilities related to the
 [Feedme specification](https://github.com/aarong/feedme-spec).
 
 Includes functionality to:
