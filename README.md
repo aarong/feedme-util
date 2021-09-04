@@ -3,13 +3,12 @@
 
 # Feedme Utilities
 
-Various Javascript utilities related to the
+Javascript utilities related to the
 [Feedme specification](https://github.com/aarong/feedme-spec).
 
 Includes functionality to:
 
-- Validate feed name and argument types
-- Serialize feed name/argument combinations into canonical strings
+- Represent and serialize feed name-argument combinations
 - Validate Feedme messages
 - Calculate MD5 hashes for feed data
 - Apply deltas to feed data
