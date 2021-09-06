@@ -45,8 +45,7 @@
     "collectCoverageFrom": [
       "src/**/*.{js}",
       "!<rootDir>/node_modules/"
-    ],
-    "transformIgnorePatterns": []
+    ]
   },
   "repository": {
     "type": "git",
