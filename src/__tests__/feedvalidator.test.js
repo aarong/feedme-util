@@ -7,12 +7,6 @@ describe("the .validate() function", () => {
     }).toThrow(new Error("INVALID_ARGUMENT: Invalid feed name."));
   });
 
-  it("should throw if feed name is empty string", () => {
-    expect(() => {
-      feedValidator.validate("", {});
-    }).toThrow(new Error("INVALID_ARGUMENT: Invalid feed name."));
-  });
-
   it("should throw if feed args type is invalid", () => {
     expect(() => {
       feedValidator.validate("someFeed", 1);

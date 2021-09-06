@@ -118,12 +118,6 @@ describe("The factory function - feed name/arg usage", () => {
       }).toThrow(new Error("INVALID_ARGUMENT: Invalid feed name."));
     });
 
-    it("should throw on invalid feed name - empty", () => {
-      expect(() => {
-        FeedNameArgs("", {});
-      }).toThrow(new Error("INVALID_ARGUMENT: Invalid feed name."));
-    });
-
     it("should throw on invalid feed args - type", () => {
       expect(() => {
         FeedNameArgs("SOME_FEED", 123);

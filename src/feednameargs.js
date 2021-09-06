@@ -135,8 +135,8 @@ FeedNameArgs.prototype._fromNameArgs = function _constructFromNameArgs(
   feedName,
   feedArgs
 ) {
-  // Check feed name
-  if (!check.nonEmptyString(feedName)) {
+  // Check feed name - empty is spec-valid
+  if (!check.string(feedName)) {
     throw new Error("INVALID_ARGUMENT: Invalid feed name.");
   }
 

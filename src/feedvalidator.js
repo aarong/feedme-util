@@ -15,8 +15,8 @@ export default feedValidator;
  * @throws {Error} "INVALID_ARGUMENT: ..."
  */
 feedValidator.validate = function validate(name, args) {
-  // Check name
-  if (!check.nonEmptyString(name)) {
+  // Check name - empty is spec-valid
+  if (!check.string(name)) {
     throw new Error("INVALID_ARGUMENT: Invalid feed name.");
   }
 
