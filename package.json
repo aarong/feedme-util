@@ -44,9 +44,9 @@
   "jest": {
     "collectCoverageFrom": [
       "src/**/*.{js}",
-      "!<rootDir>/node_modules/",
-      "!<rootDir>/src/jestextender.js"
-    ]
+      "!<rootDir>/node_modules/"
+    ],
+    "transformIgnorePatterns": ["<rootDir>/node_modules/(?!ajv)"]
   },
   "repository": {
     "type": "git",
