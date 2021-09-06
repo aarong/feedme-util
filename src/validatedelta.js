@@ -13,7 +13,12 @@ import jsonExpressible from "json-expressible";
 const validateDelta = {};
 export default validateDelta;
 
-const ajv = new Ajv();
+const ajv = new Ajv({
+  // Suppress Ajv warnings for delta path schemas
+  // "strict mode: "items" is 1-tuple, but minItems or maxItems/additionalItems are not specified"
+  // See https://github.com/ajv-validator/ajv/issues/1417
+  strictTuples: false
+});
 const validators = {
   Set: ajv.compile(
     JSON.parse(`
