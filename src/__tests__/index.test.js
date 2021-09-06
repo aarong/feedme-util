@@ -4,7 +4,7 @@ import * as index from "..";
 describe("The index module", () => {
   it("should export all modules", () => {
     expect(check.object(index.deltaWriter)).toBe(true);
-    expect(check.object(index.feedSerializer)).toBe(true);
+    expect(check.function(index.FeedNameArgs)).toBe(true);
     expect(check.object(index.md5Calculator)).toBe(true);
     expect(check.object(index.validateAction)).toBe(true);
     expect(check.object(index.validateActionResponse)).toBe(true);

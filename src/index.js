@@ -9,7 +9,6 @@
 /* eslint-disable */
 export { default as deltaWriter } from "./deltawriter";
 export { default as FeedNameArgs } from "./feednameargs";
-export { default as feedSerializer } from "./feedserializer";
 export { default as md5Calculator } from "./md5calculator";
 export { default as validateAction } from "./validateaction";
 export { default as validateActionResponse } from "./validateactionresponse";
