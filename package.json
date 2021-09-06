@@ -46,7 +46,7 @@
       "src/**/*.{js}",
       "!<rootDir>/node_modules/"
     ],
-    "transformIgnorePatterns": ["<rootDir>/node_modules/(?!ajv)"]
+    "transformIgnorePatterns": ["/node_modules/(?!ajv)"]
   },
   "repository": {
     "type": "git",
