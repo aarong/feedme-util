@@ -15,24 +15,20 @@ const validateViolationResponse = {};
 export default validateViolationResponse;
 
 const ajv = new Ajv();
-const validator = ajv.compile(
-  JSON.parse(`
-  {
-    "type": "object",
-    "properties": {
-      "MessageType": {
-        "type": "string",
-        "enum": ["ViolationResponse"]
-      },
-      "Diagnostics": {
-        "type": "object"
-      }
+const validator = ajv.compile({
+  $schema: "http://json-schema.org/draft-07/schema#",
+  type: "object",
+  properties: {
+    MessageType: {
+      const: "ViolationResponse"
     },
-    "required": ["MessageType", "Diagnostics"],
-    "additionalProperties": false
-  }
-  `)
-);
+    Diagnostics: {
+      type: "object"
+    }
+  },
+  required: ["MessageType", "Diagnostics"],
+  additionalProperties: false
+});
 
 /**
  * @memberof validateViolationResponse
