@@ -4,14 +4,14 @@
   "description": "Various Javascript utilities related to the Feedme specification.",
   "main": "index.js",
   "scripts": {
-    "lint": "./node_modules/.bin/eslint src/**",
+    "lint": "eslint src/**",
     "pretest": "npm run lint",
-    "test": "./node_modules/.bin/jest",
-    "coverage": "./node_modules/.bin/jest --coverage",
+    "test": "jest",
+    "coverage": "jest --coverage",
     "coveralls": "jest --coverage --coverageReporters=text-lcov | coveralls",
-    "docs": "./node_modules/.bin/documentation build src/index.js -f html -o docs --access public --access private --access undefined --sort-order alpha",
+    "docs": "documentation build src/index.js -f html -o docs --access public --access private --access undefined --sort-order alpha",
     "prebuild": "npm run test",
-    "build": "./node_modules/.bin/gulp build"
+    "build": "gulp build"
   },
   "dependencies": {
     "ajv": "^8.6.2",
