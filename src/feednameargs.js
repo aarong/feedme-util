@@ -1,7 +1,7 @@
 import check from "check-types";
 import _each from "lodash/each";
-import _keys from "lodash/keys";
 import _find from "lodash/find";
+import _clone from "lodash/clone";
 
 /**
  * Represents a valid feed name-argument combination and provides a mechanism
@@ -74,7 +74,7 @@ const FeedNameArgs = function FeedNameArgs(...args) {
  * @returns {Object} { feedName, feedArgs, feedSerial }
  * @throws {Error} "INVALID_ARGUMENT: ..."
  */
-FeedNameArgs.prototype._fromSerial = function _constructFromSerial(feedSerial) {
+FeedNameArgs.prototype._fromSerial = function _fromSerial(feedSerial) {
   // Check string - JSON.parse will convert non-string inputs where possible
   if (!check.string(feedSerial)) {
     throw new Error("INVALID_ARGUMENT: Feed serial is not a string.");
@@ -107,10 +107,7 @@ FeedNameArgs.prototype._fromSerial = function _constructFromSerial(feedSerial) {
     );
   }
 
-  // Check that feed name is non-empty (everything else can be)
-  if (jsonArray[0].length === 0) {
-    throw new Error("INVALID_ARGUMENT: Feed serial specifies empty feed name.");
-  }
+  // All elements are permitted to be empty by the spec
 
   // Build feed args object
   const feedName = jsonArray[0];
@@ -131,7 +128,7 @@ FeedNameArgs.prototype._fromSerial = function _constructFromSerial(feedSerial) {
  * @returns {Object} { feedName, feedArgs, feedSerial }
  * @throws {Error} "INVALID_ARGUMENT: ..."
  */
-FeedNameArgs.prototype._fromNameArgs = function _constructFromNameArgs(
+FeedNameArgs.prototype._fromNameArgs = function _fromNameArgs(
   feedName,
   feedArgs
 ) {
@@ -151,7 +148,7 @@ FeedNameArgs.prototype._fromNameArgs = function _constructFromNameArgs(
   // Return instance properties
   return {
     feedName,
-    feedArgs,
+    feedArgs: _clone(feedArgs), // In case of outside changes to feedArgs object
     feedSerial: null // Lazy
   };
 };
@@ -180,7 +177,7 @@ FeedNameArgs.prototype.serial = function serial() {
   // Generate the serial?
   if (!this._feedSerial) {
     const serialArr = [this._feedName];
-    const sortedArgNames = _keys(this._feedArgs).sort();
+    const sortedArgNames = Object.keys(this._feedArgs).sort();
     _each(sortedArgNames, argName => {
       serialArr.push(argName, this._feedArgs[argName]);
     });

@@ -1,5 +1,4 @@
 import check from "check-types";
-import _keys from "lodash/keys";
 import md5 from "crypto-js/md5";
 import base64 from "crypto-js/enc-base64";
 
@@ -40,7 +39,7 @@ md5Calculator._canonicalJson = function _canonicalJson(node) {
   if (check.object(node)) {
     json += "{";
     // Get object keys
-    const keys = _keys(node);
+    const keys = Object.keys(node);
     // Sort the keys explicitly
     keys.sort();
     // For each key (in lex order)

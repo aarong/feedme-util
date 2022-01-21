@@ -9,6 +9,6 @@ Various Javascript utilities related to the
 Includes functionality to:
 
 - Represent and serialize feed name-argument combinations
-- Validate Feedme messages
+- Parse and validate Feedme messages and parts
 - Calculate MD5 hashes for feed data
 - Apply deltas to feed data

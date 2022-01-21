@@ -6,7 +6,7 @@ const clean = () => del("build");
 
 const bld = () =>
   gulp
-    .src("src/*.js")
+    .src(["src/**/*.js", "!src/**/__tests__/*"]) // All js files not in __tests__
     .pipe(babel())
     .pipe(gulp.dest("build/"));
 

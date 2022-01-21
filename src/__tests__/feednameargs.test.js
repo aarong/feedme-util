@@ -79,17 +79,18 @@ describe("The factory function - feed serial usage", () => {
         )
       );
     });
-
-    it("should throw if feed name is empty", () => {
-      expect(() => {
-        FeedNameArgs('[""]');
-      }).toThrow(
-        new Error("INVALID_ARGUMENT: Feed serial specifies empty feed name.")
-      );
-    });
   });
 
   describe("could succeed", () => {
+    it("should return an object with functioning getters - empty name", () => {
+      const ser = '[""]';
+      const fna = FeedNameArgs(ser);
+      expect(fna).toBeInstanceOf(Object);
+      expect(fna.name()).toBe("");
+      expect(fna.args()).toEqual({});
+      expect(fna.serial()).toEqual(ser);
+    });
+
     it("should return an object with functioning getters - no feed arguments", () => {
       const ser = '["SOME_FEED"]';
       const fna = FeedNameArgs(ser);
@@ -152,6 +153,18 @@ describe("The factory function - feed name/arg usage", () => {
         "ARG_2",
         "VAL_2"
       ]);
+    });
+
+    it("should not change results if the args object changes", () => {
+      const args = {
+        ORIG: "ORIG"
+      };
+      const fna = FeedNameArgs("SOME_FEED", args);
+      args.NEW = "NEW";
+      expect(fna).toBeInstanceOf(Object);
+      expect(fna.name()).toBe("SOME_FEED");
+      expect(fna.args()).toEqual({ ORIG: "ORIG" });
+      expect(JSON.parse(fna.serial())).toEqual(["SOME_FEED", "ORIG", "ORIG"]);
     });
   });
 });
