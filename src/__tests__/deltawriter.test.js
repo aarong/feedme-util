@@ -11,9 +11,7 @@ describe("The deltaWriter._walkTo() function", () => {
     expect(() => {
       deltaWriter._walkTo({ num: 1 }, ["num", 0]);
     }).toThrow(
-      new Error(
-        "INVALID_OPERATION: Path references an element of a non-array or a member of a non-object."
-      )
+      new Error("INVALID_OPERATION: Path references an element of a non-array.")
     );
   });
 
@@ -21,9 +19,7 @@ describe("The deltaWriter._walkTo() function", () => {
     expect(() => {
       deltaWriter._walkTo({ num: 1 }, ["num", "foo"]);
     }).toThrow(
-      new Error(
-        "INVALID_OPERATION: Path references an element of a non-array or a member of a non-object."
-      )
+      new Error("INVALID_OPERATION: Path references a member of a non-object.")
     );
   });
 
@@ -33,7 +29,7 @@ describe("The deltaWriter._walkTo() function", () => {
         deltaWriter._walkTo({}, ["foo"]);
       }).toThrow(
         new Error(
-          "INVALID_OPERATION: Path references a non-existent location in the feed data."
+          "INVALID_OPERATION: Path references a non-existent object member."
         )
       );
     });
@@ -43,7 +39,7 @@ describe("The deltaWriter._walkTo() function", () => {
         deltaWriter._walkTo({}, [0]);
       }).toThrow(
         new Error(
-          "INVALID_OPERATION: Path references a non-existent location in the feed data."
+          "INVALID_OPERATION: Path references an element of a non-array."
         )
       );
     });
@@ -61,7 +57,7 @@ describe("The deltaWriter._walkTo() function", () => {
         deltaWriter._walkTo({ child: {} }, ["child", "foo"]);
       }).toThrow(
         new Error(
-          "INVALID_OPERATION: Path references a non-existent location in the feed data."
+          "INVALID_OPERATION: Path references a non-existent object member."
         )
       );
     });
@@ -71,7 +67,7 @@ describe("The deltaWriter._walkTo() function", () => {
         deltaWriter._walkTo({ child: {} }, ["child", 0]);
       }).toThrow(
         new Error(
-          "INVALID_OPERATION: Path references a non-existent location in the feed data."
+          "INVALID_OPERATION: Path references an element of a non-array."
         )
       );
     });
@@ -89,7 +85,7 @@ describe("The deltaWriter._walkTo() function", () => {
         deltaWriter._walkTo({ arr: [] }, ["arr", 0]);
       }).toThrow(
         new Error(
-          "INVALID_OPERATION: Path references a non-existent location in the feed data."
+          "INVALID_OPERATION: Path references a non-existent array element."
         )
       );
     });
@@ -107,7 +103,7 @@ describe("The deltaWriter._walkTo() function", () => {
         deltaWriter._walkTo({ child: { arr: [] } }, ["child", "arr", 0]);
       }).toThrow(
         new Error(
-          "INVALID_OPERATION: Path references a non-existent location in the feed data."
+          "INVALID_OPERATION: Path references a non-existent array element."
         )
       );
     });
@@ -125,7 +121,7 @@ describe("The deltaWriter._walkTo() function", () => {
         deltaWriter._walkTo({ arr: [[]] }, ["arr", 0, 0]);
       }).toThrow(
         new Error(
-          "INVALID_OPERATION: Path references a non-existent location in the feed data."
+          "INVALID_OPERATION: Path references a non-existent array element."
         )
       );
     });
@@ -283,10 +279,13 @@ describe("The deltaWrite.apply() function", () => {
   describe("when invoked with a DeleteValue delta operation", () => {
     it("should throw if the path reference does not exist", () => {
       expect(() => {
-        deltaWriter.apply({}, { Operation: "DeleteValue", Path: ["foo"] });
+        deltaWriter.apply(
+          {},
+          { Operation: "DeleteValue", Path: ["foo"], Value: 123 }
+        );
       }).toThrow(
         new Error(
-          "INVALID_OPERATION: Path references a non-existent location in the feed data."
+          "INVALID_OPERATION: Path references a non-existent object member."
         )
       );
     });
@@ -505,7 +504,7 @@ describe("The deltaWrite.apply() function", () => {
         );
       }).toThrow(
         new Error(
-          "INVALID_OPERATION: Path references a non-existent location in the feed data."
+          "INVALID_OPERATION: Path references a non-existent object member."
         )
       );
     });
@@ -540,7 +539,7 @@ describe("The deltaWrite.apply() function", () => {
         );
       }).toThrow(
         new Error(
-          "INVALID_OPERATION: Path references a non-existent location in the feed data."
+          "INVALID_OPERATION: Path references a non-existent object member."
         )
       );
     });
@@ -575,7 +574,7 @@ describe("The deltaWrite.apply() function", () => {
         );
       }).toThrow(
         new Error(
-          "INVALID_OPERATION: Path references a non-existent location in the feed data."
+          "INVALID_OPERATION: Path references a non-existent object member."
         )
       );
     });
@@ -623,7 +622,7 @@ describe("The deltaWrite.apply() function", () => {
         );
       }).toThrow(
         new Error(
-          "INVALID_OPERATION: Path references a non-existent location in the feed data."
+          "INVALID_OPERATION: Path references a non-existent object member."
         )
       );
     });
@@ -668,7 +667,7 @@ describe("The deltaWrite.apply() function", () => {
         deltaWriter.apply({}, { Operation: "DeleteFirst", Path: ["foo"] });
       }).toThrow(
         new Error(
-          "INVALID_OPERATION: Path references a non-existent location in the feed data."
+          "INVALID_OPERATION: Path references a non-existent object member."
         )
       );
     });
@@ -714,7 +713,7 @@ describe("The deltaWrite.apply() function", () => {
         deltaWriter.apply({}, { Operation: "DeleteLast", Path: ["foo"] });
       }).toThrow(
         new Error(
-          "INVALID_OPERATION: Path references a non-existent location in the feed data."
+          "INVALID_OPERATION: Path references a non-existent object member."
         )
       );
     });

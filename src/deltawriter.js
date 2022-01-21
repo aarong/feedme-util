@@ -21,21 +21,33 @@ export default deltaWriter;
  * @throws {Error} "INVALID_OPERATION: ..."
  */
 deltaWriter._walkTo = function _walkTo(feedData, path) {
-  if (path.length === 0) {
-    return feedData;
-  }
-
   let node = feedData;
+
   path.forEach(pathElement => {
-    if (!check.array(node) && !check.object(node)) {
-      throw new Error(
-        "INVALID_OPERATION: Path references an element of a non-array or a member of a non-object."
-      );
-    }
-    if (check.undefined(node[pathElement])) {
-      throw new Error(
-        "INVALID_OPERATION: Path references a non-existent location in the feed data."
-      );
+    if (check.string(pathElement)) {
+      // Object member reference
+      if (!check.object(node)) {
+        throw new Error(
+          "INVALID_OPERATION: Path references a member of a non-object."
+        );
+      }
+      if (!(pathElement in node)) {
+        throw new Error(
+          "INVALID_OPERATION: Path references a non-existent object member."
+        );
+      }
+    } else {
+      // Array element reference
+      if (!check.array(node)) {
+        throw new Error(
+          "INVALID_OPERATION: Path references an element of a non-array."
+        );
+      }
+      if (pathElement >= node.length) {
+        throw new Error(
+          "INVALID_OPERATION: Path references a non-existent array element."
+        );
+      }
     }
     node = node[pathElement];
   });
