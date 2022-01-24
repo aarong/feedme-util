@@ -1,89 +1,150 @@
 import check from "check-types";
-import _filter from "lodash/filter";
 import _isEqual from "lodash/isEqual";
 import _remove from "lodash/remove";
 import _each from "lodash/each";
 
 /**
-Applies delta operations to feed data.
+Applies delta operations to feed data objects.
 */
 const deltaWriter = {};
 export default deltaWriter;
 
 /**
- * Walks to a specified path in some feed data, returning a reference.
- * Throws an error if the path endpoint does not exist.
+ * Checks whether a path element is valid for some parent feed data node and throws
+ * an error if it isn't.
+ *
+ * - String path elements can only be used within object nodes
+ * - Number path elements can only be used within array nodes
+ *
  * @memberof deltaWriter
  * @private
- * @param {Object} feedData The feed data to navigate
- * @param {Array} path The path to walk to
- * @returns {Object} Reference to the path endpoint
+ * @param {*} feedDataNode
+ * @param {string|number} pathElement
+ * @returns {void}
  * @throws {Error} "INVALID_OPERATION: ..."
  */
-deltaWriter._walkTo = function _walkTo(feedData, path) {
-  let node = feedData;
+deltaWriter._checkPathElement = function _checkPathElement(
+  feedDataNode,
+  pathElement
+) {
+  if (check.string(pathElement) && !check.object(feedDataNode)) {
+    throw new Error(
+      "INVALID_OPERATION: Path references an object property but feed data node is not an object."
+    );
+  }
 
+  if (check.number(pathElement) && !check.array(feedDataNode)) {
+    throw new Error(
+      "INVALID_OPERATION: Path references an array element but feed data node is not an array."
+    );
+  }
+};
+
+/**
+ * Checks whether the specified path element exists as a child of the supplied
+ * feed data node and throws an error if it doesn't.
+ * @memberof deltaWriter
+ * @privatea
+ * @param {*} feedDataNode
+ * @param {string|number} pathElement
+ * @returns {void}
+ * @throws {Error} "INVALID_OPERATION: ..."
+ */
+deltaWriter._checkChildExists = function _checkChildExists(
+  feedDataNode,
+  pathElement
+) {
+  deltaWriter._checkPathElement(feedDataNode, pathElement); // Cascade
+
+  if (check.string(pathElement) && !(pathElement in feedDataNode)) {
+    throw new Error(
+      "INVALID_OPERATION: Path references a non-existent object property."
+    );
+  }
+
+  if (check.number(pathElement) && pathElement >= feedDataNode.length) {
+    throw new Error(
+      "INVALID_OPERATION: Path references a non-existent array element."
+    );
+  }
+};
+
+/**
+ * Navigates to a path-specified node in the feed data and returns it.
+ * Throws an error if the path is invalid given the state of the feed data
+ * or if the path endpoint doesn't exist.
+ * @memberof deltaWriter
+ * @private
+ * @param {Object} feedData
+ * @param {Array} path
+ * @returns {*}
+ * @throws {Error} "INVALID_OPERATION: ..."
+ */
+deltaWriter._getNode = function _getNode(feedData, path) {
+  let node = feedData;
   path.forEach(pathElement => {
-    if (check.string(pathElement)) {
-      // Object member reference
-      if (!check.object(node)) {
-        throw new Error(
-          "INVALID_OPERATION: Path references a member of a non-object."
-        );
-      }
-      if (!(pathElement in node)) {
-        throw new Error(
-          "INVALID_OPERATION: Path references a non-existent object member."
-        );
-      }
-    } else {
-      // Array element reference
-      if (!check.array(node)) {
-        throw new Error(
-          "INVALID_OPERATION: Path references an element of a non-array."
-        );
-      }
-      if (pathElement >= node.length) {
-        throw new Error(
-          "INVALID_OPERATION: Path references a non-existent array element."
-        );
-      }
-    }
+    this._checkChildExists(node, pathElement); // Cascade
     node = node[pathElement];
   });
-
   return node;
 };
 
 /**
- * Return a path to the container/object for a given path (i.e. a copy
- * of the array with the last element chopped, or an error on empty input).
+ * Navigates to the parent of a path-specified node in the feed data and returns
+ * the parent node and child path element. The child node is not required to
+ * exist, but an error is thrown if the parent does not exist. An error is also
+ * thrown if the path endpoint type (string/number) is not consistent with the
+ * parent node type (object/array).
  * @memberof deltaWriter
  * @private
- * @param {Array} path The path to the contained data.
- * @returns {Array} The path to the container.
+ * @param {Object} feedData
+ * @param {Array} path
+ * @param {boolean} [childMustExist=true]
+ * @returns {Object} { parentNode: object|array, childPathElement: string|number }
  * @throws {Error} "INVALID_OPERATION: ..."
  */
-deltaWriter._containerPath = function _containerPath(path) {
+deltaWriter._getParentNode = function _getParentNode(
+  feedData,
+  path,
+  childMustExist = true
+) {
   if (path.length === 0) {
     throw new Error(
-      "INVALID_OPERATION: The feed data root does not have a container."
+      "INVALID_OPERATION: Path must not reference feed data root."
     );
   }
-  return _filter(path, (val, idx) => idx < path.length - 1); // Don't modify original
+
+  const parentPath = path.slice(0, path.length - 1); // Do not modify original
+  const childPathElement = path[path.length - 1]; // Will exit
+
+  const parentNode = deltaWriter._getNode(feedData, parentPath); // Cascade
+
+  if (childMustExist) {
+    deltaWriter._checkChildExists(parentNode, childPathElement); // Cascade - also checks path element
+  } else {
+    deltaWriter._checkPathElement(parentNode, childPathElement); // Cascade
+  }
+
+  return { parentNode, childPathElement };
 };
 
 /**
  * Apply a delta operation to feed data, throwing an error if the delta
  * is not valid given the current state of the feed data.
+ *
+ * The feedData argument is generally modified and returned, except when
+ * performing a Set operation on the root of the feed data, in which case
+ * delta.Value is returned.
+ *
+ * If delta.Value is being inserted somewhere in feedData, the insertion is
+ * done by reference. So if delta.Value is an array or object and is modified
+ * after the call to apply(), it can affect feedData.
  * @memberof deltaWriter
- * @param {Object} feedData The current feed data.
+ * @param {Object} feedData The pre-delta feed data.
  * @param {Object} delta A schema-valid feed delta is assumed (not checked).
- *                       The operation may or may
- *                       not be valid given the current state of the feed data.
- * @returns {Object} The post-operation feed data. This will be a reference
- *                   to feedData unless the root is being set, in which case
- *                   a reference to delta.
+ *                       The operation may or may not be valid given the current
+ *                       state of the feed data.
+ * @returns {Object} The post-delta feed data.
  * @throws {Error}    "INVALID_ARGUMENT: ..."
  *                    "INVALID_OPERATION: ..."
  */
@@ -98,9 +159,8 @@ deltaWriter.apply = function apply(feedData, delta) {
     throw new Error("INVALID_ARGUMENT: Invalid delta object.");
   }
 
-  // Camel case function name
-  const fn = delta.Operation[0].toLowerCase() + delta.Operation.substring(1);
-  return this._operations[fn](feedData, delta); // Cascade errors
+  // Pass to operation-specific processor
+  return this._operations[delta.Operation](feedData, delta); // Cascade
 };
 
 /**
@@ -115,26 +175,29 @@ deltaWriter._operations = {};
  * @memberof deltaWriter._operations
  * @private
  */
-deltaWriter._operations.set = function set(feedData, delta) {
+deltaWriter._operations.Set = function set(feedData, delta) {
+  // Set root data
   if (delta.Path.length === 0) {
     if (!check.object(delta.Value)) {
       throw new Error(
-        "INVALID_OPERATION: The feed data root must be an object."
+        "INVALID_OPERATION: Feed data root may only be set to an object."
       );
     }
     return delta.Value;
   }
-  const pathEndpoint = delta.Path[delta.Path.length - 1];
-  const containerNode = deltaWriter._walkTo(
+
+  // Set non-root data
+  const { parentNode, childPathElement } = deltaWriter._getParentNode(
     feedData,
-    deltaWriter._containerPath(delta.Path)
-  );
-  if (check.array(containerNode) && pathEndpoint > containerNode.length) {
+    delta.Path,
+    false // Child not required to exist
+  ); // Cascade
+  if (check.array(parentNode) && childPathElement > parentNode.length) {
     throw new Error(
-      "INVALID_OPERATION: Cannot write non-contiguous elements to an array."
+      "INVALID_OPERATION: Cannot set a non-contiguous element of an array."
     );
   }
-  containerNode[pathEndpoint] = delta.Value;
+  parentNode[childPathElement] = delta.Value;
   return feedData;
 };
 
@@ -143,25 +206,16 @@ deltaWriter._operations.set = function set(feedData, delta) {
  * @memberof deltaWriter._operations
  * @private
  */
-deltaWriter._operations.delete = function delete_(feedData, delta) {
-  if (delta.Path.length === 0) {
-    throw new Error("INVALID_OPERATION: Cannot delete the feed data root.");
-  }
-  const pathEndpoint = delta.Path[delta.Path.length - 1];
-  const containerNode = deltaWriter._walkTo(
+deltaWriter._operations.Delete = function delete_(feedData, delta) {
+  const { parentNode, childPathElement } = deltaWriter._getParentNode(
     feedData,
-    deltaWriter._containerPath(delta.Path)
-  );
-  if (check.undefined(containerNode[pathEndpoint])) {
-    throw new Error(
-      "INVALID_OPERATION: Path references a non-existent location in the feed data."
-    );
-  }
-  // pathEndpoint exists, so we know containerNode is an object/array
-  if (check.array(containerNode)) {
-    containerNode.splice(pathEndpoint, 1);
+    delta.Path,
+    true // Child must exist
+  ); // Cascade
+  if (check.object(parentNode)) {
+    delete parentNode[childPathElement];
   } else {
-    delete containerNode[pathEndpoint];
+    parentNode.splice(childPathElement, 1);
   }
   return feedData;
 };
@@ -171,19 +225,19 @@ deltaWriter._operations.delete = function delete_(feedData, delta) {
  * @memberof deltaWriter._operations
  * @private
  */
-deltaWriter._operations.deleteValue = function deleteValue(feedData, delta) {
-  const containerNode = deltaWriter._walkTo(feedData, delta.Path);
-  if (check.array(containerNode)) {
-    _remove(containerNode, val => _isEqual(val, delta.Value));
-  } else if (check.object(containerNode)) {
-    _each(containerNode, (val, key) => {
+deltaWriter._operations.DeleteValue = function deleteValue(feedData, delta) {
+  const parentNode = deltaWriter._getNode(feedData, delta.Path);
+  if (check.object(parentNode)) {
+    _each(parentNode, (val, key) => {
       if (_isEqual(val, delta.Value)) {
-        delete containerNode[key];
+        delete parentNode[key];
       }
     });
+  } else if (check.array(parentNode)) {
+    _remove(parentNode, val => _isEqual(val, delta.Value));
   } else {
     throw new Error(
-      "INVALID_OPERATION: Can only delete from arrays and objects."
+      "INVALID_OPERATION: Path must refer to an array or an object."
     );
   }
   return feedData;
@@ -194,20 +248,16 @@ deltaWriter._operations.deleteValue = function deleteValue(feedData, delta) {
  * @memberof deltaWriter._operations
  * @private
  */
-deltaWriter._operations.prepend = function prepend(feedData, delta) {
-  const containerNode = deltaWriter._walkTo(
+deltaWriter._operations.Prepend = function prepend(feedData, delta) {
+  const { parentNode, childPathElement } = deltaWriter._getParentNode(
     feedData,
-    deltaWriter._containerPath(delta.Path)
-  );
-  const pathEndpoint = delta.Path[delta.Path.length - 1];
-  if (check.undefined(containerNode[pathEndpoint])) {
-    throw new Error(
-      "INVALID_OPERATION: Path references a non-existent location in the feed data."
-    );
-  } else if (check.string(containerNode[pathEndpoint])) {
-    containerNode[pathEndpoint] = delta.Value + containerNode[pathEndpoint];
+    delta.Path,
+    true // Child must exist
+  ); // Cascade
+  if (check.string(parentNode[childPathElement])) {
+    parentNode[childPathElement] = delta.Value + parentNode[childPathElement];
   } else {
-    throw new Error("INVALID_OPERATION: Can only prepend to strings.");
+    throw new Error("INVALID_OPERATION: Path must reference a string.");
   }
   return feedData;
 };
@@ -217,20 +267,16 @@ deltaWriter._operations.prepend = function prepend(feedData, delta) {
  * @memberof deltaWriter._operations
  * @private
  */
-deltaWriter._operations.append = function append(feedData, delta) {
-  const containerNode = deltaWriter._walkTo(
+deltaWriter._operations.Append = function append(feedData, delta) {
+  const { parentNode, childPathElement } = deltaWriter._getParentNode(
     feedData,
-    deltaWriter._containerPath(delta.Path)
-  );
-  const pathEndpoint = delta.Path[delta.Path.length - 1];
-  if (check.undefined(containerNode[pathEndpoint])) {
-    throw new Error(
-      "INVALID_OPERATION: Path references a non-existent location in the feed data."
-    );
-  } else if (check.string(containerNode[pathEndpoint])) {
-    containerNode[pathEndpoint] += delta.Value;
+    delta.Path,
+    true // Child must exist
+  ); // Cascade
+  if (check.string(parentNode[childPathElement])) {
+    parentNode[childPathElement] += delta.Value;
   } else {
-    throw new Error("INVALID_OPERATION: Can only append to strings.");
+    throw new Error("INVALID_OPERATION: Path must reference a string.");
   }
   return feedData;
 };
@@ -240,20 +286,16 @@ deltaWriter._operations.append = function append(feedData, delta) {
  * @memberof deltaWriter._operations
  * @private
  */
-deltaWriter._operations.increment = function increment(feedData, delta) {
-  const containerNode = deltaWriter._walkTo(
+deltaWriter._operations.Increment = function increment(feedData, delta) {
+  const { parentNode, childPathElement } = deltaWriter._getParentNode(
     feedData,
-    deltaWriter._containerPath(delta.Path)
-  );
-  const pathEndpoint = delta.Path[delta.Path.length - 1];
-  if (check.undefined(containerNode[pathEndpoint])) {
-    throw new Error(
-      "INVALID_OPERATION: Path references a non-existent location in the feed data."
-    );
-  } else if (check.number(containerNode[pathEndpoint])) {
-    containerNode[pathEndpoint] += delta.Value;
+    delta.Path,
+    true // Child must exist
+  ); // Cascade
+  if (check.number(parentNode[childPathElement])) {
+    parentNode[childPathElement] += delta.Value;
   } else {
-    throw new Error("INVALID_OPERATION: Can only increment numbers.");
+    throw new Error("INVALID_OPERATION: Path must reference a number.");
   }
   return feedData;
 };
@@ -263,20 +305,16 @@ deltaWriter._operations.increment = function increment(feedData, delta) {
  * @memberof deltaWriter._operations
  * @private
  */
-deltaWriter._operations.decrement = function decrement(feedData, delta) {
-  const containerNode = deltaWriter._walkTo(
+deltaWriter._operations.Decrement = function decrement(feedData, delta) {
+  const { parentNode, childPathElement } = deltaWriter._getParentNode(
     feedData,
-    deltaWriter._containerPath(delta.Path)
-  );
-  const pathEndpoint = delta.Path[delta.Path.length - 1];
-  if (check.undefined(containerNode[pathEndpoint])) {
-    throw new Error(
-      "INVALID_OPERATION: Path references a non-existent location in the feed data."
-    );
-  } else if (check.number(containerNode[pathEndpoint])) {
-    containerNode[pathEndpoint] -= delta.Value;
+    delta.Path,
+    true // Child must exist
+  ); // Cascade
+  if (check.number(parentNode[childPathElement])) {
+    parentNode[childPathElement] -= delta.Value;
   } else {
-    throw new Error("INVALID_OPERATION: Can only decrement numbers.");
+    throw new Error("INVALID_OPERATION: Path must reference a number.");
   }
   return feedData;
 };
@@ -286,20 +324,16 @@ deltaWriter._operations.decrement = function decrement(feedData, delta) {
  * @memberof deltaWriter._operations
  * @private
  */
-deltaWriter._operations.toggle = function toggle(feedData, delta) {
-  const containerNode = deltaWriter._walkTo(
+deltaWriter._operations.Toggle = function toggle(feedData, delta) {
+  const { parentNode, childPathElement } = deltaWriter._getParentNode(
     feedData,
-    deltaWriter._containerPath(delta.Path)
-  );
-  const pathEndpoint = delta.Path[delta.Path.length - 1];
-  if (check.undefined(containerNode[pathEndpoint])) {
-    throw new Error(
-      "INVALID_OPERATION: Path references a non-existent location in the feed data."
-    );
-  } else if (check.boolean(containerNode[pathEndpoint])) {
-    containerNode[pathEndpoint] = !containerNode[pathEndpoint];
+    delta.Path,
+    true // Child must exist
+  ); // Cascade
+  if (check.boolean(parentNode[childPathElement])) {
+    parentNode[childPathElement] = !parentNode[childPathElement];
   } else {
-    throw new Error("INVALID_OPERATION: Can only toggle booleans.");
+    throw new Error("INVALID_OPERATION: Path must reference a boolean.");
   }
   return feedData;
 };
@@ -309,12 +343,12 @@ deltaWriter._operations.toggle = function toggle(feedData, delta) {
  * @memberof deltaWriter._operations
  * @private
  */
-deltaWriter._operations.insertFirst = function insertFirst(feedData, delta) {
-  const containerNode = deltaWriter._walkTo(feedData, delta.Path);
-  if (check.array(containerNode)) {
-    containerNode.unshift(delta.Value);
+deltaWriter._operations.InsertFirst = function insertFirst(feedData, delta) {
+  const parentNode = deltaWriter._getNode(feedData, delta.Path);
+  if (check.array(parentNode)) {
+    parentNode.unshift(delta.Value);
   } else {
-    throw new Error("INVALID_OPERATION: Can only insert into arrays.");
+    throw new Error("INVALID_OPERATION: Path must reference an array.");
   }
   return feedData;
 };
@@ -324,12 +358,12 @@ deltaWriter._operations.insertFirst = function insertFirst(feedData, delta) {
  * @memberof deltaWriter._operations
  * @private
  */
-deltaWriter._operations.insertLast = function insertLast(feedData, delta) {
-  const containerNode = deltaWriter._walkTo(feedData, delta.Path);
-  if (check.array(containerNode)) {
-    containerNode.push(delta.Value);
+deltaWriter._operations.InsertLast = function insertLast(feedData, delta) {
+  const parentNode = deltaWriter._getNode(feedData, delta.Path);
+  if (check.array(parentNode)) {
+    parentNode.push(delta.Value);
   } else {
-    throw new Error("INVALID_OPERATION: Can only insert into arrays.");
+    throw new Error("INVALID_OPERATION: Path must reference an array.");
   }
   return feedData;
 };
@@ -339,21 +373,16 @@ deltaWriter._operations.insertLast = function insertLast(feedData, delta) {
  * @memberof deltaWriter._operations
  * @private
  */
-deltaWriter._operations.insertBefore = function insertBefore(feedData, delta) {
-  const containerNode = deltaWriter._walkTo(
+deltaWriter._operations.InsertBefore = function insertBefore(feedData, delta) {
+  const { parentNode, childPathElement } = deltaWriter._getParentNode(
     feedData,
-    deltaWriter._containerPath(delta.Path)
-  );
-  const pathEndpoint = delta.Path[delta.Path.length - 1];
-  if (check.undefined(containerNode[pathEndpoint])) {
-    throw new Error(
-      "INVALID_OPERATION: Path references a non-existent location in the feed data."
-    );
+    delta.Path,
+    true // Child must exist
+  ); // Cascade
+  if (!check.array(parentNode)) {
+    throw new Error("INVALID_OPERATION: Path must reference an array element.");
   }
-  if (!check.array(containerNode)) {
-    throw new Error("INVALID_OPERATION: Can only insert into arrays.");
-  }
-  containerNode.splice(pathEndpoint, 0, delta.Value);
+  parentNode.splice(childPathElement, 0, delta.Value);
   return feedData;
 };
 
@@ -362,21 +391,16 @@ deltaWriter._operations.insertBefore = function insertBefore(feedData, delta) {
  * @memberof deltaWriter._operations
  * @private
  */
-deltaWriter._operations.insertAfter = function insertAfter(feedData, delta) {
-  const containerNode = deltaWriter._walkTo(
+deltaWriter._operations.InsertAfter = function insertAfter(feedData, delta) {
+  const { parentNode, childPathElement } = deltaWriter._getParentNode(
     feedData,
-    deltaWriter._containerPath(delta.Path)
-  );
-  const pathEndpoint = delta.Path[delta.Path.length - 1];
-  if (check.undefined(containerNode[pathEndpoint])) {
-    throw new Error(
-      "INVALID_OPERATION: Path references a non-existent location in the feed data."
-    );
+    delta.Path,
+    true // Child must exist
+  ); // Cascade
+  if (!check.array(parentNode)) {
+    throw new Error("INVALID_OPERATION: Path must reference an array element.");
   }
-  if (!check.array(containerNode)) {
-    throw new Error("INVALID_OPERATION: Can only insert into arrays.");
-  }
-  containerNode.splice(pathEndpoint + 1, 0, delta.Value);
+  parentNode.splice(childPathElement + 1, 0, delta.Value);
   return feedData;
 };
 
@@ -385,17 +409,17 @@ deltaWriter._operations.insertAfter = function insertAfter(feedData, delta) {
  * @memberof deltaWriter._operations
  * @private
  */
-deltaWriter._operations.deleteFirst = function deleteFirst(feedData, delta) {
-  const containerNode = deltaWriter._walkTo(feedData, delta.Path);
-  if (check.array(containerNode)) {
-    if (containerNode.length === 0) {
+deltaWriter._operations.DeleteFirst = function deleteFirst(feedData, delta) {
+  const parentNode = deltaWriter._getNode(feedData, delta.Path);
+  if (check.array(parentNode)) {
+    if (parentNode.length === 0) {
       throw new Error(
-        "INVALID_OPERATION: Cannot delete elements from empty arrays."
+        "INVALID_OPERATION: Path must reference a non-empty array."
       );
     }
-    containerNode.shift(containerNode);
+    parentNode.shift();
   } else {
-    throw new Error("INVALID_OPERATION: Can only delete elements from arrays.");
+    throw new Error("INVALID_OPERATION: Path must reference an array.");
   }
   return feedData;
 };
@@ -405,17 +429,17 @@ deltaWriter._operations.deleteFirst = function deleteFirst(feedData, delta) {
  * @memberof deltaWriter._operations
  * @private
  */
-deltaWriter._operations.deleteLast = function deleteLast(feedData, delta) {
-  const containerNode = deltaWriter._walkTo(feedData, delta.Path);
-  if (check.array(containerNode)) {
-    if (containerNode.length === 0) {
+deltaWriter._operations.DeleteLast = function deleteLast(feedData, delta) {
+  const parentNode = deltaWriter._getNode(feedData, delta.Path);
+  if (check.array(parentNode)) {
+    if (parentNode.length === 0) {
       throw new Error(
-        "INVALID_OPERATION: Cannot delete elements from empty arrays."
+        "INVALID_OPERATION: Path must reference a non-empty array."
       );
     }
-    containerNode.pop(containerNode);
+    parentNode.pop();
   } else {
-    throw new Error("INVALID_OPERATION: Can only delete elements from arrays.");
+    throw new Error("INVALID_OPERATION: Path must reference an array.");
   }
   return feedData;
 };
