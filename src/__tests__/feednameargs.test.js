@@ -60,9 +60,19 @@ describe("The factory function - feed serial usage", () => {
       );
     });
 
-    it("should throw if JSON array includes a non-string element - first", () => {
+    it("should throw if JSON array includes a non-string element - first - truthy", () => {
       expect(() => {
         FeedNameArgs("[1]");
+      }).toThrow(
+        new Error(
+          "INVALID_ARGUMENT: Feed serial JSON array includes non-string element."
+        )
+      );
+    });
+
+    it("should throw if JSON array includes a non-string element - first - falsy", () => {
+      expect(() => {
+        FeedNameArgs("[0]");
       }).toThrow(
         new Error(
           "INVALID_ARGUMENT: Feed serial JSON array includes non-string element."
@@ -125,7 +135,13 @@ describe("The factory function - feed name/arg usage", () => {
       }).toThrow(new Error("INVALID_ARGUMENT: Invalid feed arguments object."));
     });
 
-    it("should throw on invalid feed args - property type", () => {
+    it("should throw on invalid feed args - property type - falsy", () => {
+      expect(() => {
+        FeedNameArgs("SOME_FEED", { SOME_ARG: 0 });
+      }).toThrow(new Error("INVALID_ARGUMENT: Invalid feed arguments object."));
+    });
+
+    it("should throw on invalid feed args - property type - truthy", () => {
       expect(() => {
         FeedNameArgs("SOME_FEED", { SOME_ARG: 123 });
       }).toThrow(new Error("INVALID_ARGUMENT: Invalid feed arguments object."));

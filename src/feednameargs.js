@@ -1,6 +1,6 @@
 import check from "check-types";
 import _each from "lodash/each";
-import _find from "lodash/find";
+import _some from "lodash/some";
 import _clone from "lodash/clone";
 
 /**
@@ -101,7 +101,7 @@ FeedNameArgs.prototype._fromSerial = function _fromSerial(feedSerial) {
   }
 
   // Check feed name, feed arg keys, and feed arg values are all strings
-  if (_find(jsonArray, element => !check.string(element))) {
+  if (_some(jsonArray, element => !check.string(element))) {
     throw new Error(
       "INVALID_ARGUMENT: Feed serial JSON array includes non-string element."
     );
@@ -140,7 +140,7 @@ FeedNameArgs.prototype._fromNameArgs = function _fromNameArgs(
   // Check feed args
   if (
     !check.object(feedArgs) || // Args is an object?
-    _find(feedArgs, argVal => !check.string(argVal)) // Values are strings?
+    _some(feedArgs, argVal => !check.string(argVal)) // Values are strings?
   ) {
     throw new Error("INVALID_ARGUMENT: Invalid feed arguments object.");
   }
