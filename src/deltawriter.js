@@ -4,14 +4,13 @@ import _remove from "lodash/remove";
 import _each from "lodash/each";
 
 /**
-Applies delta operations to feed data objects.
+Validates delta objects given some feed data and applies them.
 */
 const deltaWriter = {};
 export default deltaWriter;
 
 /**
- * Checks whether a path element is valid for some parent feed data node and throws
- * an error if it isn't.
+ * Checks whether a path element is valid for some parent feed data node.
  *
  * - String path elements can only be used within object nodes
  * - Number path elements can only be used within array nodes
@@ -20,88 +19,107 @@ export default deltaWriter;
  * @private
  * @param {*} feedDataNode
  * @param {string|number} pathElement
- * @returns {void}
- * @throws {Error} "INVALID_OPERATION: ..."
+ * @returns {Object} { valid: true } or { valid: false, reason: string }
  */
 deltaWriter._checkPathElement = function _checkPathElement(
   feedDataNode,
   pathElement
 ) {
   if (check.string(pathElement) && !check.object(feedDataNode)) {
-    throw new Error(
-      "INVALID_OPERATION: Path references an object property but feed data node is not an object."
-    );
+    return {
+      valid: false,
+      reason:
+        "Path references an object property but feed data node is not an object."
+    };
   }
 
   if (check.number(pathElement) && !check.array(feedDataNode)) {
-    throw new Error(
-      "INVALID_OPERATION: Path references an array element but feed data node is not an array."
-    );
+    return {
+      valid: false,
+      reason:
+        "Path references an array element but feed data node is not an array."
+    };
   }
+
+  return { valid: true };
 };
 
 /**
  * Checks whether the specified path element exists as a child of the supplied
- * feed data node and throws an error if it doesn't.
+ * feed data node and returns an error if it doesn't.
  * @memberof deltaWriter
  * @privatea
  * @param {*} feedDataNode
  * @param {string|number} pathElement
- * @returns {void}
- * @throws {Error} "INVALID_OPERATION: ..."
+ * @returns {Object} { valid: true } or { valid: false, reason: string }
  */
 deltaWriter._checkChildExists = function _checkChildExists(
   feedDataNode,
   pathElement
 ) {
-  deltaWriter._checkPathElement(feedDataNode, pathElement); // Cascade
+  const result = deltaWriter._checkPathElement(feedDataNode, pathElement);
+  if (!result.valid) {
+    return result;
+  }
 
   if (check.string(pathElement) && !(pathElement in feedDataNode)) {
-    throw new Error(
-      "INVALID_OPERATION: Path references a non-existent object property."
-    );
+    return {
+      valid: false,
+      reason: "Path references a non-existent object property."
+    };
   }
 
   if (check.number(pathElement) && pathElement >= feedDataNode.length) {
-    throw new Error(
-      "INVALID_OPERATION: Path references a non-existent array element."
-    );
+    return {
+      valid: false,
+      reason: "Path references a non-existent array element."
+    };
   }
+
+  return { valid: true };
 };
 
 /**
  * Navigates to a path-specified node in the feed data and returns it.
- * Throws an error if the path is invalid given the state of the feed data
+ * Returns an error if the path is invalid given the state of the feed data
  * or if the path endpoint doesn't exist.
  * @memberof deltaWriter
  * @private
  * @param {Object} feedData
  * @param {Array} path
- * @returns {*}
- * @throws {Error} "INVALID_OPERATION: ..."
+ * @returns {Object} { valid: true, node: value } or { valid: false, reason: string }
  */
 deltaWriter._getNode = function _getNode(feedData, path) {
   let node = feedData;
-  path.forEach(pathElement => {
-    this._checkChildExists(node, pathElement); // Cascade
+  for (let i = 0; i < path.length; i += 1) {
+    const pathElement = path[i];
+    const result = this._checkChildExists(node, pathElement);
+    if (!result.valid) {
+      return result;
+    }
     node = node[pathElement];
-  });
-  return node;
+  }
+  return { valid: true, node };
 };
 
 /**
  * Navigates to the parent of a path-specified node in the feed data and returns
  * the parent node and child path element. The child node is not required to
- * exist, but an error is thrown if the parent does not exist. An error is also
- * thrown if the path endpoint type (string/number) is not consistent with the
+ * exist, but an error is returned if the parent does not exist. An error is also
+ * returned if the path endpoint type (string/number) is not consistent with the
  * parent node type (object/array).
  * @memberof deltaWriter
  * @private
  * @param {Object} feedData
  * @param {Array} path
  * @param {boolean} [childMustExist=true]
- * @returns {Object} { parentNode: object|array, childPathElement: string|number }
- * @throws {Error} "INVALID_OPERATION: ..."
+ * @returns {Object} { valid: false, reason: string }
+ *                   or
+ *                   {
+ *                     valid:            true,
+ *                     parentNode:       object|array,
+ *                     childPathElement: string|number
+ *                   }
  */
 deltaWriter._getParentNode = function _getParentNode(
   feedData,
@@ -109,27 +127,32 @@ deltaWriter._getParentNode = function _getParentNode(
   childMustExist = true
 ) {
   if (path.length === 0) {
-    throw new Error(
-      "INVALID_OPERATION: Path must not reference feed data root."
-    );
+    return { valid: false, reason: "Path must not reference feed data root." };
   }
 
   const parentPath = path.slice(0, path.length - 1); // Do not modify original
   const childPathElement = path[path.length - 1]; // Will exit
 
-  const parentNode = deltaWriter._getNode(feedData, parentPath); // Cascade
+  let result = deltaWriter._getNode(feedData, parentPath);
+  if (!result.valid) {
+    return result;
+  }
+  const parentNode = result.node;
 
   if (childMustExist) {
-    deltaWriter._checkChildExists(parentNode, childPathElement); // Cascade - also checks path element
+    result = deltaWriter._checkChildExists(parentNode, childPathElement); // Also checks path element
   } else {
-    deltaWriter._checkPathElement(parentNode, childPathElement); // Cascade
+    result = deltaWriter._checkPathElement(parentNode, childPathElement);
+  }
+  if (!result.valid) {
+    return result;
   }
 
-  return { parentNode, childPathElement };
+  return { valid: true, parentNode, childPathElement };
 };
 
 /**
- * Apply a delta operation to feed data, throwing an error if the delta
+ * Apply a delta operation to feed data, returning an error if the delta
  * is not valid given the current state of the feed data.
  *
  * The feedData argument is generally modified and returned, except when
@@ -144,9 +167,10 @@ deltaWriter._getParentNode = function _getParentNode(
  * @param {Object} delta A schema-valid feed delta is assumed (not checked).
  *                       The operation may or may not be valid given the current
  *                       state of the feed data.
- * @returns {Object} The post-delta feed data.
+ * @returns {Object} { valid: true, feedData: object }
+ *                   or
+ *                   { valid: false, reason: string}
  * @throws {Error}    "INVALID_ARGUMENT: ..."
- *                    "INVALID_OPERATION: ..."
  */
 deltaWriter.apply = function apply(feedData, delta) {
   // Check feed data arg
@@ -160,7 +184,7 @@ deltaWriter.apply = function apply(feedData, delta) {
   }
 
   // Pass to operation-specific processor
-  return this._operations[delta.Operation](feedData, delta); // Cascade
+  return this._operations[delta.Operation](feedData, delta);
 };
 
 /**
@@ -179,26 +203,33 @@ deltaWriter._operations.Set = function set(feedData, delta) {
   // Set root data
   if (delta.Path.length === 0) {
     if (!check.object(delta.Value)) {
-      throw new Error(
-        "INVALID_OPERATION: Feed data root may only be set to an object."
-      );
+      return {
+        valid: false,
+        reason: "Feed data root may only be set to an object."
+      };
     }
-    return delta.Value;
+    return { valid: true, feedData: delta.Value };
   }
 
   // Set non-root data
-  const { parentNode, childPathElement } = deltaWriter._getParentNode(
+  const result = deltaWriter._getParentNode(
     feedData,
     delta.Path,
     false // Child not required to exist
-  ); // Cascade
+  );
+  if (!result.valid) {
+    return result;
+  }
+  const { parentNode, childPathElement } = result;
+
   if (check.array(parentNode) && childPathElement > parentNode.length) {
-    throw new Error(
-      "INVALID_OPERATION: Cannot set a non-contiguous element of an array."
-    );
+    return {
+      valid: false,
+      reason: "Cannot set a non-contiguous element of an array."
+    };
   }
   parentNode[childPathElement] = delta.Value;
-  return feedData;
+  return { valid: true, feedData };
 };
 
 /**
@@ -207,17 +238,22 @@ deltaWriter._operations.Set = function set(feedData, delta) {
  * @private
  */
 deltaWriter._operations.Delete = function delete_(feedData, delta) {
-  const { parentNode, childPathElement } = deltaWriter._getParentNode(
+  const result = deltaWriter._getParentNode(
     feedData,
     delta.Path,
     true // Child must exist
-  ); // Cascade
+  );
+  if (!result.valid) {
+    return result;
+  }
+  const { parentNode, childPathElement } = result;
+
   if (check.object(parentNode)) {
     delete parentNode[childPathElement];
   } else {
     parentNode.splice(childPathElement, 1);
   }
-  return feedData;
+  return { valid: true, feedData };
 };
 
 /**
@@ -226,7 +262,12 @@ deltaWriter._operations.Delete = function delete_(feedData, delta) {
  * @private
  */
 deltaWriter._operations.DeleteValue = function deleteValue(feedData, delta) {
-  const parentNode = deltaWriter._getNode(feedData, delta.Path);
+  const result = deltaWriter._getNode(feedData, delta.Path);
+  if (!result.valid) {
+    return result;
+  }
+  const parentNode = result.node;
+
   if (check.object(parentNode)) {
     _each(parentNode, (val, key) => {
       if (_isEqual(val, delta.Value)) {
@@ -236,11 +277,12 @@ deltaWriter._operations.DeleteValue = function deleteValue(feedData, delta) {
   } else if (check.array(parentNode)) {
     _remove(parentNode, val => _isEqual(val, delta.Value));
   } else {
-    throw new Error(
-      "INVALID_OPERATION: Path must refer to an array or an object."
-    );
+    return {
+      valid: false,
+      reason: "Path must refer to an array or an object."
+    };
   }
-  return feedData;
+  return { valid: true, feedData };
 };
 
 /**
@@ -249,17 +291,22 @@ deltaWriter._operations.DeleteValue = function deleteValue(feedData, delta) {
  * @private
  */
 deltaWriter._operations.Prepend = function prepend(feedData, delta) {
-  const { parentNode, childPathElement } = deltaWriter._getParentNode(
+  const result = deltaWriter._getParentNode(
     feedData,
     delta.Path,
     true // Child must exist
-  ); // Cascade
+  );
+  if (!result.valid) {
+    return result;
+  }
+  const { parentNode, childPathElement } = result;
+
   if (check.string(parentNode[childPathElement])) {
     parentNode[childPathElement] = delta.Value + parentNode[childPathElement];
   } else {
-    throw new Error("INVALID_OPERATION: Path must reference a string.");
+    return { valid: false, reason: "Path must reference a string." };
   }
-  return feedData;
+  return { valid: true, feedData };
 };
 
 /**
@@ -268,17 +315,22 @@ deltaWriter._operations.Prepend = function prepend(feedData, delta) {
  * @private
  */
 deltaWriter._operations.Append = function append(feedData, delta) {
-  const { parentNode, childPathElement } = deltaWriter._getParentNode(
+  const result = deltaWriter._getParentNode(
     feedData,
     delta.Path,
     true // Child must exist
-  ); // Cascade
+  );
+  if (!result.valid) {
+    return result;
+  }
+  const { parentNode, childPathElement } = result;
+
   if (check.string(parentNode[childPathElement])) {
     parentNode[childPathElement] += delta.Value;
   } else {
-    throw new Error("INVALID_OPERATION: Path must reference a string.");
+    return { valid: false, reason: "Path must reference a string." };
   }
-  return feedData;
+  return { valid: true, feedData };
 };
 
 /**
@@ -287,17 +339,22 @@ deltaWriter._operations.Append = function append(feedData, delta) {
  * @private
  */
 deltaWriter._operations.Increment = function increment(feedData, delta) {
-  const { parentNode, childPathElement } = deltaWriter._getParentNode(
+  const result = deltaWriter._getParentNode(
     feedData,
     delta.Path,
     true // Child must exist
-  ); // Cascade
+  );
+  if (!result.valid) {
+    return result;
+  }
+  const { parentNode, childPathElement } = result;
+
   if (check.number(parentNode[childPathElement])) {
     parentNode[childPathElement] += delta.Value;
   } else {
-    throw new Error("INVALID_OPERATION: Path must reference a number.");
+    return { valid: false, reason: "Path must reference a number." };
   }
-  return feedData;
+  return { valid: true, feedData };
 };
 
 /**
@@ -306,17 +363,22 @@ deltaWriter._operations.Increment = function increment(feedData, delta) {
  * @private
  */
 deltaWriter._operations.Decrement = function decrement(feedData, delta) {
-  const { parentNode, childPathElement } = deltaWriter._getParentNode(
+  const result = deltaWriter._getParentNode(
     feedData,
     delta.Path,
     true // Child must exist
-  ); // Cascade
+  );
+  if (!result.valid) {
+    return result;
+  }
+  const { parentNode, childPathElement } = result;
+
   if (check.number(parentNode[childPathElement])) {
     parentNode[childPathElement] -= delta.Value;
   } else {
-    throw new Error("INVALID_OPERATION: Path must reference a number.");
+    return { valid: false, reason: "Path must reference a number." };
   }
-  return feedData;
+  return { valid: true, feedData };
 };
 
 /**
@@ -325,17 +387,22 @@ deltaWriter._operations.Decrement = function decrement(feedData, delta) {
  * @private
  */
 deltaWriter._operations.Toggle = function toggle(feedData, delta) {
-  const { parentNode, childPathElement } = deltaWriter._getParentNode(
+  const result = deltaWriter._getParentNode(
     feedData,
     delta.Path,
     true // Child must exist
-  ); // Cascade
+  );
+  if (!result.valid) {
+    return result;
+  }
+  const { parentNode, childPathElement } = result;
+
   if (check.boolean(parentNode[childPathElement])) {
     parentNode[childPathElement] = !parentNode[childPathElement];
   } else {
-    throw new Error("INVALID_OPERATION: Path must reference a boolean.");
+    return { valid: false, reason: "Path must reference a boolean." };
   }
-  return feedData;
+  return { valid: true, feedData };
 };
 
 /**
@@ -344,13 +411,18 @@ deltaWriter._operations.Toggle = function toggle(feedData, delta) {
  * @private
  */
 deltaWriter._operations.InsertFirst = function insertFirst(feedData, delta) {
-  const parentNode = deltaWriter._getNode(feedData, delta.Path);
+  const result = deltaWriter._getNode(feedData, delta.Path);
+  if (!result.valid) {
+    return result;
+  }
+  const parentNode = result.node;
+
   if (check.array(parentNode)) {
     parentNode.unshift(delta.Value);
   } else {
-    throw new Error("INVALID_OPERATION: Path must reference an array.");
+    return { valid: false, reason: "Path must reference an array." };
   }
-  return feedData;
+  return { valid: true, feedData };
 };
 
 /**
@@ -359,13 +431,18 @@ deltaWriter._operations.InsertFirst = function insertFirst(feedData, delta) {
  * @private
  */
 deltaWriter._operations.InsertLast = function insertLast(feedData, delta) {
-  const parentNode = deltaWriter._getNode(feedData, delta.Path);
+  const result = deltaWriter._getNode(feedData, delta.Path);
+  if (!result.valid) {
+    return result;
+  }
+  const parentNode = result.node;
+
   if (check.array(parentNode)) {
     parentNode.push(delta.Value);
   } else {
-    throw new Error("INVALID_OPERATION: Path must reference an array.");
+    return { valid: false, reason: "Path must reference an array." };
   }
-  return feedData;
+  return { valid: true, feedData };
 };
 
 /**
@@ -374,16 +451,21 @@ deltaWriter._operations.InsertLast = function insertLast(feedData, delta) {
  * @private
  */
 deltaWriter._operations.InsertBefore = function insertBefore(feedData, delta) {
-  const { parentNode, childPathElement } = deltaWriter._getParentNode(
+  const result = deltaWriter._getParentNode(
     feedData,
     delta.Path,
     true // Child must exist
-  ); // Cascade
+  );
+  if (!result.valid) {
+    return result;
+  }
+  const { parentNode, childPathElement } = result;
+
   if (!check.array(parentNode)) {
-    throw new Error("INVALID_OPERATION: Path must reference an array element.");
+    return { valid: false, reason: "Path must reference an array element." };
   }
   parentNode.splice(childPathElement, 0, delta.Value);
-  return feedData;
+  return { valid: true, feedData };
 };
 
 /**
@@ -392,16 +474,21 @@ deltaWriter._operations.InsertBefore = function insertBefore(feedData, delta) {
  * @private
  */
 deltaWriter._operations.InsertAfter = function insertAfter(feedData, delta) {
-  const { parentNode, childPathElement } = deltaWriter._getParentNode(
+  const result = deltaWriter._getParentNode(
     feedData,
     delta.Path,
     true // Child must exist
-  ); // Cascade
+  );
+  if (!result.valid) {
+    return result;
+  }
+  const { parentNode, childPathElement } = result;
+
   if (!check.array(parentNode)) {
-    throw new Error("INVALID_OPERATION: Path must reference an array element.");
+    return { valid: false, reason: "Path must reference an array element." };
   }
   parentNode.splice(childPathElement + 1, 0, delta.Value);
-  return feedData;
+  return { valid: true, feedData };
 };
 
 /**
@@ -410,18 +497,21 @@ deltaWriter._operations.InsertAfter = function insertAfter(feedData, delta) {
  * @private
  */
 deltaWriter._operations.DeleteFirst = function deleteFirst(feedData, delta) {
-  const parentNode = deltaWriter._getNode(feedData, delta.Path);
+  const result = deltaWriter._getNode(feedData, delta.Path);
+  if (!result.valid) {
+    return result;
+  }
+  const parentNode = result.node;
+
   if (check.array(parentNode)) {
     if (parentNode.length === 0) {
-      throw new Error(
-        "INVALID_OPERATION: Path must reference a non-empty array."
-      );
+      return { valid: false, reason: "Path must reference a non-empty array." };
     }
     parentNode.shift();
   } else {
-    throw new Error("INVALID_OPERATION: Path must reference an array.");
+    return { valid: false, reason: "Path must reference an array." };
   }
-  return feedData;
+  return { valid: true, feedData };
 };
 
 /**
@@ -430,16 +520,19 @@ deltaWriter._operations.DeleteFirst = function deleteFirst(feedData, delta) {
  * @private
  */
 deltaWriter._operations.DeleteLast = function deleteLast(feedData, delta) {
-  const parentNode = deltaWriter._getNode(feedData, delta.Path);
+  const result = deltaWriter._getNode(feedData, delta.Path);
+  if (!result.valid) {
+    return result;
+  }
+  const parentNode = result.node;
+
   if (check.array(parentNode)) {
     if (parentNode.length === 0) {
-      throw new Error(
-        "INVALID_OPERATION: Path must reference a non-empty array."
-      );
+      return { valid: false, reason: "Path must reference a non-empty array." };
     }
     parentNode.pop();
   } else {
-    throw new Error("INVALID_OPERATION: Path must reference an array.");
+    return { valid: false, reason: "Path must reference an array." };
   }
-  return feedData;
+  return { valid: true, feedData };
 };
