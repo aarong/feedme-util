@@ -6,7 +6,5 @@ describe("The index module", () => {
     expect(check.object(index.deltaWriter)).toBe(true);
     expect(check.function(index.FeedNameArgs)).toBe(true);
     expect(check.object(index.md5Calculator)).toBe(true);
-    expect(check.function(index.parseClientMessage)).toBe(true);
-    expect(check.function(index.parseServerMessage)).toBe(true);
   });
 });
