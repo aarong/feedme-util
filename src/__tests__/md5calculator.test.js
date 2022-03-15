@@ -52,7 +52,7 @@ describe("The md5Calculator.calculate() function", () => {
   it("should throw on invalid feed data object", () => {
     expect(() => {
       md5Calculator.calculate("garbage");
-    }).toThrow(new Error("INVALID_ARGUMENT: Feed data must be an object."));
+    }).toThrow(new Error("Feed data must be an object."));
   });
 
   it("should return a correct hash on a simple object", () => {

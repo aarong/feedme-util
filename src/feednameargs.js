@@ -4,80 +4,88 @@ import _some from "lodash/some";
 import _clone from "lodash/clone";
 
 /**
- * Represents a valid feed name-argument combination and provides a mechanism
- * that can translate to/from a canonical serialization.
+ * Validates and represents a feed name-argument combinations with serialize
+ * and unserialize functionality.
  *
- * Serialized using JSON-encoded arrays of the form:
+ * Does not throw errors if arguments are invalid, as this may not represent
+ * an error condition for user code. Instead, provides an error() method
+ * indicating whether processing was successful. However, the module does throw
+ * if there is a call to name(), args(), or serial() when error() is not null.
+ *
+ * Serialization uses JSON-encoded arrays of the form:
  *
  *   [feedName, argName1, argVal1, ...]
  *
  * That way escaping is built-in and it is easy to unserialize.
  *
- * Constructor usage 1 parameters:
+ * Factory usage 1 parameters:
  *   feedName (string)
  *   feedArgs (Object of strings)
  *
- * Constructor usage 2 parameters:
+ * Factory usage 2 parameters:
  *   feedSerial (string)
  *
- * @throws {Error} "INVALID_ARGUMENT: ..."
  */
 const FeedNameArgs = function FeedNameArgs(...args) {
-  let feedName;
-  let feedArgs;
-  let feedSerial;
-
-  // Validate and process arguments
-  if (args.length === 1) {
-    ({ feedName, feedArgs, feedSerial } = this._fromSerial(args[0]));
-  } else if (args.length === 2) {
-    ({ feedName, feedArgs, feedSerial } = this._fromNameArgs(args[0], args[1]));
-  } else {
-    throw new Error("INVALID_ARGUMENT: Expects either one or two arguments.");
-  }
-
-  // Success
-
   /**
-   * Feed name. Never null.
+   * Error message if feed name/arg/serial arguments were invalid.
+   * Null if valid.
    * @memberof FeedNameArgs
    * @instance
    * @private
    * @type {string}
    */
-  this._feedName = feedName;
+  this._error = null;
 
   /**
-   * Feed arguments. Never null.
-   * @memberof FeedNameArgs
-   * @instance
-   * @private
-   * @type {Object}
-   */
-  this._feedArgs = feedArgs;
-
-  /**
-   * Feed serial. Null if instance created from name/args and there has not
-   * been a call to serial().
+   * Feed name. Null if error.
    * @memberof FeedNameArgs
    * @instance
    * @private
    * @type {?string}
    */
-  this._feedSerial = feedSerial;
+  this._feedName = null;
+
+  /**
+   * Feed arguments. Null if error.
+   * @memberof FeedNameArgs
+   * @instance
+   * @private
+   * @type {?Object}
+   */
+  this._feedArgs = null;
+
+  /**
+   * Feed serial. Null if error or if instance created from name/args and there
+   * has not been a call to serial().
+   * @memberof FeedNameArgs
+   * @instance
+   * @private
+   * @type {?string}
+   */
+  this._feedSerial = null;
+
+  // Process arguments
+  if (args.length === 1) {
+    this._fromSerial(args[0]);
+  } else if (args.length === 2) {
+    this._fromNameArgs(args[0], args[1]);
+  } else {
+    this._error = "Expects either one or two arguments.";
+  }
 };
 
 /**
  * Validates initialization from a feed serial, which means parsing it.
  * So feed name/args are always stored up front, not generated on a lazy basis.
  * @param {string} feedSerial
- * @returns {Object} { feedName, feedArgs, feedSerial }
- * @throws {Error} "INVALID_ARGUMENT: ..."
+ * @returns {void}
  */
 FeedNameArgs.prototype._fromSerial = function _fromSerial(feedSerial) {
   // Check string - JSON.parse will convert non-string inputs where possible
   if (!check.string(feedSerial)) {
-    throw new Error("INVALID_ARGUMENT: Feed serial is not a string.");
+    this._error = "Feed serial is not a string.";
+    return; // Stop
   }
 
   // Check valid JSON
@@ -85,39 +93,37 @@ FeedNameArgs.prototype._fromSerial = function _fromSerial(feedSerial) {
   try {
     jsonArray = JSON.parse(feedSerial);
   } catch (e) {
-    throw new Error("INVALID_ARGUMENT: Feed serial is not valid JSON.");
+    this._error = "Feed serial is not valid JSON.";
+    return; // Stop
   }
 
   // Check JSON array
   if (!check.array(jsonArray)) {
-    throw new Error("INVALID_ARGUMENT: Feed serial is not a JSON array.");
+    this._error = "Feed serial is not a JSON array.";
+    return; // Stop
   }
 
   // Check name present and no extraneous elements
   if (jsonArray.length % 2 !== 1) {
-    throw new Error(
-      "INVALID_ARGUMENT: Feed serial JSON array has invalid length."
-    );
+    this._error = "Feed serial JSON array must have odd length.";
+    return; // Stop
   }
 
   // Check feed name, feed arg keys, and feed arg values are all strings
   if (_some(jsonArray, element => !check.string(element))) {
-    throw new Error(
-      "INVALID_ARGUMENT: Feed serial JSON array includes non-string element."
-    );
+    this._error = "Feed serial JSON array includes non-string element.";
+    return; // Stop
   }
 
   // All elements are permitted to be empty by the spec
 
-  // Build feed args object
-  const feedName = jsonArray[0];
-  const feedArgs = {};
+  // Save feed name/args/serial
+  this._feedName = jsonArray[0]; // eslint-disable-line prefer-destructuring
+  this._feedArgs = {};
   for (let i = 1; i < jsonArray.length; i += 2) {
-    feedArgs[jsonArray[i]] = jsonArray[i + 1];
+    this._feedArgs[jsonArray[i]] = jsonArray[i + 1];
   }
-
-  // Return instance properties
-  return { feedName, feedArgs, feedSerial };
+  this._feedSerial = feedSerial;
 };
 
 /**
@@ -125,8 +131,7 @@ FeedNameArgs.prototype._fromSerial = function _fromSerial(feedSerial) {
  * on a lazy basis if serial() is called.
  * @param {string} feedName
  * @param {Object} feedArgs
- * @returns {Object} { feedName, feedArgs, feedSerial }
- * @throws {Error} "INVALID_ARGUMENT: ..."
+ * @returns {void}
  */
 FeedNameArgs.prototype._fromNameArgs = function _fromNameArgs(
   feedName,
@@ -134,7 +139,8 @@ FeedNameArgs.prototype._fromNameArgs = function _fromNameArgs(
 ) {
   // Check feed name - empty is spec-valid
   if (!check.string(feedName)) {
-    throw new Error("INVALID_ARGUMENT: Invalid feed name.");
+    this._error = "Invalid feed name.";
+    return; // Stop
   }
 
   // Check feed args
@@ -142,38 +148,57 @@ FeedNameArgs.prototype._fromNameArgs = function _fromNameArgs(
     !check.object(feedArgs) || // Args is an object?
     _some(feedArgs, argVal => !check.string(argVal)) // Values are strings?
   ) {
-    throw new Error("INVALID_ARGUMENT: Invalid feed arguments object.");
+    this._error = "Invalid feed arguments object.";
+    return; // Stop
   }
 
-  // Return instance properties
-  return {
-    feedName,
-    feedArgs: _clone(feedArgs), // In case of outside changes to feedArgs object
-    feedSerial: null // Lazy
-  };
+  // Save feed name and args
+  this._feedName = feedName;
+  this._feedArgs = _clone(feedArgs); // In case of outside changes to feedArgs object
+};
+
+/**
+ * Returns error message or null if none.
+ * @returns {?string}
+ */
+FeedNameArgs.prototype.error = function error() {
+  return this._error;
 };
 
 /**
  * Returns feed name.
  * @returns {string}
+ * @throws {Error}
  */
 FeedNameArgs.prototype.name = function name() {
+  if (this._error) {
+    throw new Error(this._error);
+  }
   return this._feedName;
 };
 
 /**
  * Returns feed args.
  * @returns {Object}
+ * @throws {Error}
  */
 FeedNameArgs.prototype.args = function args() {
+  if (this._error) {
+    throw new Error(this._error);
+  }
   return this._feedArgs;
 };
 
 /**
  * Returns feed serial, which may need to be generated.
  * @returns {string}
+ * @throws {Error}
  */
 FeedNameArgs.prototype.serial = function serial() {
+  if (this._error) {
+    throw new Error(this._error);
+  }
+
   // Generate the serial?
   if (!this._feedSerial) {
     const serialArr = [this._feedName];

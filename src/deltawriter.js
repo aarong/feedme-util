@@ -170,17 +170,17 @@ deltaWriter._getParentNode = function _getParentNode(
  * @returns {Object} { valid: true, feedData: object }
  *                   or
  *                   { valid: false, reason: string}
- * @throws {Error}    "INVALID_ARGUMENT: ..."
+ * @throws {Error}
  */
 deltaWriter.apply = function apply(feedData, delta) {
   // Check feed data arg
   if (!check.object(feedData)) {
-    throw new Error("INVALID_ARGUMENT: Invalid feed data object.");
+    throw new Error("Invalid feed data object.");
   }
 
   // Check delta arg
   if (!check.object(delta)) {
-    throw new Error("INVALID_ARGUMENT: Invalid delta object.");
+    throw new Error("Invalid delta object.");
   }
 
   // Pass to operation-specific processor

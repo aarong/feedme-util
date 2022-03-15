@@ -647,13 +647,13 @@ describe("The deltaWriter.apply() function", () => {
   it("should return invalid if feedData argument is invalid", () => {
     expect(() => {
       deltaWriter.apply(1, { Operation: "Set", Path: [], Value: 1 });
-    }).toThrow(new Error("INVALID_ARGUMENT: Invalid feed data object."));
+    }).toThrow(new Error("Invalid feed data object."));
   });
 
   it("should return invalid if delta argument is invalid", () => {
     expect(() => {
       deltaWriter.apply({}, 1);
-    }).toThrow(new Error("INVALID_ARGUMENT: Invalid delta object."));
+    }).toThrow(new Error("Invalid delta object."));
   });
 
   describe("when invoked with a Set delta operation", () => {

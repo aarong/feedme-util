@@ -13,12 +13,12 @@ export default md5Calculator;
  * Calculate an MD5 hash for a given feed data object.
  * @param {Object} feedData The post-delta feed data object
  * @returns {string} Base64 representation of the calculated hash
- * @throws {Error} "INVALID_ARGUMENT: ..."
+ * @throws {Error}
  */
 md5Calculator.calculate = function calculate(feedData) {
   // Object?
   if (!check.object(feedData)) {
-    throw new Error("INVALID_ARGUMENT: Feed data must be an object.");
+    throw new Error("Feed data must be an object.");
   }
 
   // Get the canonical JSON
