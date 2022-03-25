@@ -47,7 +47,7 @@ const FeedNameArgs = function FeedNameArgs(...args) {
   this._feedName = null;
 
   /**
-   * Feed arguments. Null if error.
+   * Feed arguments. Null if error. Frozen.
    * @memberof FeedNameArgs
    * @instance
    * @private
@@ -123,6 +123,7 @@ FeedNameArgs.prototype._fromSerial = function _fromSerial(feedSerial) {
   for (let i = 1; i < jsonArray.length; i += 2) {
     this._feedArgs[jsonArray[i]] = jsonArray[i + 1];
   }
+  Object.freeze(this._feedArgs);
   this._feedSerial = feedSerial;
 };
 
@@ -155,6 +156,7 @@ FeedNameArgs.prototype._fromNameArgs = function _fromNameArgs(
   // Save feed name and args
   this._feedName = feedName;
   this._feedArgs = _clone(feedArgs); // In case of outside changes to feedArgs object
+  Object.freeze(this._feedArgs);
 };
 
 /**

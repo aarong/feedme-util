@@ -182,10 +182,19 @@ describe("Feed serial usage", () => {
       expect(fna.args()).toEqual({ ARG_1: "VAL_1", ARG_2: "VAL_2" });
       expect(fna.serial()).toBe(ser);
     });
+
+    it("should freeze the returned feed args object", () => {
+      const ser = '["SOME_FEED", "ARG_1", "VAL_1", "ARG_2", "VAL_2"]';
+      const fna = FeedNameArgs(ser);
+      const args = fna.args();
+      expect(() => {
+        args.NEW = 123;
+      }).toThrow(TypeError); // TypeError: Cannot add property NEW, object is not extensible
+    });
   });
 });
 
-describe("Feed serial usage", () => {
+describe("Feed name/arg usage", () => {
   describe("could fail", () => {
     it("should produce error if invalid feed name type", () => {
       const errMsg = "Invalid feed name.";
@@ -289,6 +298,14 @@ describe("Feed serial usage", () => {
       expect(fna.name()).toBe("SOME_FEED");
       expect(fna.args()).toEqual({ ORIG: "ORIG" });
       expect(JSON.parse(fna.serial())).toEqual(["SOME_FEED", "ORIG", "ORIG"]);
+    });
+
+    it("should freeze the returned feed args object", () => {
+      const fna = FeedNameArgs("SOME_FEED", { feed: "args" });
+      const args = fna.args();
+      expect(() => {
+        args.NEW = 123;
+      }).toThrow(TypeError); // TypeError: Cannot add property NEW, object is not extensible
     });
   });
 });
