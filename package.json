@@ -11,7 +11,7 @@
     "coveralls": "jest --coverage --coverageReporters=text-lcov | coveralls",
     "docs": "documentation build src/index.js -f html -o docs --access public --access private --access undefined --sort-order alpha",
     "prebuild": "npm run test",
-    "build": "gulp build"
+    "build": "babel-node build.js"
   },
   "dependencies": {
     "check-types": "^7.4.0",
@@ -21,11 +21,11 @@
   },
   "devDependencies": {
     "@babel/core": "^7.3.4",
+    "@babel/node": "^7.22.19",
     "@babel/preset-env": "^7.3.4",
     "@babel/register": "^7.0.0",
     "babel-core": "^7.0.0-bridge.0",
     "coveralls": "^3.0.3",
-    "del": "^4.0.0",
     "documentation": "^9.1.1",
     "eslint": "^5.12.0",
     "eslint-config-airbnb-base": "^13.1.0",
@@ -33,8 +33,7 @@
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-prettier": "^3.0.1",
     "ghooks": "^2.0.4",
-    "gulp": "^4.0.0",
-    "gulp-babel": "^8.0.0",
+    "glob": "^10.3.10",
     "jest": "^23.6.0",
     "jest-cli": "^23.6.0",
     "prettier": "^1.14.3"
