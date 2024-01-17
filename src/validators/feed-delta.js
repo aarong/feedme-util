@@ -28,7 +28,7 @@ const DELTA_VALIDATORS = {
   InsertBefore: vInsertBefore,
   InsertAfter: vInsertAfter,
   DeleteFirst: vDeleteFirst,
-  DeleteLast: vDeleteLast
+  DeleteLast: vDeleteLast,
 };
 
 /**

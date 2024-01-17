@@ -10,8 +10,8 @@ describe("The feed-delta-prepend validator", () => {
       expect(
         vFeedDeltaPrepend({
           Path: [],
-          Value: "VALUE"
-        })
+          Value: "VALUE",
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -19,8 +19,8 @@ describe("The feed-delta-prepend validator", () => {
       expect(
         vFeedDeltaPrepend({
           Operation: "Prepend",
-          Value: "VALUE"
-        })
+          Value: "VALUE",
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -28,8 +28,8 @@ describe("The feed-delta-prepend validator", () => {
       expect(
         vFeedDeltaPrepend({
           Operation: "Prepend",
-          Path: []
-        })
+          Path: [],
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -39,8 +39,8 @@ describe("The feed-delta-prepend validator", () => {
           Operation: "Prepend",
           Path: [],
           Value: "VALUE",
-          Extraneous: "INVALID"
-        })
+          Extraneous: "INVALID",
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -49,8 +49,8 @@ describe("The feed-delta-prepend validator", () => {
         vFeedDeltaPrepend({
           Operation: "INVALID",
           Path: [],
-          Value: "VALUE"
-        })
+          Value: "VALUE",
+        }),
       ).toBe("Operation > Not 'Prepend'.");
     });
 
@@ -59,8 +59,8 @@ describe("The feed-delta-prepend validator", () => {
         vFeedDeltaPrepend({
           Operation: "Prepend",
           Path: "INVALID",
-          Value: "VALUE"
-        })
+          Value: "VALUE",
+        }),
       ).toBe("Path > Not an array.");
     });
 
@@ -69,8 +69,8 @@ describe("The feed-delta-prepend validator", () => {
         vFeedDeltaPrepend({
           Operation: "Prepend",
           Path: [],
-          Value: 123
-        })
+          Value: 123,
+        }),
       ).toBe("Value > Not a string.");
     });
   });
@@ -81,8 +81,8 @@ describe("The feed-delta-prepend validator", () => {
         vFeedDeltaPrepend({
           Operation: "Prepend",
           Path: [],
-          Value: "VALUE"
-        })
+          Value: "VALUE",
+        }),
       ).toBe("");
     });
   });

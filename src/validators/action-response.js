@@ -10,7 +10,7 @@ import vActionResponseFailure from "./action-response-failure";
  */
 export default function validateActionResponse(
   value,
-  checkJsonExpressible = true
+  checkJsonExpressible = true,
 ) {
   // Validate value type - never tripped by server-message validator
   if (!check.object(value)) {

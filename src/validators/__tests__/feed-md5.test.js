@@ -11,7 +11,7 @@ describe("The feed-md5 validator", () => {
 
   it("should return invalid if too long", () => {
     expect(vFeedMd5("0123456789012345678901234")).toBe(
-      "Not 24 characters long."
+      "Not 24 characters long.",
     );
   });
 

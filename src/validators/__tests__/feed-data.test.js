@@ -12,7 +12,7 @@ describe("The feed-data validator", () => {
 
     it("should return invalid if JSON expressiblity check is explicitly enabled and value is not a JSON-expressible object", () => {
       expect(vFeedData({ Data: undefined }, true)).toBe(
-        "Not JSON-expressible."
+        "Not JSON-expressible.",
       );
     });
   });

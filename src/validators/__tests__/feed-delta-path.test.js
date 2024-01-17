@@ -8,25 +8,25 @@ describe("The feed-delta-path validator", () => {
 
     it("should return invalid if array contains invalid element type - first", () => {
       expect(vFeedDeltaPath([false])).toBe(
-        "Element 0 > Not a string or non-negative integer."
+        "Element 0 > Not a string or non-negative integer.",
       );
     });
 
     it("should return invalid if array contains invalid element type - not first", () => {
       expect(vFeedDeltaPath(["VAL", false])).toBe(
-        "Element 1 > Not a string or non-negative integer."
+        "Element 1 > Not a string or non-negative integer.",
       );
     });
 
     it("should return invalid if array contains negative integer element", () => {
       expect(vFeedDeltaPath([-1])).toBe(
-        "Element 0 > Not a string or non-negative integer."
+        "Element 0 > Not a string or non-negative integer.",
       );
     });
 
     it("should return invalid if array contains decimal number element", () => {
       expect(vFeedDeltaPath([1.5])).toBe(
-        "Element 0 > Not a string or non-negative integer."
+        "Element 0 > Not a string or non-negative integer.",
       );
     });
   });

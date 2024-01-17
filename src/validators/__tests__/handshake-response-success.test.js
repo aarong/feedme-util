@@ -10,8 +10,8 @@ describe("The handshake-response-success validator", () => {
       expect(
         vHandshakeResponseSuccess({
           Success: true,
-          Version: "0.1"
-        })
+          Version: "0.1",
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -19,8 +19,8 @@ describe("The handshake-response-success validator", () => {
       expect(
         vHandshakeResponseSuccess({
           MessageType: "HandshakeResponse",
-          Version: "0.1"
-        })
+          Version: "0.1",
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -28,8 +28,8 @@ describe("The handshake-response-success validator", () => {
       expect(
         vHandshakeResponseSuccess({
           MessageType: "HandshakeResponse",
-          Success: true
-        })
+          Success: true,
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -39,8 +39,8 @@ describe("The handshake-response-success validator", () => {
           MessageType: "HandshakeResponse",
           Success: true,
           Version: "0.1",
-          Extraneous: "INVALID"
-        })
+          Extraneous: "INVALID",
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -49,8 +49,8 @@ describe("The handshake-response-success validator", () => {
         vHandshakeResponseSuccess({
           MessageType: "INVALID",
           Success: true,
-          Version: "0.1"
-        })
+          Version: "0.1",
+        }),
       ).toBe("MessageType > Not 'HandshakeResponse'.");
     });
 
@@ -59,8 +59,8 @@ describe("The handshake-response-success validator", () => {
         vHandshakeResponseSuccess({
           MessageType: "HandshakeResponse",
           Success: false,
-          Version: "0.1"
-        })
+          Version: "0.1",
+        }),
       ).toBe("Success > Not true.");
     });
 
@@ -69,8 +69,8 @@ describe("The handshake-response-success validator", () => {
         vHandshakeResponseSuccess({
           MessageType: "HandshakeResponse",
           Success: true,
-          Version: 123
-        })
+          Version: 123,
+        }),
       ).toBe("Version > Not a string.");
     });
   });
@@ -81,8 +81,8 @@ describe("The handshake-response-success validator", () => {
         vHandshakeResponseSuccess({
           MessageType: "HandshakeResponse",
           Success: true,
-          Version: "0.1"
-        })
+          Version: "0.1",
+        }),
       ).toBe("");
     });
   });

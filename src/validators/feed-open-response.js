@@ -10,7 +10,7 @@ import vFeedOpenResponseFailure from "./feed-open-response-failure";
  */
 export default function validateFeedOpenResponse(
   value,
-  checkJsonExpressible = true
+  checkJsonExpressible = true,
 ) {
   // Validate value type - never tripped by server-message validator
   if (!check.object(value)) {

@@ -13,7 +13,7 @@ const REQ_MESSAGE_KEYS = [
   "FeedArgs",
   "ActionName",
   "ActionData",
-  "FeedDeltas"
+  "FeedDeltas",
 ].sort();
 
 const FEED_MD5 = "FeedMd5";
@@ -33,7 +33,7 @@ export default function validateFeedAction(value, checkJsonExpressible = true) {
   // Check if FeedMd5 is present and sequester other keys
   const reqKeys = [];
   let hasFeedMd5 = false;
-  Object.keys(value).forEach(val => {
+  Object.keys(value).forEach((val) => {
     if (val === FEED_MD5) {
       hasFeedMd5 = true;
     } else {

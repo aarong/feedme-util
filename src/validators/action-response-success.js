@@ -7,7 +7,7 @@ const MESSAGE_KEYS = [
   "MessageType",
   "Success",
   "CallbackId",
-  "ActionData"
+  "ActionData",
 ].sort();
 
 /**
@@ -18,7 +18,7 @@ const MESSAGE_KEYS = [
  */
 export default function validateActionResponseSuccess(
   value,
-  checkJsonExpressible = true
+  checkJsonExpressible = true,
 ) {
   // Validate value type - never tripped by action-response validator
   if (!check.object(value)) {

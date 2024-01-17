@@ -10,8 +10,8 @@ describe("The feed-delta-increment validator", () => {
       expect(
         vFeedDeltaIncrement({
           Path: [],
-          Value: 1
-        })
+          Value: 1,
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -19,8 +19,8 @@ describe("The feed-delta-increment validator", () => {
       expect(
         vFeedDeltaIncrement({
           Operation: "Increment",
-          Value: 1
-        })
+          Value: 1,
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -28,8 +28,8 @@ describe("The feed-delta-increment validator", () => {
       expect(
         vFeedDeltaIncrement({
           Operation: "Increment",
-          Path: []
-        })
+          Path: [],
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -39,8 +39,8 @@ describe("The feed-delta-increment validator", () => {
           Operation: "Increment",
           Path: [],
           Value: 1,
-          Extraneous: "INVALID"
-        })
+          Extraneous: "INVALID",
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -49,8 +49,8 @@ describe("The feed-delta-increment validator", () => {
         vFeedDeltaIncrement({
           Operation: "INVALID",
           Path: [],
-          Value: 1
-        })
+          Value: 1,
+        }),
       ).toBe("Operation > Not 'Increment'.");
     });
 
@@ -59,8 +59,8 @@ describe("The feed-delta-increment validator", () => {
         vFeedDeltaIncrement({
           Operation: "Increment",
           Path: "INVALID",
-          Value: 1
-        })
+          Value: 1,
+        }),
       ).toBe("Path > Not an array.");
     });
 
@@ -69,8 +69,8 @@ describe("The feed-delta-increment validator", () => {
         vFeedDeltaIncrement({
           Operation: "Increment",
           Path: [],
-          Value: "INVALID"
-        })
+          Value: "INVALID",
+        }),
       ).toBe("Value > Not a number.");
     });
   });
@@ -81,8 +81,8 @@ describe("The feed-delta-increment validator", () => {
         vFeedDeltaIncrement({
           Operation: "Increment",
           Path: [],
-          Value: 1
-        })
+          Value: 1,
+        }),
       ).toBe("");
     });
   });

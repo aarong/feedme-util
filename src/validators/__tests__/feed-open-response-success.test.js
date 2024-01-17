@@ -12,8 +12,8 @@ describe("The feed-open-response-success validator", () => {
           Success: true,
           FeedName: "FEED_NAME",
           FeedArgs: {},
-          FeedData: {}
-        })
+          FeedData: {},
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -23,8 +23,8 @@ describe("The feed-open-response-success validator", () => {
           MessageType: "FeedOpenResponse",
           FeedName: "FEED_NAME",
           FeedArgs: {},
-          FeedData: {}
-        })
+          FeedData: {},
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -34,8 +34,8 @@ describe("The feed-open-response-success validator", () => {
           MessageType: "FeedOpenResponse",
           Success: true,
           FeedArgs: {},
-          FeedData: {}
-        })
+          FeedData: {},
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -45,8 +45,8 @@ describe("The feed-open-response-success validator", () => {
           MessageType: "FeedOpenResponse",
           Success: true,
           FeedName: "FEED_NAME",
-          FeedData: {}
-        })
+          FeedData: {},
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -56,8 +56,8 @@ describe("The feed-open-response-success validator", () => {
           MessageType: "FeedOpenResponse",
           Success: true,
           FeedName: "FEED_NAME",
-          FeedArgs: {}
-        })
+          FeedArgs: {},
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -69,8 +69,8 @@ describe("The feed-open-response-success validator", () => {
           FeedName: "FEED_NAME",
           FeedArgs: {},
           FeedData: {},
-          Extraneous: "INVALID"
-        })
+          Extraneous: "INVALID",
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -81,8 +81,8 @@ describe("The feed-open-response-success validator", () => {
           Success: true,
           FeedName: "FEED_NAME",
           FeedArgs: {},
-          FeedData: {}
-        })
+          FeedData: {},
+        }),
       ).toBe("MessageType > Not 'FeedOpenResponse'.");
     });
 
@@ -93,8 +93,8 @@ describe("The feed-open-response-success validator", () => {
           Success: false,
           FeedName: "FEED_NAME",
           FeedArgs: {},
-          FeedData: {}
-        })
+          FeedData: {},
+        }),
       ).toBe("Success > Not true.");
     });
 
@@ -105,8 +105,8 @@ describe("The feed-open-response-success validator", () => {
           Success: true,
           FeedName: 123,
           FeedArgs: {},
-          FeedData: {}
-        })
+          FeedData: {},
+        }),
       ).toBe("FeedName > Not a string.");
     });
 
@@ -117,8 +117,8 @@ describe("The feed-open-response-success validator", () => {
           Success: true,
           FeedName: "FEED_NAME",
           FeedArgs: "INVALID",
-          FeedData: {}
-        })
+          FeedData: {},
+        }),
       ).toBe("FeedArgs > Not an object.");
     });
 
@@ -129,8 +129,8 @@ describe("The feed-open-response-success validator", () => {
           Success: true,
           FeedName: "FEED_NAME",
           FeedArgs: {},
-          FeedData: { Data: undefined }
-        })
+          FeedData: { Data: undefined },
+        }),
       ).toBe("FeedData > Not JSON-expressible.");
     });
 
@@ -142,10 +142,10 @@ describe("The feed-open-response-success validator", () => {
             Success: true,
             FeedName: "FEED_NAME",
             FeedArgs: {},
-            FeedData: { Data: undefined }
+            FeedData: { Data: undefined },
           },
-          true
-        )
+          true,
+        ),
       ).toBe("FeedData > Not JSON-expressible.");
     });
   });
@@ -158,8 +158,8 @@ describe("The feed-open-response-success validator", () => {
           Success: true,
           FeedName: "FEED_NAME",
           FeedArgs: {},
-          FeedData: { Feed: "Data" }
-        })
+          FeedData: { Feed: "Data" },
+        }),
       ).toBe("");
     });
 
@@ -171,10 +171,10 @@ describe("The feed-open-response-success validator", () => {
             Success: true,
             FeedName: "FEED_NAME",
             FeedArgs: {},
-            FeedData: { Feed: "Data" }
+            FeedData: { Feed: "Data" },
           },
-          true
-        )
+          true,
+        ),
       ).toBe("");
     });
 
@@ -186,10 +186,10 @@ describe("The feed-open-response-success validator", () => {
             Success: true,
             FeedName: "FEED_NAME",
             FeedArgs: {},
-            FeedData: { Feed: "Data" }
+            FeedData: { Feed: "Data" },
           },
-          false
-        )
+          false,
+        ),
       ).toBe("");
     });
 
@@ -201,10 +201,10 @@ describe("The feed-open-response-success validator", () => {
             Success: true,
             FeedName: "FEED_NAME",
             FeedArgs: {},
-            FeedData: { Data: undefined }
+            FeedData: { Data: undefined },
           },
-          false
-        )
+          false,
+        ),
       ).toBe("");
     });
   });

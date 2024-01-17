@@ -13,7 +13,7 @@ const DELTA_KEYS = ["Operation", "Path", "Value"].sort();
  */
 export default function validateFeedDeltaInsertFirst(
   value,
-  checkJsonExpressible = true
+  checkJsonExpressible = true,
 ) {
   // Validate value type - never tripped by feed-delta validator
   if (!check.object(value)) {

@@ -12,31 +12,31 @@ describe("The client-message validator", () => {
 
     it("should return invalid if invalid MessageType", () => {
       expect(vClientMessage({ MessageType: "INVALID " })).toBe(
-        "MessageType > Missing or invalid."
+        "MessageType > Missing or invalid.",
       );
     });
 
     it("should return invalid if invalid Handshake message", () => {
       expect(vClientMessage({ MessageType: "Handshake" })).toBe(
-        "(Handshake Message) Missing or extraneous property."
+        "(Handshake Message) Missing or extraneous property.",
       );
     });
 
     it("should return invalid if invalid Action message", () => {
       expect(vClientMessage({ MessageType: "Action" })).toBe(
-        "(Action Message) Missing or extraneous property."
+        "(Action Message) Missing or extraneous property.",
       );
     });
 
     it("should return invalid if invalid FeedOpen message", () => {
       expect(vClientMessage({ MessageType: "FeedOpen" })).toBe(
-        "(FeedOpen Message) Missing or extraneous property."
+        "(FeedOpen Message) Missing or extraneous property.",
       );
     });
 
     it("should return invalid if invalid FeedClose message", () => {
       expect(vClientMessage({ MessageType: "FeedClose" })).toBe(
-        "(FeedClose Message) Missing or extraneous property."
+        "(FeedClose Message) Missing or extraneous property.",
       );
     });
   });
@@ -46,8 +46,8 @@ describe("The client-message validator", () => {
       expect(
         vClientMessage({
           MessageType: "Handshake",
-          Versions: ["0.1"]
-        })
+          Versions: ["0.1"],
+        }),
       ).toBe("");
     });
 
@@ -57,8 +57,8 @@ describe("The client-message validator", () => {
           MessageType: "Action",
           ActionName: "ACTION_NAME",
           ActionArgs: {},
-          CallbackId: "CALLBACK_ID"
-        })
+          CallbackId: "CALLBACK_ID",
+        }),
       ).toBe("");
     });
 
@@ -67,8 +67,8 @@ describe("The client-message validator", () => {
         vClientMessage({
           MessageType: "FeedOpen",
           FeedName: "FEED_NAME",
-          FeedArgs: {}
-        })
+          FeedArgs: {},
+        }),
       ).toBe("");
     });
 
@@ -77,8 +77,8 @@ describe("The client-message validator", () => {
         vClientMessage({
           MessageType: "FeedClose",
           FeedName: "FEED_NAME",
-          FeedArgs: {}
-        })
+          FeedArgs: {},
+        }),
       ).toBe("");
     });
   });
@@ -92,10 +92,10 @@ describe("The client-message validator", () => {
               MessageType: "Action",
               ActionName: "ACTION_NAME",
               ActionArgs: { Arg: undefined },
-              CallbackId: "CALLBACK_ID"
+              CallbackId: "CALLBACK_ID",
             },
-            true
-          )
+            true,
+          ),
         ).toBe("(Action Message) ActionArgs > Not JSON-expressible.");
       });
 
@@ -106,10 +106,10 @@ describe("The client-message validator", () => {
               MessageType: "Action",
               ActionName: "ACTION_NAME",
               ActionArgs: { Arg: undefined },
-              CallbackId: "CALLBACK_ID"
+              CallbackId: "CALLBACK_ID",
             },
-            false
-          )
+            false,
+          ),
         ).toBe("");
       });
     });

@@ -284,13 +284,13 @@ describe("Feed name/arg usage", () => {
         "ARG_1",
         "VAL_1",
         "ARG_2",
-        "VAL_2"
+        "VAL_2",
       ]);
     });
 
     it("should not change results if the outside args object changes", () => {
       const args = {
-        ORIG: "ORIG"
+        ORIG: "ORIG",
       };
       const fna = FeedNameArgs("SOME_FEED", args);
       args.NEW = "NEW";

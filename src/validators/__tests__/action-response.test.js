@@ -8,37 +8,37 @@ describe("The action-response validator", () => {
 
     it("should return invalid if missing MessageType", () => {
       expect(vActionResponse({ Success: true })).toBe(
-        "MessageType > Missing or not 'ActionResponse'."
+        "MessageType > Missing or not 'ActionResponse'.",
       );
     });
 
     it("should return invalid if missing Success", () => {
       expect(vActionResponse({ MessageType: "ActionResponse" })).toBe(
-        "Success > Missing or not boolean."
+        "Success > Missing or not boolean.",
       );
     });
 
     it("should return invalid if invalid MessageType", () => {
       expect(vActionResponse({ MessageType: "INVALID", Success: true })).toBe(
-        "MessageType > Missing or not 'ActionResponse'."
+        "MessageType > Missing or not 'ActionResponse'.",
       );
     });
 
     it("should return invalid if invalid Success", () => {
       expect(
-        vActionResponse({ MessageType: "ActionResponse", Success: "INVALID" })
+        vActionResponse({ MessageType: "ActionResponse", Success: "INVALID" }),
       ).toBe("Success > Missing or not boolean.");
     });
 
     it("should return invalid if invalid ActionResponse success message", () => {
       expect(
-        vActionResponse({ MessageType: "ActionResponse", Success: true })
+        vActionResponse({ MessageType: "ActionResponse", Success: true }),
       ).toBe("(Success) Missing or extraneous property.");
     });
 
     it("should return invalid if invalid ActionResponse failure message", () => {
       expect(
-        vActionResponse({ MessageType: "ActionResponse", Success: false })
+        vActionResponse({ MessageType: "ActionResponse", Success: false }),
       ).toBe("(Failure) Missing or extraneous property.");
     });
   });
@@ -50,8 +50,8 @@ describe("The action-response validator", () => {
           MessageType: "ActionResponse",
           Success: true,
           CallbackId: "CALLBACK_ID",
-          ActionData: {}
-        })
+          ActionData: {},
+        }),
       ).toBe("");
     });
 
@@ -62,8 +62,8 @@ describe("The action-response validator", () => {
           Success: false,
           CallbackId: "CALLBACK_ID",
           ErrorCode: "ERROR_CODE",
-          ErrorData: {}
-        })
+          ErrorData: {},
+        }),
       ).toBe("");
     });
   });

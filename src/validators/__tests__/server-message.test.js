@@ -12,49 +12,49 @@ describe("The server-message validator", () => {
 
     it("should return invalid if invalid MessageType", () => {
       expect(vServerMessage({ MessageType: "INVALID " })).toBe(
-        "MessageType > Missing or invalid."
+        "MessageType > Missing or invalid.",
       );
     });
 
     it("should return invalid if invalid ViolationResponse message", () => {
       expect(vServerMessage({ MessageType: "ViolationResponse" })).toBe(
-        "(ViolationResponse Message) Missing or extraneous property."
+        "(ViolationResponse Message) Missing or extraneous property.",
       );
     });
 
     it("should return invalid if invalid HandshakeResponse message", () => {
       expect(vServerMessage({ MessageType: "HandshakeResponse" })).toBe(
-        "(HandshakeResponse Message) Success > Missing or not boolean."
+        "(HandshakeResponse Message) Success > Missing or not boolean.",
       );
     });
 
     it("should return invalid if invalid ActionResponse message", () => {
       expect(vServerMessage({ MessageType: "ActionResponse" })).toBe(
-        "(ActionResponse Message) Success > Missing or not boolean."
+        "(ActionResponse Message) Success > Missing or not boolean.",
       );
     });
 
     it("should return invalid if invalid FeedOpenResponse message", () => {
       expect(vServerMessage({ MessageType: "FeedOpenResponse" })).toBe(
-        "(FeedOpenResponse Message) Success > Missing or not boolean."
+        "(FeedOpenResponse Message) Success > Missing or not boolean.",
       );
     });
 
     it("should return invalid if invalid FeedCloseResponse message", () => {
       expect(vServerMessage({ MessageType: "FeedCloseResponse" })).toBe(
-        "(FeedCloseResponse Message) Missing or extraneous property."
+        "(FeedCloseResponse Message) Missing or extraneous property.",
       );
     });
 
     it("should return invalid if invalid FeedAction message", () => {
       expect(vServerMessage({ MessageType: "FeedAction" })).toBe(
-        "(FeedAction Message) Missing or extraneous property."
+        "(FeedAction Message) Missing or extraneous property.",
       );
     });
 
     it("should return invalid if invalid FeedTermination message", () => {
       expect(vServerMessage({ MessageType: "FeedTermination" })).toBe(
-        "(FeedTermination Message) Missing or extraneous property."
+        "(FeedTermination Message) Missing or extraneous property.",
       );
     });
   });
@@ -64,8 +64,8 @@ describe("The server-message validator", () => {
       expect(
         vServerMessage({
           MessageType: "ViolationResponse",
-          Diagnostics: {}
-        })
+          Diagnostics: {},
+        }),
       ).toBe("");
     });
 
@@ -73,8 +73,8 @@ describe("The server-message validator", () => {
       expect(
         vServerMessage({
           MessageType: "HandshakeResponse",
-          Success: false
-        })
+          Success: false,
+        }),
       ).toBe("");
     });
 
@@ -85,8 +85,8 @@ describe("The server-message validator", () => {
           Success: false,
           CallbackId: "CALLBACK_ID",
           ErrorCode: "ERROR_CODE",
-          ErrorData: {}
-        })
+          ErrorData: {},
+        }),
       ).toBe("");
     });
 
@@ -98,8 +98,8 @@ describe("The server-message validator", () => {
           FeedName: "FEED_NAME",
           FeedArgs: {},
           ErrorCode: "ERROR_CODE",
-          ErrorData: {}
-        })
+          ErrorData: {},
+        }),
       ).toBe("");
     });
 
@@ -108,8 +108,8 @@ describe("The server-message validator", () => {
         vServerMessage({
           MessageType: "FeedCloseResponse",
           FeedName: "FEED_NAME",
-          FeedArgs: {}
-        })
+          FeedArgs: {},
+        }),
       ).toBe("");
     });
 
@@ -121,8 +121,8 @@ describe("The server-message validator", () => {
           FeedArgs: {},
           ActionName: "ACTION_NAME",
           ActionData: {},
-          FeedDeltas: []
-        })
+          FeedDeltas: [],
+        }),
       ).toBe("");
     });
 
@@ -133,8 +133,8 @@ describe("The server-message validator", () => {
           FeedName: "FEED_NAME",
           FeedArgs: {},
           ErrorCode: "ERROR_CODE",
-          ErrorData: {}
-        })
+          ErrorData: {},
+        }),
       ).toBe("");
     });
   });
@@ -146,12 +146,12 @@ describe("The server-message validator", () => {
           vServerMessage(
             {
               MessageType: "ViolationResponse",
-              Diagnostics: { Diag: undefined }
+              Diagnostics: { Diag: undefined },
             },
-            true
-          )
+            true,
+          ),
         ).toBe(
-          "(ViolationResponse Message) Diagnostics > Not JSON-expressible."
+          "(ViolationResponse Message) Diagnostics > Not JSON-expressible.",
         );
       });
 
@@ -160,10 +160,10 @@ describe("The server-message validator", () => {
           vServerMessage(
             {
               MessageType: "ViolationResponse",
-              Diagnostics: { Diag: undefined }
+              Diagnostics: { Diag: undefined },
             },
-            false
-          )
+            false,
+          ),
         ).toBe("");
       });
     });
@@ -176,12 +176,12 @@ describe("The server-message validator", () => {
               MessageType: "ActionResponse",
               Success: true,
               CallbackId: "CALLBACK_ID",
-              ActionData: { Data: undefined }
+              ActionData: { Data: undefined },
             },
-            true
-          )
+            true,
+          ),
         ).toBe(
-          "(ActionResponse Message) (Success) ActionData > Not JSON-expressible."
+          "(ActionResponse Message) (Success) ActionData > Not JSON-expressible.",
         );
       });
 
@@ -192,10 +192,10 @@ describe("The server-message validator", () => {
               MessageType: "ActionResponse",
               Success: true,
               CallbackId: "CALLBACK_ID",
-              ActionData: { Data: undefined }
+              ActionData: { Data: undefined },
             },
-            false
-          )
+            false,
+          ),
         ).toBe("");
       });
     });
@@ -209,12 +209,12 @@ describe("The server-message validator", () => {
               Success: false,
               CallbackId: "CALLBACK_ID",
               ErrorCode: "ERROR_CODE",
-              ErrorData: { Data: undefined }
+              ErrorData: { Data: undefined },
             },
-            true
-          )
+            true,
+          ),
         ).toBe(
-          "(ActionResponse Message) (Failure) ErrorData > Not JSON-expressible."
+          "(ActionResponse Message) (Failure) ErrorData > Not JSON-expressible.",
         );
       });
 
@@ -226,10 +226,10 @@ describe("The server-message validator", () => {
               Success: false,
               CallbackId: "CALLBACK_ID",
               ErrorCode: "ERROR_CODE",
-              ErrorData: { Data: undefined }
+              ErrorData: { Data: undefined },
             },
-            false
-          )
+            false,
+          ),
         ).toBe("");
       });
     });
@@ -243,12 +243,12 @@ describe("The server-message validator", () => {
               Success: true,
               FeedName: "FEED_NAME",
               FeedArgs: {},
-              FeedData: { Data: undefined }
+              FeedData: { Data: undefined },
             },
-            true
-          )
+            true,
+          ),
         ).toBe(
-          "(FeedOpenResponse Message) (Success) FeedData > Not JSON-expressible."
+          "(FeedOpenResponse Message) (Success) FeedData > Not JSON-expressible.",
         );
       });
 
@@ -260,10 +260,10 @@ describe("The server-message validator", () => {
               Success: true,
               FeedName: "FEED_NAME",
               FeedArgs: {},
-              FeedData: { Data: undefined }
+              FeedData: { Data: undefined },
             },
-            false
-          )
+            false,
+          ),
         ).toBe("");
       });
     });
@@ -278,12 +278,12 @@ describe("The server-message validator", () => {
               FeedName: "FEED_NAME",
               FeedArgs: {},
               ErrorCode: "ERROR_CODE",
-              ErrorData: { Data: undefined }
+              ErrorData: { Data: undefined },
             },
-            true
-          )
+            true,
+          ),
         ).toBe(
-          "(FeedOpenResponse Message) (Failure) ErrorData > Not JSON-expressible."
+          "(FeedOpenResponse Message) (Failure) ErrorData > Not JSON-expressible.",
         );
       });
 
@@ -296,10 +296,10 @@ describe("The server-message validator", () => {
               FeedName: "FEED_NAME",
               FeedArgs: {},
               ErrorCode: "ERROR_CODE",
-              ErrorData: { Data: undefined }
+              ErrorData: { Data: undefined },
             },
-            false
-          )
+            false,
+          ),
         ).toBe("");
       });
     });
@@ -314,10 +314,10 @@ describe("The server-message validator", () => {
               FeedArgs: {},
               ActionName: "ACTION_NAME",
               ActionData: { Data: undefined },
-              FeedDeltas: []
+              FeedDeltas: [],
             },
-            true
-          )
+            true,
+          ),
         ).toBe("(FeedAction Message) ActionData > Not JSON-expressible.");
       });
 
@@ -330,10 +330,10 @@ describe("The server-message validator", () => {
               FeedArgs: {},
               ActionName: "ACTION_NAME",
               ActionData: { Data: undefined },
-              FeedDeltas: []
+              FeedDeltas: [],
             },
-            false
-          )
+            false,
+          ),
         ).toBe("");
       });
     });
@@ -348,12 +348,12 @@ describe("The server-message validator", () => {
               FeedArgs: {},
               ActionName: "ACTION_NAME",
               ActionData: {},
-              FeedDeltas: [{ Operation: "Set", Path: [], Value: undefined }]
+              FeedDeltas: [{ Operation: "Set", Path: [], Value: undefined }],
             },
-            true
-          )
+            true,
+          ),
         ).toBe(
-          "(FeedAction Message) FeedDeltas > Element 0 > (Set Delta) Value > Not JSON-expressible."
+          "(FeedAction Message) FeedDeltas > Element 0 > (Set Delta) Value > Not JSON-expressible.",
         );
       });
 
@@ -366,10 +366,10 @@ describe("The server-message validator", () => {
               FeedArgs: {},
               ActionName: "ACTION_NAME",
               ActionData: {},
-              FeedDeltas: [{ Operation: "Set", Path: [], Value: undefined }]
+              FeedDeltas: [{ Operation: "Set", Path: [], Value: undefined }],
             },
-            false
-          )
+            false,
+          ),
         ).toBe("");
       });
     });
@@ -385,13 +385,13 @@ describe("The server-message validator", () => {
               ActionName: "ACTION_NAME",
               ActionData: {},
               FeedDeltas: [
-                { Operation: "DeleteValue", Path: [], Value: undefined }
-              ]
+                { Operation: "DeleteValue", Path: [], Value: undefined },
+              ],
             },
-            true
-          )
+            true,
+          ),
         ).toBe(
-          "(FeedAction Message) FeedDeltas > Element 0 > (DeleteValue Delta) Value > Not JSON-expressible."
+          "(FeedAction Message) FeedDeltas > Element 0 > (DeleteValue Delta) Value > Not JSON-expressible.",
         );
       });
 
@@ -405,11 +405,11 @@ describe("The server-message validator", () => {
               ActionName: "ACTION_NAME",
               ActionData: {},
               FeedDeltas: [
-                { Operation: "DeleteValue", Path: [], Value: undefined }
-              ]
+                { Operation: "DeleteValue", Path: [], Value: undefined },
+              ],
             },
-            false
-          )
+            false,
+          ),
         ).toBe("");
       });
     });
@@ -425,13 +425,13 @@ describe("The server-message validator", () => {
               ActionName: "ACTION_NAME",
               ActionData: {},
               FeedDeltas: [
-                { Operation: "InsertFirst", Path: [], Value: undefined }
-              ]
+                { Operation: "InsertFirst", Path: [], Value: undefined },
+              ],
             },
-            true
-          )
+            true,
+          ),
         ).toBe(
-          "(FeedAction Message) FeedDeltas > Element 0 > (InsertFirst Delta) Value > Not JSON-expressible."
+          "(FeedAction Message) FeedDeltas > Element 0 > (InsertFirst Delta) Value > Not JSON-expressible.",
         );
       });
 
@@ -445,11 +445,11 @@ describe("The server-message validator", () => {
               ActionName: "ACTION_NAME",
               ActionData: {},
               FeedDeltas: [
-                { Operation: "InsertFirst", Path: [], Value: undefined }
-              ]
+                { Operation: "InsertFirst", Path: [], Value: undefined },
+              ],
             },
-            false
-          )
+            false,
+          ),
         ).toBe("");
       });
     });
@@ -465,13 +465,13 @@ describe("The server-message validator", () => {
               ActionName: "ACTION_NAME",
               ActionData: {},
               FeedDeltas: [
-                { Operation: "InsertLast", Path: [], Value: undefined }
-              ]
+                { Operation: "InsertLast", Path: [], Value: undefined },
+              ],
             },
-            true
-          )
+            true,
+          ),
         ).toBe(
-          "(FeedAction Message) FeedDeltas > Element 0 > (InsertLast Delta) Value > Not JSON-expressible."
+          "(FeedAction Message) FeedDeltas > Element 0 > (InsertLast Delta) Value > Not JSON-expressible.",
         );
       });
 
@@ -485,11 +485,11 @@ describe("The server-message validator", () => {
               ActionName: "ACTION_NAME",
               ActionData: {},
               FeedDeltas: [
-                { Operation: "InsertLast", Path: [], Value: undefined }
-              ]
+                { Operation: "InsertLast", Path: [], Value: undefined },
+              ],
             },
-            false
-          )
+            false,
+          ),
         ).toBe("");
       });
     });
@@ -505,13 +505,13 @@ describe("The server-message validator", () => {
               ActionName: "ACTION_NAME",
               ActionData: {},
               FeedDeltas: [
-                { Operation: "InsertBefore", Path: [], Value: undefined }
-              ]
+                { Operation: "InsertBefore", Path: [], Value: undefined },
+              ],
             },
-            true
-          )
+            true,
+          ),
         ).toBe(
-          "(FeedAction Message) FeedDeltas > Element 0 > (InsertBefore Delta) Value > Not JSON-expressible."
+          "(FeedAction Message) FeedDeltas > Element 0 > (InsertBefore Delta) Value > Not JSON-expressible.",
         );
       });
 
@@ -525,11 +525,11 @@ describe("The server-message validator", () => {
               ActionName: "ACTION_NAME",
               ActionData: {},
               FeedDeltas: [
-                { Operation: "InsertBefore", Path: [], Value: undefined }
-              ]
+                { Operation: "InsertBefore", Path: [], Value: undefined },
+              ],
             },
-            false
-          )
+            false,
+          ),
         ).toBe("");
       });
     });
@@ -545,13 +545,13 @@ describe("The server-message validator", () => {
               ActionName: "ACTION_NAME",
               ActionData: {},
               FeedDeltas: [
-                { Operation: "InsertAfter", Path: [], Value: undefined }
-              ]
+                { Operation: "InsertAfter", Path: [], Value: undefined },
+              ],
             },
-            true
-          )
+            true,
+          ),
         ).toBe(
-          "(FeedAction Message) FeedDeltas > Element 0 > (InsertAfter Delta) Value > Not JSON-expressible."
+          "(FeedAction Message) FeedDeltas > Element 0 > (InsertAfter Delta) Value > Not JSON-expressible.",
         );
       });
 
@@ -565,11 +565,11 @@ describe("The server-message validator", () => {
               ActionName: "ACTION_NAME",
               ActionData: {},
               FeedDeltas: [
-                { Operation: "InsertAfter", Path: [], Value: undefined }
-              ]
+                { Operation: "InsertAfter", Path: [], Value: undefined },
+              ],
             },
-            false
-          )
+            false,
+          ),
         ).toBe("");
       });
     });
@@ -583,10 +583,10 @@ describe("The server-message validator", () => {
               FeedName: "FEED_NAME",
               FeedArgs: {},
               ErrorCode: "ERROR_CODE",
-              ErrorData: { Data: undefined }
+              ErrorData: { Data: undefined },
             },
-            true
-          )
+            true,
+          ),
         ).toBe("(FeedTermination Message) ErrorData > Not JSON-expressible.");
       });
 
@@ -598,10 +598,10 @@ describe("The server-message validator", () => {
               FeedName: "FEED_NAME",
               FeedArgs: {},
               ErrorCode: "ERROR_CODE",
-              ErrorData: { Data: undefined }
+              ErrorData: { Data: undefined },
             },
-            false
-          )
+            false,
+          ),
         ).toBe("");
       });
     });

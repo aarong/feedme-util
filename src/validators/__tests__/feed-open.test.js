@@ -10,8 +10,8 @@ describe("The feed-open validator", () => {
       expect(
         vFeedOpen({
           FeedName: "FEED_NAME",
-          FeedArgs: {}
-        })
+          FeedArgs: {},
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -19,8 +19,8 @@ describe("The feed-open validator", () => {
       expect(
         vFeedOpen({
           MessageType: "FeedOpen",
-          FeedArgs: {}
-        })
+          FeedArgs: {},
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -28,8 +28,8 @@ describe("The feed-open validator", () => {
       expect(
         vFeedOpen({
           MessageType: "FeedOpen",
-          FeedName: "FEED_NAME"
-        })
+          FeedName: "FEED_NAME",
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -39,8 +39,8 @@ describe("The feed-open validator", () => {
           MessageType: "FeedOpen",
           FeedName: "FEED_NAME",
           FeedArgs: {},
-          Extraneous: "INVALID"
-        })
+          Extraneous: "INVALID",
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -49,8 +49,8 @@ describe("The feed-open validator", () => {
         vFeedOpen({
           MessageType: "INVALID",
           FeedName: "FEED_NAME",
-          FeedArgs: {}
-        })
+          FeedArgs: {},
+        }),
       ).toBe("MessageType > Not 'FeedOpen'.");
     });
 
@@ -59,8 +59,8 @@ describe("The feed-open validator", () => {
         vFeedOpen({
           MessageType: "FeedOpen",
           FeedName: 123,
-          FeedArgs: {}
-        })
+          FeedArgs: {},
+        }),
       ).toBe("FeedName > Not a string.");
     });
 
@@ -69,8 +69,8 @@ describe("The feed-open validator", () => {
         vFeedOpen({
           MessageType: "FeedOpen",
           FeedName: "FEED_NAME",
-          FeedArgs: "INVALID"
-        })
+          FeedArgs: "INVALID",
+        }),
       ).toBe("FeedArgs > Not an object.");
     });
   });
@@ -81,8 +81,8 @@ describe("The feed-open validator", () => {
         vFeedOpen({
           MessageType: "FeedOpen",
           FeedName: "FEED_NAME",
-          FeedArgs: {}
-        })
+          FeedArgs: {},
+        }),
       ).toBe("");
     });
 
@@ -91,8 +91,8 @@ describe("The feed-open validator", () => {
         vFeedOpen({
           MessageType: "FeedOpen",
           FeedName: "FEED_NAME",
-          FeedArgs: { Arg: "ARG" }
-        })
+          FeedArgs: { Arg: "ARG" },
+        }),
       ).toBe("");
     });
   });

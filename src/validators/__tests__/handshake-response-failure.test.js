@@ -9,16 +9,16 @@ describe("The handshake-response-failure validator", () => {
     it("should return invalid if missing MessageType", () => {
       expect(
         vHandshakeResponseFailure({
-          Success: false
-        })
+          Success: false,
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
     it("should return invalid if missing Success", () => {
       expect(
         vHandshakeResponseFailure({
-          MessageType: "HandshakeResponse"
-        })
+          MessageType: "HandshakeResponse",
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -27,8 +27,8 @@ describe("The handshake-response-failure validator", () => {
         vHandshakeResponseFailure({
           MessageType: "HandshakeResponse",
           Success: false,
-          Extraneous: "INVALID"
-        })
+          Extraneous: "INVALID",
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -36,8 +36,8 @@ describe("The handshake-response-failure validator", () => {
       expect(
         vHandshakeResponseFailure({
           MessageType: "INVALID",
-          Success: false
-        })
+          Success: false,
+        }),
       ).toBe("MessageType > Not 'HandshakeResponse'.");
     });
 
@@ -45,8 +45,8 @@ describe("The handshake-response-failure validator", () => {
       expect(
         vHandshakeResponseFailure({
           MessageType: "HandshakeResponse",
-          Success: true
-        })
+          Success: true,
+        }),
       ).toBe("Success > Not false.");
     });
   });
@@ -56,8 +56,8 @@ describe("The handshake-response-failure validator", () => {
       expect(
         vHandshakeResponseFailure({
           MessageType: "HandshakeResponse",
-          Success: false
-        })
+          Success: false,
+        }),
       ).toBe("");
     });
   });

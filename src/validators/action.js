@@ -8,7 +8,7 @@ const MESSAGE_KEYS = [
   "MessageType",
   "ActionName",
   "ActionArgs",
-  "CallbackId"
+  "CallbackId",
 ].sort();
 
 /**

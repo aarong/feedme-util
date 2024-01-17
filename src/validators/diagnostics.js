@@ -9,7 +9,7 @@ import jsonExpressible from "json-expressible";
  */
 export default function validateDiagnostics(
   value,
-  checkJsonExpressible = true
+  checkJsonExpressible = true,
 ) {
   // Validate value type
   if (!check.object(value)) {

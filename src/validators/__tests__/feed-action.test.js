@@ -13,8 +13,8 @@ describe("The feed-action validator", () => {
           FeedArgs: {},
           ActionName: "ACTION_NAME",
           ActionData: {},
-          FeedDeltas: []
-        })
+          FeedDeltas: [],
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -25,8 +25,8 @@ describe("The feed-action validator", () => {
           FeedArgs: {},
           ActionName: "ACTION_NAME",
           ActionData: {},
-          FeedDeltas: []
-        })
+          FeedDeltas: [],
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -37,8 +37,8 @@ describe("The feed-action validator", () => {
           FeedName: "FEED_NAME",
           ActionName: "ACTION_NAME",
           ActionData: {},
-          FeedDeltas: []
-        })
+          FeedDeltas: [],
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -49,8 +49,8 @@ describe("The feed-action validator", () => {
           FeedName: "FEED_NAME",
           FeedArgs: {},
           ActionData: {},
-          FeedDeltas: []
-        })
+          FeedDeltas: [],
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -61,8 +61,8 @@ describe("The feed-action validator", () => {
           FeedName: "FEED_NAME",
           FeedArgs: {},
           ActionName: "ACTION_NAME",
-          FeedDeltas: []
-        })
+          FeedDeltas: [],
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -73,8 +73,8 @@ describe("The feed-action validator", () => {
           FeedName: "FEED_NAME",
           FeedArgs: {},
           ActionName: "ACTION_NAME",
-          ActionData: {}
-        })
+          ActionData: {},
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -87,8 +87,8 @@ describe("The feed-action validator", () => {
           ActionName: "ACTION_NAME",
           ActionData: {},
           FeedDeltas: [],
-          Extraneous: "INVALID"
-        })
+          Extraneous: "INVALID",
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -100,8 +100,8 @@ describe("The feed-action validator", () => {
           FeedArgs: {},
           ActionName: "ACTION_NAME",
           ActionData: {},
-          FeedDeltas: []
-        })
+          FeedDeltas: [],
+        }),
       ).toBe("MessageType > Not 'FeedAction'.");
     });
 
@@ -113,8 +113,8 @@ describe("The feed-action validator", () => {
           FeedArgs: {},
           ActionName: "ACTION_NAME",
           ActionData: {},
-          FeedDeltas: []
-        })
+          FeedDeltas: [],
+        }),
       ).toBe("FeedName > Not a string.");
     });
 
@@ -126,8 +126,8 @@ describe("The feed-action validator", () => {
           FeedArgs: "INVALID",
           ActionName: "ACTION_NAME",
           ActionData: {},
-          FeedDeltas: []
-        })
+          FeedDeltas: [],
+        }),
       ).toBe("FeedArgs > Not an object.");
     });
 
@@ -139,8 +139,8 @@ describe("The feed-action validator", () => {
           FeedArgs: {},
           ActionName: 123,
           ActionData: {},
-          FeedDeltas: []
-        })
+          FeedDeltas: [],
+        }),
       ).toBe("ActionName > Not a string.");
     });
 
@@ -152,8 +152,8 @@ describe("The feed-action validator", () => {
           FeedArgs: {},
           ActionName: "ACTION_NAME",
           ActionData: "INVALID",
-          FeedDeltas: []
-        })
+          FeedDeltas: [],
+        }),
       ).toBe("ActionData > Not an object.");
     });
 
@@ -165,8 +165,8 @@ describe("The feed-action validator", () => {
           FeedArgs: {},
           ActionName: "ACTION_NAME",
           ActionData: {},
-          FeedDeltas: "INVALID"
-        })
+          FeedDeltas: "INVALID",
+        }),
       ).toBe("FeedDeltas > Not an array.");
     });
 
@@ -179,8 +179,8 @@ describe("The feed-action validator", () => {
           ActionName: "ACTION_NAME",
           ActionData: {},
           FeedDeltas: [],
-          FeedMd5: "INVALID"
-        })
+          FeedMd5: "INVALID",
+        }),
       ).toBe("FeedMd5 > Not 24 characters long.");
     });
   });
@@ -194,8 +194,8 @@ describe("The feed-action validator", () => {
           FeedArgs: {},
           ActionName: "ACTION_NAME",
           ActionData: {},
-          FeedDeltas: []
-        })
+          FeedDeltas: [],
+        }),
       ).toBe("");
     });
 
@@ -208,8 +208,8 @@ describe("The feed-action validator", () => {
           ActionName: "ACTION_NAME",
           ActionData: {},
           FeedDeltas: [],
-          FeedMd5: "012345678901234567890123"
-        })
+          FeedMd5: "012345678901234567890123",
+        }),
       ).toBe("");
     });
   });

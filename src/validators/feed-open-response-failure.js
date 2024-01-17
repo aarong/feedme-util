@@ -11,7 +11,7 @@ const MESSAGE_KEYS = [
   "FeedName",
   "FeedArgs",
   "ErrorCode",
-  "ErrorData"
+  "ErrorData",
 ].sort();
 
 /**
@@ -22,7 +22,7 @@ const MESSAGE_KEYS = [
  */
 export default function validateFeedOpenResponseFailure(
   value,
-  checkJsonExpressible = true
+  checkJsonExpressible = true,
 ) {
   // Validate value type - never tripped by feed-open-response validator
   if (!check.object(value)) {

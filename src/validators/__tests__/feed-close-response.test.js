@@ -10,8 +10,8 @@ describe("The feed-close-response validator", () => {
       expect(
         vFeedCloseResponse({
           FeedName: "FEED_NAME",
-          FeedArgs: {}
-        })
+          FeedArgs: {},
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -19,8 +19,8 @@ describe("The feed-close-response validator", () => {
       expect(
         vFeedCloseResponse({
           MessageType: "FeedName",
-          FeedArgs: {}
-        })
+          FeedArgs: {},
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -28,8 +28,8 @@ describe("The feed-close-response validator", () => {
       expect(
         vFeedCloseResponse({
           MessageType: "FeedCloseResponse",
-          FeedName: "FEED_NAME"
-        })
+          FeedName: "FEED_NAME",
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -39,8 +39,8 @@ describe("The feed-close-response validator", () => {
           MessageType: "FeedCloseResponse",
           FeedName: "FEED_NAME",
           FeedArgs: {},
-          Extraneous: "INVALID"
-        })
+          Extraneous: "INVALID",
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -49,8 +49,8 @@ describe("The feed-close-response validator", () => {
         vFeedCloseResponse({
           MessageType: "INVALID",
           FeedName: "FEED_NAME",
-          FeedArgs: {}
-        })
+          FeedArgs: {},
+        }),
       ).toBe("MessageType > Not 'FeedCloseResponse'.");
     });
 
@@ -59,8 +59,8 @@ describe("The feed-close-response validator", () => {
         vFeedCloseResponse({
           MessageType: "FeedCloseResponse",
           FeedName: 123,
-          FeedArgs: {}
-        })
+          FeedArgs: {},
+        }),
       ).toBe("FeedName > Not a string.");
     });
 
@@ -69,8 +69,8 @@ describe("The feed-close-response validator", () => {
         vFeedCloseResponse({
           MessageType: "FeedCloseResponse",
           FeedName: "FEED_NAME",
-          FeedArgs: "INVALID"
-        })
+          FeedArgs: "INVALID",
+        }),
       ).toBe("FeedArgs > Not an object.");
     });
   });
@@ -81,8 +81,8 @@ describe("The feed-close-response validator", () => {
         vFeedCloseResponse({
           MessageType: "FeedCloseResponse",
           FeedName: "FEED_NAME",
-          FeedArgs: {}
-        })
+          FeedArgs: {},
+        }),
       ).toBe("");
     });
   });

@@ -8,7 +8,7 @@ const MESSAGE_VALIDATORS = {
   Handshake: vHandshake,
   Action: vAction,
   FeedOpen: vFeedOpen,
-  FeedClose: vFeedClose
+  FeedClose: vFeedClose,
 };
 
 /**
@@ -19,7 +19,7 @@ const MESSAGE_VALIDATORS = {
  */
 export default function validateClientMessage(
   value,
-  checkJsonExpressible = true
+  checkJsonExpressible = true,
 ) {
   // Validate value type
   if (!check.object(value)) {
@@ -35,7 +35,7 @@ export default function validateClientMessage(
   // Strictly speaking, not all sub-validators require checkJsonExpressible
   const err = MESSAGE_VALIDATORS[value.MessageType](
     value,
-    checkJsonExpressible
+    checkJsonExpressible,
   );
   if (err) {
     return `(${value.MessageType} Message) ${err}`;

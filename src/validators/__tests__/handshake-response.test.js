@@ -9,16 +9,16 @@ describe("The handshake-response validator", () => {
     it("should return invalid if missing HandshakeResponse", () => {
       expect(
         vHandshakeResponse({
-          Success: true
-        })
+          Success: true,
+        }),
       ).toBe("MessageType > Missing or not 'HandshakeResponse'.");
     });
 
     it("should return invalid if missing Success", () => {
       expect(
         vHandshakeResponse({
-          MessageType: "HandshakeResponse"
-        })
+          MessageType: "HandshakeResponse",
+        }),
       ).toBe("Success > Missing or not boolean.");
     });
 
@@ -26,8 +26,8 @@ describe("The handshake-response validator", () => {
       expect(
         vHandshakeResponse({
           MessageType: "INVALID",
-          Success: true
-        })
+          Success: true,
+        }),
       ).toBe("MessageType > Missing or not 'HandshakeResponse'.");
     });
 
@@ -35,8 +35,8 @@ describe("The handshake-response validator", () => {
       expect(
         vHandshakeResponse({
           MessageType: "HandshakeResponse",
-          Success: "INVALID"
-        })
+          Success: "INVALID",
+        }),
       ).toBe("Success > Missing or not boolean.");
     });
 
@@ -44,8 +44,8 @@ describe("The handshake-response validator", () => {
       expect(
         vHandshakeResponse({
           MessageType: "HandshakeResponse",
-          Success: true
-        })
+          Success: true,
+        }),
       ).toBe("(Success) Missing or extraneous property.");
     });
 
@@ -54,8 +54,8 @@ describe("The handshake-response validator", () => {
         vHandshakeResponse({
           MessageType: "HandshakeResponse",
           Success: false,
-          Extraneous: "INVALID"
-        })
+          Extraneous: "INVALID",
+        }),
       ).toBe("(Failure) Missing or extraneous property.");
     });
   });
@@ -66,8 +66,8 @@ describe("The handshake-response validator", () => {
         vHandshakeResponse({
           MessageType: "HandshakeResponse",
           Success: true,
-          Version: "0.1"
-        })
+          Version: "0.1",
+        }),
       ).toBe("");
     });
 
@@ -75,8 +75,8 @@ describe("The handshake-response validator", () => {
       expect(
         vHandshakeResponse({
           MessageType: "HandshakeResponse",
-          Success: false
-        })
+          Success: false,
+        }),
       ).toBe("");
     });
   });

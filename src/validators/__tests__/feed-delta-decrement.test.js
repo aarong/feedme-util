@@ -10,8 +10,8 @@ describe("The feed-delta-decrement validator", () => {
       expect(
         vFeedDeltaDecrement({
           Path: [],
-          Value: 1
-        })
+          Value: 1,
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -19,8 +19,8 @@ describe("The feed-delta-decrement validator", () => {
       expect(
         vFeedDeltaDecrement({
           Operation: "Decrement",
-          Value: 1
-        })
+          Value: 1,
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -28,8 +28,8 @@ describe("The feed-delta-decrement validator", () => {
       expect(
         vFeedDeltaDecrement({
           Operation: "Decrement",
-          Path: []
-        })
+          Path: [],
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -39,8 +39,8 @@ describe("The feed-delta-decrement validator", () => {
           Operation: "Decrement",
           Path: [],
           Value: 1,
-          Extraneous: "INVALID"
-        })
+          Extraneous: "INVALID",
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -49,8 +49,8 @@ describe("The feed-delta-decrement validator", () => {
         vFeedDeltaDecrement({
           Operation: "INVALID",
           Path: [],
-          Value: 1
-        })
+          Value: 1,
+        }),
       ).toBe("Operation > Not 'Decrement'.");
     });
 
@@ -59,8 +59,8 @@ describe("The feed-delta-decrement validator", () => {
         vFeedDeltaDecrement({
           Operation: "Decrement",
           Path: "INVALID",
-          Value: 1
-        })
+          Value: 1,
+        }),
       ).toBe("Path > Not an array.");
     });
 
@@ -69,8 +69,8 @@ describe("The feed-delta-decrement validator", () => {
         vFeedDeltaDecrement({
           Operation: "Decrement",
           Path: [],
-          Value: "INVALID"
-        })
+          Value: "INVALID",
+        }),
       ).toBe("Value > Not a number.");
     });
   });
@@ -81,8 +81,8 @@ describe("The feed-delta-decrement validator", () => {
         vFeedDeltaDecrement({
           Operation: "Decrement",
           Path: [],
-          Value: 1
-        })
+          Value: 1,
+        }),
       ).toBe("");
     });
   });

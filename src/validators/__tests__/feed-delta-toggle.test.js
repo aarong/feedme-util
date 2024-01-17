@@ -9,16 +9,16 @@ describe("The feed-delta-toggle validator", () => {
     it("should return invalid if missing Operation", () => {
       expect(
         vFeedDeltaToggle({
-          Path: []
-        })
+          Path: [],
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
     it("should return invalid if missing Path", () => {
       expect(
         vFeedDeltaToggle({
-          Operation: "Toggle"
-        })
+          Operation: "Toggle",
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -27,8 +27,8 @@ describe("The feed-delta-toggle validator", () => {
         vFeedDeltaToggle({
           Operation: "Toggle",
           Path: [],
-          Extraneous: "INVALID"
-        })
+          Extraneous: "INVALID",
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -36,8 +36,8 @@ describe("The feed-delta-toggle validator", () => {
       expect(
         vFeedDeltaToggle({
           Operation: "INVALID",
-          Path: []
-        })
+          Path: [],
+        }),
       ).toBe("Operation > Not 'Toggle'.");
     });
 
@@ -45,8 +45,8 @@ describe("The feed-delta-toggle validator", () => {
       expect(
         vFeedDeltaToggle({
           Operation: "Toggle",
-          Path: "INVALID"
-        })
+          Path: "INVALID",
+        }),
       ).toBe("Path > Not an array.");
     });
   });
@@ -56,8 +56,8 @@ describe("The feed-delta-toggle validator", () => {
       expect(
         vFeedDeltaToggle({
           Operation: "Toggle",
-          Path: []
-        })
+          Path: [],
+        }),
       ).toBe("");
     });
   });

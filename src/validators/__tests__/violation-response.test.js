@@ -9,16 +9,16 @@ describe("The violation-response validator", () => {
     it("should return invalid if missing MessageType", () => {
       expect(
         vViolationResponse({
-          Diagnostics: {}
-        })
+          Diagnostics: {},
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
     it("should return invalid if missing Diagnostics", () => {
       expect(
         vViolationResponse({
-          MessageType: "ViolationResponse"
-        })
+          MessageType: "ViolationResponse",
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -27,8 +27,8 @@ describe("The violation-response validator", () => {
         vViolationResponse({
           MessageType: "ViolationResponse",
           Diagnostics: {},
-          Extraneous: "INVALID"
-        })
+          Extraneous: "INVALID",
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -36,8 +36,8 @@ describe("The violation-response validator", () => {
       expect(
         vViolationResponse({
           MessageType: "INVALID",
-          Diagnostics: {}
-        })
+          Diagnostics: {},
+        }),
       ).toBe("MessageType > Not 'ViolationResponse'.");
     });
 
@@ -45,8 +45,8 @@ describe("The violation-response validator", () => {
       expect(
         vViolationResponse({
           MessageType: "ViolationResponse",
-          Diagnostics: "INVALID"
-        })
+          Diagnostics: "INVALID",
+        }),
       ).toBe("Diagnostics > Not an object.");
     });
 
@@ -54,8 +54,8 @@ describe("The violation-response validator", () => {
       expect(
         vViolationResponse({
           MessageType: "ViolationResponse",
-          Diagnostics: { Something: undefined }
-        })
+          Diagnostics: { Something: undefined },
+        }),
       ).toBe("Diagnostics > Not JSON-expressible.");
     });
 
@@ -64,10 +64,10 @@ describe("The violation-response validator", () => {
         vViolationResponse(
           {
             MessageType: "ViolationResponse",
-            Diagnostics: { Something: undefined }
+            Diagnostics: { Something: undefined },
           },
-          true
-        )
+          true,
+        ),
       ).toBe("Diagnostics > Not JSON-expressible.");
     });
   });
@@ -77,8 +77,8 @@ describe("The violation-response validator", () => {
       expect(
         vViolationResponse({
           MessageType: "ViolationResponse",
-          Diagnostics: {}
-        })
+          Diagnostics: {},
+        }),
       ).toBe("");
     });
 
@@ -87,10 +87,10 @@ describe("The violation-response validator", () => {
         vViolationResponse(
           {
             MessageType: "ViolationResponse",
-            Diagnostics: {}
+            Diagnostics: {},
           },
-          true
-        )
+          true,
+        ),
       ).toBe("");
     });
 
@@ -99,10 +99,10 @@ describe("The violation-response validator", () => {
         vViolationResponse(
           {
             MessageType: "ViolationResponse",
-            Diagnostics: {}
+            Diagnostics: {},
           },
-          false
-        )
+          false,
+        ),
       ).toBe("");
     });
 
@@ -111,10 +111,10 @@ describe("The violation-response validator", () => {
         vViolationResponse(
           {
             MessageType: "ViolationResponse",
-            Diagnostics: { Something: undefined }
+            Diagnostics: { Something: undefined },
           },
-          false
-        )
+          false,
+        ),
       ).toBe("");
     });
   });

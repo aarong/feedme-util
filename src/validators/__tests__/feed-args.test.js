@@ -8,13 +8,13 @@ describe("The feed-args validator", () => {
 
     it("should return invalid if the sole argument is invalid", () => {
       expect(vFeedArgs({ Arg: 123 })).toBe(
-        "One or more properties is not a string."
+        "One or more properties is not a string.",
       );
     });
 
     it("should return invalid if one of multiple arguments is invalid", () => {
       expect(vFeedArgs({ Arg1: "OK", Arg2: 123 })).toBe(
-        "One or more properties is not a string."
+        "One or more properties is not a string.",
       );
     });
   });

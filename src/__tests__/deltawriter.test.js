@@ -6,13 +6,13 @@ describe("The deltaWriter._checkPathElement() function", () => {
       expect(deltaWriter._checkPathElement([], "Child")).toEqual({
         valid: false,
         reason:
-          "Path references an object property but feed data node is not an object."
+          "Path references an object property but feed data node is not an object.",
       });
     });
 
     it("should succeed if feedDataNode is an object", () => {
       expect(deltaWriter._checkPathElement({}, "Child")).toEqual({
-        valid: true
+        valid: true,
       });
     });
   });
@@ -22,7 +22,7 @@ describe("The deltaWriter._checkPathElement() function", () => {
       expect(deltaWriter._checkPathElement({}, 0)).toEqual({
         valid: false,
         reason:
-          "Path references an array element but feed data node is not an array."
+          "Path references an array element but feed data node is not an array.",
       });
     });
 
@@ -38,20 +38,20 @@ describe("The deltaWriter._checkChildExists() function", () => {
       expect(deltaWriter._checkChildExists([], "Child")).toEqual({
         valid: false,
         reason:
-          "Path references an object property but feed data node is not an object."
+          "Path references an object property but feed data node is not an object.",
       });
     });
 
     it("should return invalid if feedDataNode is an object and does not contain the specified property", () => {
       expect(deltaWriter._checkChildExists({}, "Child")).toEqual({
         valid: false,
-        reason: "Path references a non-existent object property."
+        reason: "Path references a non-existent object property.",
       });
     });
 
     it("should succeed if feedDataNode is an object and contains the specified property", () => {
       expect(deltaWriter._checkChildExists({ Child: true }, "Child")).toEqual({
-        valid: true
+        valid: true,
       });
     });
   });
@@ -61,14 +61,14 @@ describe("The deltaWriter._checkChildExists() function", () => {
       expect(deltaWriter._checkChildExists({}, 0)).toEqual({
         valid: false,
         reason:
-          "Path references an array element but feed data node is not an array."
+          "Path references an array element but feed data node is not an array.",
       });
     });
 
     it("should return invalid if feedDataNode is an array and does not contain the specified element", () => {
       expect(deltaWriter._checkChildExists([], 0)).toEqual({
         valid: false,
-        reason: "Path references a non-existent array element."
+        reason: "Path references a non-existent array element.",
       });
     });
 
@@ -83,37 +83,37 @@ describe("The deltaWriter._getNode() function", () => {
     it("should fail if path references non-existent object property - root - empty", () => {
       expect(deltaWriter._getNode({}, ["Missing"])).toEqual({
         valid: false,
-        reason: "Path references a non-existent object property."
+        reason: "Path references a non-existent object property.",
       });
     });
 
     it("should fail if path references non-existent object property - root - populated", () => {
       expect(deltaWriter._getNode({ Present: true }, ["Missing"])).toEqual({
         valid: false,
-        reason: "Path references a non-existent object property."
+        reason: "Path references a non-existent object property.",
       });
     });
 
     it("should fail if path references non-existent object property - within object - empty", () => {
       expect(deltaWriter._getNode({ Prop: {} }, ["Prop", "Missing"])).toEqual({
         valid: false,
-        reason: "Path references a non-existent object property."
+        reason: "Path references a non-existent object property.",
       });
     });
 
     it("should fail if path references non-existent object property - within object - populated", () => {
       expect(
-        deltaWriter._getNode({ Prop: { Present: true } }, ["Prop", "Missing"])
+        deltaWriter._getNode({ Prop: { Present: true } }, ["Prop", "Missing"]),
       ).toEqual({
         valid: false,
-        reason: "Path references a non-existent object property."
+        reason: "Path references a non-existent object property.",
       });
     });
 
     it("should fail if path references non-existent object property - within array - empty", () => {
       expect(deltaWriter._getNode([{}], [0, "Missing"])).toEqual({
         valid: false,
-        reason: "Path references a non-existent object property."
+        reason: "Path references a non-existent object property.",
       });
     });
 
@@ -121,46 +121,46 @@ describe("The deltaWriter._getNode() function", () => {
       expect(deltaWriter._getNode([{ Present: true }], [0, "Missing"])).toEqual(
         {
           valid: false,
-          reason: "Path references a non-existent object property."
-        }
+          reason: "Path references a non-existent object property.",
+        },
       );
     });
 
     it("should fail if path references non-existent array element - empty", () => {
       expect(deltaWriter._getNode({ Arr: [] }, ["Arr", 0])).toEqual({
         valid: false,
-        reason: "Path references a non-existent array element."
+        reason: "Path references a non-existent array element.",
       });
     });
 
     it("should fail if path references non-existent array element - populated", () => {
       expect(deltaWriter._getNode({ Arr: [true] }, ["Arr", 1])).toEqual({
         valid: false,
-        reason: "Path references a non-existent array element."
+        reason: "Path references a non-existent array element.",
       });
     });
 
     it("should fail if path references non-existent array element - within array - empty", () => {
       expect(deltaWriter._getNode({ Arr: [[]] }, ["Arr", 0, 0])).toEqual({
         valid: false,
-        reason: "Path references a non-existent array element."
+        reason: "Path references a non-existent array element.",
       });
     });
 
     it("should fail if path references non-existent array element - within array - populated", () => {
       expect(deltaWriter._getNode({ Arr: [[]] }, ["Arr", 0, 0])).toEqual({
         valid: false,
-        reason: "Path references a non-existent array element."
+        reason: "Path references a non-existent array element.",
       });
     });
 
     it("should fail if path references property of string", () => {
       expect(
-        deltaWriter._getNode({ Prop: "STRING" }, ["Prop", "Child"])
+        deltaWriter._getNode({ Prop: "STRING" }, ["Prop", "Child"]),
       ).toEqual({
         valid: false,
         reason:
-          "Path references an object property but feed data node is not an object."
+          "Path references an object property but feed data node is not an object.",
       });
     });
 
@@ -168,7 +168,7 @@ describe("The deltaWriter._getNode() function", () => {
       expect(deltaWriter._getNode({ Prop: 123 }, ["Prop", "Child"])).toEqual({
         valid: false,
         reason:
-          "Path references an object property but feed data node is not an object."
+          "Path references an object property but feed data node is not an object.",
       });
     });
 
@@ -176,7 +176,7 @@ describe("The deltaWriter._getNode() function", () => {
       expect(deltaWriter._getNode({ Prop: false }, ["Prop", "Child"])).toEqual({
         valid: false,
         reason:
-          "Path references an object property but feed data node is not an object."
+          "Path references an object property but feed data node is not an object.",
       });
     });
 
@@ -184,7 +184,7 @@ describe("The deltaWriter._getNode() function", () => {
       expect(deltaWriter._getNode({ Prop: null }, ["Prop", "Child"])).toEqual({
         valid: false,
         reason:
-          "Path references an object property but feed data node is not an object."
+          "Path references an object property but feed data node is not an object.",
       });
     });
 
@@ -192,7 +192,7 @@ describe("The deltaWriter._getNode() function", () => {
       expect(deltaWriter._getNode({ Prop: [] }, ["Prop", "Child"])).toEqual({
         valid: false,
         reason:
-          "Path references an object property but feed data node is not an object."
+          "Path references an object property but feed data node is not an object.",
       });
     });
 
@@ -200,7 +200,7 @@ describe("The deltaWriter._getNode() function", () => {
       expect(deltaWriter._getNode({ Prop: "STRING" }, ["Prop", 0])).toEqual({
         valid: false,
         reason:
-          "Path references an array element but feed data node is not an array."
+          "Path references an array element but feed data node is not an array.",
       });
     });
 
@@ -208,7 +208,7 @@ describe("The deltaWriter._getNode() function", () => {
       expect(deltaWriter._getNode({ Prop: 123 }, ["Prop", 0])).toEqual({
         valid: false,
         reason:
-          "Path references an array element but feed data node is not an array."
+          "Path references an array element but feed data node is not an array.",
       });
     });
 
@@ -216,7 +216,7 @@ describe("The deltaWriter._getNode() function", () => {
       expect(deltaWriter._getNode({ Prop: false }, ["Prop", 0])).toEqual({
         valid: false,
         reason:
-          "Path references an array element but feed data node is not an array."
+          "Path references an array element but feed data node is not an array.",
       });
     });
 
@@ -224,7 +224,7 @@ describe("The deltaWriter._getNode() function", () => {
       expect(deltaWriter._getNode({ Prop: null }, ["Prop", 0])).toEqual({
         valid: false,
         reason:
-          "Path references an array element but feed data node is not an array."
+          "Path references an array element but feed data node is not an array.",
       });
     });
 
@@ -232,7 +232,7 @@ describe("The deltaWriter._getNode() function", () => {
       expect(deltaWriter._getNode({}, [0])).toEqual({
         valid: false,
         reason:
-          "Path references an array element but feed data node is not an array."
+          "Path references an array element but feed data node is not an array.",
       });
     });
 
@@ -240,7 +240,7 @@ describe("The deltaWriter._getNode() function", () => {
       expect(deltaWriter._getNode({ Prop: {} }, ["Prop", 0])).toEqual({
         valid: false,
         reason:
-          "Path references an array element but feed data node is not an array."
+          "Path references an array element but feed data node is not an array.",
       });
     });
   });
@@ -253,133 +253,133 @@ describe("The deltaWriter._getNode() function", () => {
           Number: 1,
           Boolean: true,
           Null: null,
-          Array: [true]
-        }
+          Array: [true],
+        },
       },
-      Array: [["STRING", 1, true, null, {}]]
+      Array: [["STRING", 1, true, null, {}]],
     };
 
     it("should return correctly if path references root", () => {
       expect(deltaWriter._getNode(feedData, [])).toEqual({
         valid: true,
-        node: feedData
+        node: feedData,
       });
     });
 
     it("should return correctly if path references root > child object", () => {
       expect(deltaWriter._getNode(feedData, ["Child"])).toEqual({
         valid: true,
-        node: feedData.Child
+        node: feedData.Child,
       });
     });
 
     it("should return correctly if path references root > child object > child object", () => {
       expect(deltaWriter._getNode(feedData, ["Child", "Grandchild"])).toEqual({
         valid: true,
-        node: feedData.Child.Grandchild
+        node: feedData.Child.Grandchild,
       });
     });
 
     it("should return correctly if path references root > child object > child object > string", () => {
       expect(
-        deltaWriter._getNode(feedData, ["Child", "Grandchild", "String"])
+        deltaWriter._getNode(feedData, ["Child", "Grandchild", "String"]),
       ).toEqual({
         valid: true,
-        node: "STRING"
+        node: "STRING",
       });
     });
 
     it("should return correctly if path references root > child object > child object > number", () => {
       expect(
-        deltaWriter._getNode(feedData, ["Child", "Grandchild", "Number"])
+        deltaWriter._getNode(feedData, ["Child", "Grandchild", "Number"]),
       ).toEqual({
         valid: true,
-        node: 1
+        node: 1,
       });
     });
 
     it("should return correctly if path references root > child object > child object > boolean", () => {
       expect(
-        deltaWriter._getNode(feedData, ["Child", "Grandchild", "Boolean"])
+        deltaWriter._getNode(feedData, ["Child", "Grandchild", "Boolean"]),
       ).toEqual({
         valid: true,
-        node: true
+        node: true,
       });
     });
 
     it("should return correctly if path references root > child object > child object > null", () => {
       expect(
-        deltaWriter._getNode(feedData, ["Child", "Grandchild", "Null"])
+        deltaWriter._getNode(feedData, ["Child", "Grandchild", "Null"]),
       ).toEqual({
         valid: true,
-        node: null
+        node: null,
       });
     });
 
     it("should return correctly if path references root > child object > child object > array", () => {
       expect(
-        deltaWriter._getNode(feedData, ["Child", "Grandchild", "Array"])
+        deltaWriter._getNode(feedData, ["Child", "Grandchild", "Array"]),
       ).toEqual({
         valid: true,
-        node: feedData.Child.Grandchild.Array
+        node: feedData.Child.Grandchild.Array,
       });
     });
 
     it("should return correctly if path references root > child object > child object > array > element", () => {
       expect(
-        deltaWriter._getNode(feedData, ["Child", "Grandchild", "Array", 0])
+        deltaWriter._getNode(feedData, ["Child", "Grandchild", "Array", 0]),
       ).toEqual({
         valid: true,
-        node: true
+        node: true,
       });
     });
 
     it("should return correctly if path references root > child array", () => {
       expect(deltaWriter._getNode(feedData, ["Array"])).toEqual({
         valid: true,
-        node: feedData.Array
+        node: feedData.Array,
       });
     });
 
     it("should return correctly if path references root > child array > array element", () => {
       expect(deltaWriter._getNode(feedData, ["Array", 0])).toEqual({
         valid: true,
-        node: feedData.Array[0]
+        node: feedData.Array[0],
       });
     });
 
     it("should return correctly if path references root > child array > array element > string", () => {
       expect(deltaWriter._getNode(feedData, ["Array", 0, 0])).toEqual({
         valid: true,
-        node: "STRING"
+        node: "STRING",
       });
     });
 
     it("should return correctly if path references root > child array > array element > number", () => {
       expect(deltaWriter._getNode(feedData, ["Array", 0, 1])).toEqual({
         valid: true,
-        node: 1
+        node: 1,
       });
     });
 
     it("should return correctly if path references root > child array > array element > boolean", () => {
       expect(deltaWriter._getNode(feedData, ["Array", 0, 2])).toEqual({
         valid: true,
-        node: true
+        node: true,
       });
     });
 
     it("should return correctly if path references root > child array > array element > null", () => {
       expect(deltaWriter._getNode(feedData, ["Array", 0, 3])).toEqual({
         valid: true,
-        node: null
+        node: null,
       });
     });
 
     it("should return correctly if path references root > child array > array element > object", () => {
       expect(deltaWriter._getNode(feedData, ["Array", 0, 4])).toEqual({
         valid: true,
-        node: feedData.Array[0][4]
+        node: feedData.Array[0][4],
       });
     });
   });
@@ -390,63 +390,63 @@ describe("The deltaWriter._getParentNode() function", () => {
     it("should return invalid if path references root", () => {
       expect(deltaWriter._getParentNode({}, [])).toEqual({
         valid: false,
-        reason: "Path must not reference feed data root."
+        reason: "Path must not reference feed data root.",
       });
     });
 
     it("should return invalid if the parent node does not exist", () => {
       expect(deltaWriter._getParentNode({}, ["Obj1", "Obj2"])).toEqual({
         valid: false,
-        reason: "Path references a non-existent object property."
+        reason: "Path references a non-existent object property.",
       });
     });
 
     it("should return invalid if the parent is not an object or array", () => {
       expect(
-        deltaWriter._getParentNode({ Parent: "PARENT" }, ["Parent", "Child"])
+        deltaWriter._getParentNode({ Parent: "PARENT" }, ["Parent", "Child"]),
       ).toEqual({
         valid: false,
         reason:
-          "Path references an object property but feed data node is not an object."
+          "Path references an object property but feed data node is not an object.",
       });
     });
 
     describe("if the child is required to exist (default)", () => {
       it("should return invalid if the parent is an object and the path endpoint is an array element", () => {
         expect(
-          deltaWriter._getParentNode({ Parent: {} }, ["Parent", 0])
+          deltaWriter._getParentNode({ Parent: {} }, ["Parent", 0]),
         ).toEqual({
           valid: false,
           reason:
-            "Path references an array element but feed data node is not an array."
+            "Path references an array element but feed data node is not an array.",
         });
       });
 
       it("should return invalid if the parent is an array and the path endpoint is an object property", () => {
         expect(
-          deltaWriter._getParentNode({ Parent: [] }, ["Parent", "Child"])
+          deltaWriter._getParentNode({ Parent: [] }, ["Parent", "Child"]),
         ).toEqual({
           valid: false,
           reason:
-            "Path references an object property but feed data node is not an object."
+            "Path references an object property but feed data node is not an object.",
         });
       });
 
       it("should return invalid if child required to exist and doesn't - object", () => {
         expect(
-          deltaWriter._getParentNode({ Parent: {} }, ["Parent", "Child"])
+          deltaWriter._getParentNode({ Parent: {} }, ["Parent", "Child"]),
         ).toEqual({
           valid: false,
-          reason: "Path references a non-existent object property."
+          reason: "Path references a non-existent object property.",
         });
       });
 
       it("should return invalid if child required to exist and doesn't - object", () => {
         expect(
-          deltaWriter._getParentNode({ Parent: [] }, ["Parent", 0])
+          deltaWriter._getParentNode({ Parent: [] }, ["Parent", 0]),
         ).toEqual({
           valid: false,
-          reason: "Path references a non-existent array element."
+          reason: "Path references a non-existent array element.",
         });
       });
     });
@@ -454,39 +454,39 @@ describe("The deltaWriter._getParentNode() function", () => {
     describe("if the child is required to exist (explicit)", () => {
       it("should return invalid if the parent is an object and the path endpoint is an array element", () => {
         expect(
-          deltaWriter._getParentNode({ Parent: {} }, ["Parent", 0], true)
+          deltaWriter._getParentNode({ Parent: {} }, ["Parent", 0], true),
         ).toEqual({
           valid: false,
           reason:
-            "Path references an array element but feed data node is not an array."
+            "Path references an array element but feed data node is not an array.",
         });
       });
 
       it("should return invalid if the parent is an array and the path endpoint is an object property", () => {
         expect(
-          deltaWriter._getParentNode({ Parent: [] }, ["Parent", "Child"], true)
+          deltaWriter._getParentNode({ Parent: [] }, ["Parent", "Child"], true),
         ).toEqual({
           valid: false,
           reason:
-            "Path references an object property but feed data node is not an object."
+            "Path references an object property but feed data node is not an object.",
         });
       });
 
       it("should return invalid if child required to exist and doesn't - object", () => {
         expect(
-          deltaWriter._getParentNode({ Parent: {} }, ["Parent", "Child"], true)
+          deltaWriter._getParentNode({ Parent: {} }, ["Parent", "Child"], true),
         ).toEqual({
           valid: false,
-          reason: "Path references a non-existent object property."
+          reason: "Path references a non-existent object property.",
         });
       });
 
       it("should return invalid if child required to exist and doesn't - object", () => {
         expect(
-          deltaWriter._getParentNode({ Parent: [] }, ["Parent", 0], true)
+          deltaWriter._getParentNode({ Parent: [] }, ["Parent", 0], true),
         ).toEqual({
           valid: false,
-          reason: "Path references a non-existent array element."
+          reason: "Path references a non-existent array element.",
         });
       });
     });
@@ -494,21 +494,25 @@ describe("The deltaWriter._getParentNode() function", () => {
     describe("if the child is not required to exist (explicit)", () => {
       it("should return invalid if the parent is an object and the path endpoint is an array element", () => {
         expect(
-          deltaWriter._getParentNode({ Parent: {} }, ["Parent", 0], false)
+          deltaWriter._getParentNode({ Parent: {} }, ["Parent", 0], false),
         ).toEqual({
           valid: false,
           reason:
-            "Path references an array element but feed data node is not an array."
+            "Path references an array element but feed data node is not an array.",
         });
       });
 
       it("should return invalid if the parent is an array and the path endpoint is an object property", () => {
         expect(
-          deltaWriter._getParentNode({ Parent: [] }, ["Parent", "Child"], false)
+          deltaWriter._getParentNode(
+            { Parent: [] },
+            ["Parent", "Child"],
+            false,
+          ),
         ).toEqual({
           valid: false,
           reason:
-            "Path references an object property but feed data node is not an object."
+            "Path references an object property but feed data node is not an object.",
         });
       });
     });
@@ -519,14 +523,14 @@ describe("The deltaWriter._getParentNode() function", () => {
       expect(
         deltaWriter._getParentNode(
           {
-            Parent: { Child: "CHILD" }
+            Parent: { Child: "CHILD" },
           },
-          ["Parent", "Child"]
-        )
+          ["Parent", "Child"],
+        ),
       ).toEqual({
         valid: true,
         parentNode: { Child: "CHILD" },
-        childPathElement: "Child"
+        childPathElement: "Child",
       });
     });
 
@@ -534,14 +538,14 @@ describe("The deltaWriter._getParentNode() function", () => {
       expect(
         deltaWriter._getParentNode(
           {
-            Parent: [true]
+            Parent: [true],
           },
-          ["Parent", 0]
-        )
+          ["Parent", 0],
+        ),
       ).toEqual({
         valid: true,
         parentNode: [true],
-        childPathElement: 0
+        childPathElement: 0,
       });
     });
 
@@ -549,15 +553,15 @@ describe("The deltaWriter._getParentNode() function", () => {
       expect(
         deltaWriter._getParentNode(
           {
-            Parent: { Child: "CHILD" }
+            Parent: { Child: "CHILD" },
           },
           ["Parent", "Child"],
-          true
-        )
+          true,
+        ),
       ).toEqual({
         valid: true,
         parentNode: { Child: "CHILD" },
-        childPathElement: "Child"
+        childPathElement: "Child",
       });
     });
 
@@ -565,15 +569,15 @@ describe("The deltaWriter._getParentNode() function", () => {
       expect(
         deltaWriter._getParentNode(
           {
-            Parent: [true]
+            Parent: [true],
           },
           ["Parent", 0],
-          true
-        )
+          true,
+        ),
       ).toEqual({
         valid: true,
         parentNode: [true],
-        childPathElement: 0
+        childPathElement: 0,
       });
     });
 
@@ -581,15 +585,15 @@ describe("The deltaWriter._getParentNode() function", () => {
       expect(
         deltaWriter._getParentNode(
           {
-            Parent: { Child: "CHILD" }
+            Parent: { Child: "CHILD" },
           },
           ["Parent", "Child"],
-          false
-        )
+          false,
+        ),
       ).toEqual({
         valid: true,
         parentNode: { Child: "CHILD" },
-        childPathElement: "Child"
+        childPathElement: "Child",
       });
     });
 
@@ -597,15 +601,15 @@ describe("The deltaWriter._getParentNode() function", () => {
       expect(
         deltaWriter._getParentNode(
           {
-            Parent: [true]
+            Parent: [true],
           },
           ["Parent", 0],
-          false
-        )
+          false,
+        ),
       ).toEqual({
         valid: true,
         parentNode: [true],
-        childPathElement: 0
+        childPathElement: 0,
       });
     });
 
@@ -613,15 +617,15 @@ describe("The deltaWriter._getParentNode() function", () => {
       expect(
         deltaWriter._getParentNode(
           {
-            Parent: {}
+            Parent: {},
           },
           ["Parent", "Child"],
-          false
-        )
+          false,
+        ),
       ).toEqual({
         valid: true,
         parentNode: {},
-        childPathElement: "Child"
+        childPathElement: "Child",
       });
     });
 
@@ -629,15 +633,15 @@ describe("The deltaWriter._getParentNode() function", () => {
       expect(
         deltaWriter._getParentNode(
           {
-            Parent: []
+            Parent: [],
           },
           ["Parent", 0],
-          false
-        )
+          false,
+        ),
       ).toEqual({
         valid: true,
         parentNode: [],
-        childPathElement: 0
+        childPathElement: 0,
       });
     });
   });
@@ -660,20 +664,20 @@ describe("The deltaWriter.apply() function", () => {
     describe("path references root", () => {
       it("should return invalid if value is not an object", () => {
         expect(
-          deltaWriter.apply({}, { Operation: "Set", Path: [], Value: 1 })
+          deltaWriter.apply({}, { Operation: "Set", Path: [], Value: 1 }),
         ).toEqual({
           valid: false,
-          reason: "Feed data root may only be set to an object."
+          reason: "Feed data root may only be set to an object.",
         });
       });
 
       it("should return delta value reference value is an object", () => {
         const val = { some: "val" };
         expect(
-          deltaWriter.apply({}, { Operation: "Set", Path: [], Value: val })
+          deltaWriter.apply({}, { Operation: "Set", Path: [], Value: val }),
         ).toEqual({
           valid: true,
-          feedData: val
+          feedData: val,
         });
       });
     });
@@ -683,11 +687,11 @@ describe("The deltaWriter.apply() function", () => {
         expect(
           deltaWriter.apply(
             {},
-            { Operation: "Set", Path: ["Parent", "Child"], Value: "VALUE" }
-          )
+            { Operation: "Set", Path: ["Parent", "Child"], Value: "VALUE" },
+          ),
         ).toEqual({
           valid: false,
-          reason: "Path references a non-existent object property."
+          reason: "Path references a non-existent object property.",
         });
       });
 
@@ -695,12 +699,12 @@ describe("The deltaWriter.apply() function", () => {
         expect(
           deltaWriter.apply(
             { Parent: false },
-            { Operation: "Set", Path: ["Parent", "Child"], Value: "VALUE" }
-          )
+            { Operation: "Set", Path: ["Parent", "Child"], Value: "VALUE" },
+          ),
         ).toEqual({
           valid: false,
           reason:
-            "Path references an object property but feed data node is not an object."
+            "Path references an object property but feed data node is not an object.",
         });
       });
 
@@ -709,8 +713,8 @@ describe("The deltaWriter.apply() function", () => {
           expect(
             deltaWriter.apply(
               { Parent: {} },
-              { Operation: "Set", Path: ["Parent", "Child"], Value: "VALUE" }
-            )
+              { Operation: "Set", Path: ["Parent", "Child"], Value: "VALUE" },
+            ),
           ).toEqual({ valid: true, feedData: { Parent: { Child: "VALUE" } } });
         });
 
@@ -718,11 +722,11 @@ describe("The deltaWriter.apply() function", () => {
           expect(
             deltaWriter.apply(
               { Parent: { Existing: true } },
-              { Operation: "Set", Path: ["Parent", "Child"], Value: "VALUE" }
-            )
+              { Operation: "Set", Path: ["Parent", "Child"], Value: "VALUE" },
+            ),
           ).toEqual({
             valid: true,
-            feedData: { Parent: { Child: "VALUE", Existing: true } }
+            feedData: { Parent: { Child: "VALUE", Existing: true } },
           });
         });
 
@@ -730,11 +734,15 @@ describe("The deltaWriter.apply() function", () => {
           expect(
             deltaWriter.apply(
               { Parent: { Existing: true } },
-              { Operation: "Set", Path: ["Parent", "Existing"], Value: "VALUE" }
-            )
+              {
+                Operation: "Set",
+                Path: ["Parent", "Existing"],
+                Value: "VALUE",
+              },
+            ),
           ).toEqual({
             valid: true,
-            feedData: { Parent: { Existing: "VALUE" } }
+            feedData: { Parent: { Existing: "VALUE" } },
           });
         });
       });
@@ -744,11 +752,11 @@ describe("The deltaWriter.apply() function", () => {
           expect(
             deltaWriter.apply(
               { Parent: [] },
-              { Operation: "Set", Path: ["Parent", 1], Value: "VALUE" }
-            )
+              { Operation: "Set", Path: ["Parent", 1], Value: "VALUE" },
+            ),
           ).toEqual({
             valid: false,
-            reason: "Cannot set a non-contiguous element of an array."
+            reason: "Cannot set a non-contiguous element of an array.",
           });
         });
 
@@ -756,11 +764,11 @@ describe("The deltaWriter.apply() function", () => {
           expect(
             deltaWriter.apply(
               { Parent: [1] },
-              { Operation: "Set", Path: ["Parent", 2], Value: "VALUE" }
-            )
+              { Operation: "Set", Path: ["Parent", 2], Value: "VALUE" },
+            ),
           ).toEqual({
             valid: false,
-            reason: "Cannot set a non-contiguous element of an array."
+            reason: "Cannot set a non-contiguous element of an array.",
           });
         });
 
@@ -768,8 +776,8 @@ describe("The deltaWriter.apply() function", () => {
           expect(
             deltaWriter.apply(
               { Parent: [] },
-              { Operation: "Set", Path: ["Parent", 0], Value: "VALUE" }
-            )
+              { Operation: "Set", Path: ["Parent", 0], Value: "VALUE" },
+            ),
           ).toEqual({ valid: true, feedData: { Parent: ["VALUE"] } });
         });
 
@@ -777,8 +785,8 @@ describe("The deltaWriter.apply() function", () => {
           expect(
             deltaWriter.apply(
               { Parent: [0] },
-              { Operation: "Set", Path: ["Parent", 1], Value: "VALUE" }
-            )
+              { Operation: "Set", Path: ["Parent", 1], Value: "VALUE" },
+            ),
           ).toEqual({ valid: true, feedData: { Parent: [0, "VALUE"] } });
         });
 
@@ -786,8 +794,8 @@ describe("The deltaWriter.apply() function", () => {
           expect(
             deltaWriter.apply(
               { Parent: [true] },
-              { Operation: "Set", Path: ["Parent", 0], Value: "VALUE" }
-            )
+              { Operation: "Set", Path: ["Parent", 0], Value: "VALUE" },
+            ),
           ).toEqual({ valid: true, feedData: { Parent: ["VALUE"] } });
         });
       });
@@ -798,7 +806,7 @@ describe("The deltaWriter.apply() function", () => {
     it("should return invalid if path references root", () => {
       expect(deltaWriter.apply({}, { Operation: "Delete", Path: [] })).toEqual({
         valid: false,
-        reason: "Path must not reference feed data root."
+        reason: "Path must not reference feed data root.",
       });
     });
 
@@ -806,11 +814,11 @@ describe("The deltaWriter.apply() function", () => {
       expect(
         deltaWriter.apply(
           {},
-          { Operation: "Delete", Path: ["Parent", "Child"] }
-        )
+          { Operation: "Delete", Path: ["Parent", "Child"] },
+        ),
       ).toEqual({
         valid: false,
-        reason: "Path references a non-existent object property."
+        reason: "Path references a non-existent object property.",
       });
     });
 
@@ -818,22 +826,22 @@ describe("The deltaWriter.apply() function", () => {
       expect(
         deltaWriter.apply(
           { Parent: "INVALID" },
-          { Operation: "Delete", Path: ["Parent", "Child"] }
-        )
+          { Operation: "Delete", Path: ["Parent", "Child"] },
+        ),
       ).toEqual({
         valid: false,
         reason:
-          "Path references an object property but feed data node is not an object."
+          "Path references an object property but feed data node is not an object.",
       });
     });
 
     describe("if parent is an object", () => {
       it("should return invalid if parent is ok but property doesn't exist - parent is root", () => {
         expect(
-          deltaWriter.apply({}, { Operation: "Delete", Path: ["Child"] })
+          deltaWriter.apply({}, { Operation: "Delete", Path: ["Child"] }),
         ).toEqual({
           valid: false,
-          reason: "Path references a non-existent object property."
+          reason: "Path references a non-existent object property.",
         });
       });
 
@@ -841,11 +849,11 @@ describe("The deltaWriter.apply() function", () => {
         expect(
           deltaWriter.apply(
             { Parent: {} },
-            { Operation: "Delete", Path: ["Parent", "Child"] }
-          )
+            { Operation: "Delete", Path: ["Parent", "Child"] },
+          ),
         ).toEqual({
           valid: false,
-          reason: "Path references a non-existent object property."
+          reason: "Path references a non-existent object property.",
         });
       });
 
@@ -853,8 +861,8 @@ describe("The deltaWriter.apply() function", () => {
         expect(
           deltaWriter.apply(
             { Child: true },
-            { Operation: "Delete", Path: ["Child"] }
-          )
+            { Operation: "Delete", Path: ["Child"] },
+          ),
         ).toEqual({ valid: true, feedData: {} });
       });
 
@@ -862,8 +870,8 @@ describe("The deltaWriter.apply() function", () => {
         expect(
           deltaWriter.apply(
             { Parent: { Child: true } },
-            { Operation: "Delete", Path: ["Parent", "Child"] }
-          )
+            { Operation: "Delete", Path: ["Parent", "Child"] },
+          ),
         ).toEqual({ valid: true, feedData: { Parent: {} } });
       });
     });
@@ -873,11 +881,11 @@ describe("The deltaWriter.apply() function", () => {
         expect(
           deltaWriter.apply(
             { Array: [] },
-            { Operation: "Delete", Path: ["Array", 0] }
-          )
+            { Operation: "Delete", Path: ["Array", 0] },
+          ),
         ).toEqual({
           valid: false,
-          reason: "Path references a non-existent array element."
+          reason: "Path references a non-existent array element.",
         });
       });
 
@@ -885,8 +893,8 @@ describe("The deltaWriter.apply() function", () => {
         expect(
           deltaWriter.apply(
             { Array: [1] },
-            { Operation: "Delete", Path: ["Array", 0] }
-          )
+            { Operation: "Delete", Path: ["Array", 0] },
+          ),
         ).toEqual({ valid: true, feedData: { Array: [] } });
       });
 
@@ -894,8 +902,8 @@ describe("The deltaWriter.apply() function", () => {
         expect(
           deltaWriter.apply(
             { Array: [1, 2, 3] },
-            { Operation: "Delete", Path: ["Array", 0] }
-          )
+            { Operation: "Delete", Path: ["Array", 0] },
+          ),
         ).toEqual({ valid: true, feedData: { Array: [2, 3] } });
       });
 
@@ -903,8 +911,8 @@ describe("The deltaWriter.apply() function", () => {
         expect(
           deltaWriter.apply(
             { Array: [1, 2, 3] },
-            { Operation: "Delete", Path: ["Array", 1] }
-          )
+            { Operation: "Delete", Path: ["Array", 1] },
+          ),
         ).toEqual({ valid: true, feedData: { Array: [1, 3] } });
       });
 
@@ -912,8 +920,8 @@ describe("The deltaWriter.apply() function", () => {
         expect(
           deltaWriter.apply(
             { Array: [1, 2, 3] },
-            { Operation: "Delete", Path: ["Array", 2] }
-          )
+            { Operation: "Delete", Path: ["Array", 2] },
+          ),
         ).toEqual({ valid: true, feedData: { Array: [1, 2] } });
       });
     });
@@ -924,11 +932,11 @@ describe("The deltaWriter.apply() function", () => {
       expect(
         deltaWriter.apply(
           {},
-          { Operation: "DeleteValue", Path: ["Foo"], Value: 123 }
-        )
+          { Operation: "DeleteValue", Path: ["Foo"], Value: 123 },
+        ),
       ).toEqual({
         valid: false,
-        reason: "Path references a non-existent object property."
+        reason: "Path references a non-existent object property.",
       });
     });
 
@@ -936,11 +944,11 @@ describe("The deltaWriter.apply() function", () => {
       expect(
         deltaWriter.apply(
           { Foo: 1 },
-          { Operation: "DeleteValue", Path: ["Foo"], Value: 123 }
-        )
+          { Operation: "DeleteValue", Path: ["Foo"], Value: 123 },
+        ),
       ).toEqual({
         valid: false,
-        reason: "Path must refer to an array or an object."
+        reason: "Path must refer to an array or an object.",
       });
     });
 
@@ -950,17 +958,17 @@ describe("The deltaWriter.apply() function", () => {
           deltaWriter.apply(
             {
               key1: { sub: 1 },
-              key2: { sub: 2 }
+              key2: { sub: 2 },
             },
             {
               Operation: "DeleteValue",
               Path: [],
-              Value: { sub: 3 }
-            }
-          )
+              Value: { sub: 3 },
+            },
+          ),
         ).toEqual({
           valid: true,
-          feedData: { key1: { sub: 1 }, key2: { sub: 2 } }
+          feedData: { key1: { sub: 1 }, key2: { sub: 2 } },
         });
       });
 
@@ -969,14 +977,14 @@ describe("The deltaWriter.apply() function", () => {
           deltaWriter.apply(
             {
               key1: { sub: 1 },
-              key2: { sub: 2 }
+              key2: { sub: 2 },
             },
             {
               Operation: "DeleteValue",
               Path: [],
-              Value: { sub: 2 }
-            }
-          )
+              Value: { sub: 2 },
+            },
+          ),
         ).toEqual({ valid: true, feedData: { key1: { sub: 1 } } });
       });
 
@@ -985,14 +993,14 @@ describe("The deltaWriter.apply() function", () => {
           deltaWriter.apply(
             {
               key1: { sub: 1 },
-              key2: { sub: 1 }
+              key2: { sub: 1 },
             },
             {
               Operation: "DeleteValue",
               Path: [],
-              Value: { sub: 1 }
-            }
-          )
+              Value: { sub: 1 },
+            },
+          ),
         ).toEqual({ valid: true, feedData: {} });
       });
     });
@@ -1002,17 +1010,17 @@ describe("The deltaWriter.apply() function", () => {
         expect(
           deltaWriter.apply(
             {
-              Something: { key1: { sub: 1 }, key2: { sub: 2 } }
+              Something: { key1: { sub: 1 }, key2: { sub: 2 } },
             },
             {
               Operation: "DeleteValue",
               Path: ["Something"],
-              Value: { sub: 3 }
-            }
-          )
+              Value: { sub: 3 },
+            },
+          ),
         ).toEqual({
           valid: true,
-          feedData: { Something: { key1: { sub: 1 }, key2: { sub: 2 } } }
+          feedData: { Something: { key1: { sub: 1 }, key2: { sub: 2 } } },
         });
       });
 
@@ -1020,17 +1028,17 @@ describe("The deltaWriter.apply() function", () => {
         expect(
           deltaWriter.apply(
             {
-              Something: { key1: { sub: 1 }, key2: { sub: 2 } }
+              Something: { key1: { sub: 1 }, key2: { sub: 2 } },
             },
             {
               Operation: "DeleteValue",
               Path: ["Something"],
-              Value: { sub: 2 }
-            }
-          )
+              Value: { sub: 2 },
+            },
+          ),
         ).toEqual({
           valid: true,
-          feedData: { Something: { key1: { sub: 1 } } }
+          feedData: { Something: { key1: { sub: 1 } } },
         });
       });
 
@@ -1038,17 +1046,17 @@ describe("The deltaWriter.apply() function", () => {
         expect(
           deltaWriter.apply(
             {
-              Something: { key1: { sub: 1 }, key2: { sub: 1 } }
+              Something: { key1: { sub: 1 }, key2: { sub: 1 } },
             },
             {
               Operation: "DeleteValue",
               Path: ["Something"],
-              Value: { sub: 1 }
-            }
-          )
+              Value: { sub: 1 },
+            },
+          ),
         ).toEqual({
           valid: true,
-          feedData: { Something: {} }
+          feedData: { Something: {} },
         });
       });
     });
@@ -1061,9 +1069,9 @@ describe("The deltaWriter.apply() function", () => {
             {
               Operation: "DeleteValue",
               Path: ["arr"],
-              Value: { sub: 3 }
-            }
-          )
+              Value: { sub: 3 },
+            },
+          ),
         ).toEqual({ valid: true, feedData: { arr: [{ sub: 1 }, { sub: 2 }] } });
       });
 
@@ -1074,9 +1082,9 @@ describe("The deltaWriter.apply() function", () => {
             {
               Operation: "DeleteValue",
               Path: ["arr"],
-              Value: { sub: 1 }
-            }
-          )
+              Value: { sub: 1 },
+            },
+          ),
         ).toEqual({ valid: true, feedData: { arr: [{ sub: 2 }] } });
       });
 
@@ -1087,9 +1095,9 @@ describe("The deltaWriter.apply() function", () => {
             {
               Operation: "DeleteValue",
               Path: ["arr"],
-              Value: { sub: 1 }
-            }
-          )
+              Value: { sub: 1 },
+            },
+          ),
         ).toEqual({ valid: true, feedData: { arr: [] } });
       });
     });
@@ -1100,11 +1108,11 @@ describe("The deltaWriter.apply() function", () => {
       expect(
         deltaWriter.apply(
           {},
-          { Operation: "Prepend", Path: ["foo"], Value: "bar" }
-        )
+          { Operation: "Prepend", Path: ["foo"], Value: "bar" },
+        ),
       ).toEqual({
         valid: false,
-        reason: "Path references a non-existent object property."
+        reason: "Path references a non-existent object property.",
       });
     });
 
@@ -1112,8 +1120,8 @@ describe("The deltaWriter.apply() function", () => {
       expect(
         deltaWriter.apply(
           { foo: 1 },
-          { Operation: "Prepend", Path: ["foo"], Value: "bar" }
-        )
+          { Operation: "Prepend", Path: ["foo"], Value: "bar" },
+        ),
       ).toEqual({ valid: false, reason: "Path must reference a string." });
     });
 
@@ -1124,9 +1132,9 @@ describe("The deltaWriter.apply() function", () => {
           {
             Operation: "Prepend",
             Path: ["myString"],
-            Value: "abc"
-          }
-        )
+            Value: "abc",
+          },
+        ),
       ).toEqual({ valid: true, feedData: { myString: "abcdef" } });
     });
   });
@@ -1136,11 +1144,11 @@ describe("The deltaWriter.apply() function", () => {
       expect(
         deltaWriter.apply(
           {},
-          { Operation: "Append", Path: ["foo"], Value: "bar" }
-        )
+          { Operation: "Append", Path: ["foo"], Value: "bar" },
+        ),
       ).toEqual({
         valid: false,
-        reason: "Path references a non-existent object property."
+        reason: "Path references a non-existent object property.",
       });
     });
 
@@ -1148,8 +1156,8 @@ describe("The deltaWriter.apply() function", () => {
       expect(
         deltaWriter.apply(
           { foo: 1 },
-          { Operation: "Append", Path: ["foo"], Value: "bar" }
-        )
+          { Operation: "Append", Path: ["foo"], Value: "bar" },
+        ),
       ).toEqual({ valid: false, reason: "Path must reference a string." });
     });
 
@@ -1160,9 +1168,9 @@ describe("The deltaWriter.apply() function", () => {
           {
             Operation: "Append",
             Path: ["myString"],
-            Value: "def"
-          }
-        )
+            Value: "def",
+          },
+        ),
       ).toEqual({ valid: true, feedData: { myString: "abcdef" } });
     });
   });
@@ -1172,11 +1180,11 @@ describe("The deltaWriter.apply() function", () => {
       expect(
         deltaWriter.apply(
           {},
-          { Operation: "Increment", Path: ["foo"], Value: 10 }
-        )
+          { Operation: "Increment", Path: ["foo"], Value: 10 },
+        ),
       ).toEqual({
         valid: false,
-        reason: "Path references a non-existent object property."
+        reason: "Path references a non-existent object property.",
       });
     });
 
@@ -1184,8 +1192,8 @@ describe("The deltaWriter.apply() function", () => {
       expect(
         deltaWriter.apply(
           { foo: "abc" },
-          { Operation: "Increment", Path: ["foo"], Value: 1 }
-        )
+          { Operation: "Increment", Path: ["foo"], Value: 1 },
+        ),
       ).toEqual({ valid: false, reason: "Path must reference a number." });
     });
 
@@ -1196,9 +1204,9 @@ describe("The deltaWriter.apply() function", () => {
           {
             Operation: "Increment",
             Path: ["myNumber"],
-            Value: 1
-          }
-        )
+            Value: 1,
+          },
+        ),
       ).toEqual({ valid: true, feedData: { myNumber: 2 } });
     });
   });
@@ -1208,11 +1216,11 @@ describe("The deltaWriter.apply() function", () => {
       expect(
         deltaWriter.apply(
           {},
-          { Operation: "Decrement", Path: ["foo"], Value: 10 }
-        )
+          { Operation: "Decrement", Path: ["foo"], Value: 10 },
+        ),
       ).toEqual({
         valid: false,
-        reason: "Path references a non-existent object property."
+        reason: "Path references a non-existent object property.",
       });
     });
 
@@ -1220,8 +1228,8 @@ describe("The deltaWriter.apply() function", () => {
       expect(
         deltaWriter.apply(
           { foo: "abc" },
-          { Operation: "Decrement", Path: ["foo"], Value: 1 }
-        )
+          { Operation: "Decrement", Path: ["foo"], Value: 1 },
+        ),
       ).toEqual({ valid: false, reason: "Path must reference a number." });
     });
 
@@ -1232,9 +1240,9 @@ describe("The deltaWriter.apply() function", () => {
           {
             Operation: "Decrement",
             Path: ["myNumber"],
-            Value: 1
-          }
-        )
+            Value: 1,
+          },
+        ),
       ).toEqual({ valid: true, feedData: { myNumber: 0 } });
     });
   });
@@ -1242,10 +1250,10 @@ describe("The deltaWriter.apply() function", () => {
   describe("when invoked with a Toggle delta operation", () => {
     it("should return invalid if the path reference does not exist", () => {
       expect(
-        deltaWriter.apply({}, { Operation: "Toggle", Path: ["foo"] })
+        deltaWriter.apply({}, { Operation: "Toggle", Path: ["foo"] }),
       ).toEqual({
         valid: false,
-        reason: "Path references a non-existent object property."
+        reason: "Path references a non-existent object property.",
       });
     });
 
@@ -1253,8 +1261,8 @@ describe("The deltaWriter.apply() function", () => {
       expect(
         deltaWriter.apply(
           { foo: "abc" },
-          { Operation: "Toggle", Path: ["foo"] }
-        )
+          { Operation: "Toggle", Path: ["foo"] },
+        ),
       ).toEqual({ valid: false, reason: "Path must reference a boolean." });
     });
 
@@ -1264,9 +1272,9 @@ describe("The deltaWriter.apply() function", () => {
           { myBool: true },
           {
             Operation: "Toggle",
-            Path: ["myBool"]
-          }
-        )
+            Path: ["myBool"],
+          },
+        ),
       ).toEqual({ valid: true, feedData: { myBool: false } });
     });
   });
@@ -1276,11 +1284,11 @@ describe("The deltaWriter.apply() function", () => {
       expect(
         deltaWriter.apply(
           {},
-          { Operation: "InsertFirst", Path: ["foo"], Value: "abc" }
-        )
+          { Operation: "InsertFirst", Path: ["foo"], Value: "abc" },
+        ),
       ).toEqual({
         valid: false,
-        reason: "Path references a non-existent object property."
+        reason: "Path references a non-existent object property.",
       });
     });
 
@@ -1288,8 +1296,8 @@ describe("The deltaWriter.apply() function", () => {
       expect(
         deltaWriter.apply(
           { foo: "abc" },
-          { Operation: "InsertFirst", Path: ["foo"], Value: 1 }
-        )
+          { Operation: "InsertFirst", Path: ["foo"], Value: 1 },
+        ),
       ).toEqual({ valid: false, reason: "Path must reference an array." });
     });
 
@@ -1300,9 +1308,9 @@ describe("The deltaWriter.apply() function", () => {
           {
             Operation: "InsertFirst",
             Path: ["myArray"],
-            Value: 1
-          }
-        )
+            Value: 1,
+          },
+        ),
       ).toEqual({ valid: true, feedData: { myArray: [1] } });
     });
 
@@ -1313,9 +1321,9 @@ describe("The deltaWriter.apply() function", () => {
           {
             Operation: "InsertFirst",
             Path: ["myArray"],
-            Value: 1
-          }
-        )
+            Value: 1,
+          },
+        ),
       ).toEqual({ valid: true, feedData: { myArray: [1, 2] } });
     });
   });
@@ -1325,11 +1333,11 @@ describe("The deltaWriter.apply() function", () => {
       expect(
         deltaWriter.apply(
           {},
-          { Operation: "InsertLast", Path: ["foo"], Value: "abc" }
-        )
+          { Operation: "InsertLast", Path: ["foo"], Value: "abc" },
+        ),
       ).toEqual({
         valid: false,
-        reason: "Path references a non-existent object property."
+        reason: "Path references a non-existent object property.",
       });
     });
 
@@ -1337,8 +1345,8 @@ describe("The deltaWriter.apply() function", () => {
       expect(
         deltaWriter.apply(
           { foo: "abc" },
-          { Operation: "InsertLast", Path: ["foo"], Value: 1 }
-        )
+          { Operation: "InsertLast", Path: ["foo"], Value: 1 },
+        ),
       ).toEqual({ valid: false, reason: "Path must reference an array." });
     });
 
@@ -1349,9 +1357,9 @@ describe("The deltaWriter.apply() function", () => {
           {
             Operation: "InsertLast",
             Path: ["myArray"],
-            Value: 1
-          }
-        )
+            Value: 1,
+          },
+        ),
       ).toEqual({ valid: true, feedData: { myArray: [1] } });
     });
 
@@ -1362,9 +1370,9 @@ describe("The deltaWriter.apply() function", () => {
           {
             Operation: "InsertLast",
             Path: ["myArray"],
-            Value: 2
-          }
-        )
+            Value: 2,
+          },
+        ),
       ).toEqual({ valid: true, feedData: { myArray: [1, 2] } });
     });
   });
@@ -1374,11 +1382,11 @@ describe("The deltaWriter.apply() function", () => {
       expect(
         deltaWriter.apply(
           {},
-          { Operation: "InsertBefore", Path: ["foo", 0], Value: "abc" }
-        )
+          { Operation: "InsertBefore", Path: ["foo", 0], Value: "abc" },
+        ),
       ).toEqual({
         valid: false,
-        reason: "Path references a non-existent object property."
+        reason: "Path references a non-existent object property.",
       });
     });
 
@@ -1386,12 +1394,12 @@ describe("The deltaWriter.apply() function", () => {
       expect(
         deltaWriter.apply(
           { foo: {} },
-          { Operation: "InsertBefore", Path: ["foo", 0], Value: "abc" }
-        )
+          { Operation: "InsertBefore", Path: ["foo", 0], Value: "abc" },
+        ),
       ).toEqual({
         valid: false,
         reason:
-          "Path references an array element but feed data node is not an array."
+          "Path references an array element but feed data node is not an array.",
       });
     });
 
@@ -1399,11 +1407,11 @@ describe("The deltaWriter.apply() function", () => {
       expect(
         deltaWriter.apply(
           { foo: [1, 2, 3] },
-          { Operation: "InsertBefore", Path: ["foo", 3], Value: "abc" }
-        )
+          { Operation: "InsertBefore", Path: ["foo", 3], Value: "abc" },
+        ),
       ).toEqual({
         valid: false,
-        reason: "Path references a non-existent array element."
+        reason: "Path references a non-existent array element.",
       });
     });
 
@@ -1411,11 +1419,11 @@ describe("The deltaWriter.apply() function", () => {
       expect(
         deltaWriter.apply(
           { foo: "abc" },
-          { Operation: "InsertBefore", Path: ["foo"], Value: 1 }
-        )
+          { Operation: "InsertBefore", Path: ["foo"], Value: 1 },
+        ),
       ).toEqual({
         valid: false,
-        reason: "Path must reference an array element."
+        reason: "Path must reference an array element.",
       });
     });
 
@@ -1426,9 +1434,9 @@ describe("The deltaWriter.apply() function", () => {
           {
             Operation: "InsertBefore",
             Path: ["myArray", 0],
-            Value: "INS"
-          }
-        )
+            Value: "INS",
+          },
+        ),
       ).toEqual({ valid: true, feedData: { myArray: ["INS", 1, 2, 3] } });
     });
 
@@ -1439,9 +1447,9 @@ describe("The deltaWriter.apply() function", () => {
           {
             Operation: "InsertBefore",
             Path: ["myArray", 1],
-            Value: "INS"
-          }
-        )
+            Value: "INS",
+          },
+        ),
       ).toEqual({ valid: true, feedData: { myArray: [1, "INS", 2, 3] } });
     });
 
@@ -1452,9 +1460,9 @@ describe("The deltaWriter.apply() function", () => {
           {
             Operation: "InsertBefore",
             Path: ["myArray", 2],
-            Value: "INS"
-          }
-        )
+            Value: "INS",
+          },
+        ),
       ).toEqual({ valid: true, feedData: { myArray: [1, 2, "INS", 3] } });
     });
   });
@@ -1464,11 +1472,11 @@ describe("The deltaWriter.apply() function", () => {
       expect(
         deltaWriter.apply(
           {},
-          { Operation: "InsertAfter", Path: ["foo", 0], Value: "abc" }
-        )
+          { Operation: "InsertAfter", Path: ["foo", 0], Value: "abc" },
+        ),
       ).toEqual({
         valid: false,
-        reason: "Path references a non-existent object property."
+        reason: "Path references a non-existent object property.",
       });
     });
 
@@ -1476,12 +1484,12 @@ describe("The deltaWriter.apply() function", () => {
       expect(
         deltaWriter.apply(
           { foo: {} },
-          { Operation: "InsertAfter", Path: ["foo", 0], Value: "abc" }
-        )
+          { Operation: "InsertAfter", Path: ["foo", 0], Value: "abc" },
+        ),
       ).toEqual({
         valid: false,
         reason:
-          "Path references an array element but feed data node is not an array."
+          "Path references an array element but feed data node is not an array.",
       });
     });
 
@@ -1489,11 +1497,11 @@ describe("The deltaWriter.apply() function", () => {
       expect(
         deltaWriter.apply(
           { foo: [1, 2, 3] },
-          { Operation: "InsertAfter", Path: ["foo", 3], Value: "abc" }
-        )
+          { Operation: "InsertAfter", Path: ["foo", 3], Value: "abc" },
+        ),
       ).toEqual({
         valid: false,
-        reason: "Path references a non-existent array element."
+        reason: "Path references a non-existent array element.",
       });
     });
 
@@ -1501,11 +1509,11 @@ describe("The deltaWriter.apply() function", () => {
       expect(
         deltaWriter.apply(
           { foo: "abc" },
-          { Operation: "InsertAfter", Path: ["foo"], Value: 1 }
-        )
+          { Operation: "InsertAfter", Path: ["foo"], Value: 1 },
+        ),
       ).toEqual({
         valid: false,
-        reason: "Path must reference an array element."
+        reason: "Path must reference an array element.",
       });
     });
 
@@ -1516,9 +1524,9 @@ describe("The deltaWriter.apply() function", () => {
           {
             Operation: "InsertAfter",
             Path: ["myArray", 0],
-            Value: "INS"
-          }
-        )
+            Value: "INS",
+          },
+        ),
       ).toEqual({ valid: true, feedData: { myArray: [1, "INS", 2, 3] } });
     });
 
@@ -1529,9 +1537,9 @@ describe("The deltaWriter.apply() function", () => {
           {
             Operation: "InsertAfter",
             Path: ["myArray", 1],
-            Value: "INS"
-          }
-        )
+            Value: "INS",
+          },
+        ),
       ).toEqual({ valid: true, feedData: { myArray: [1, 2, "INS", 3] } });
     });
 
@@ -1542,9 +1550,9 @@ describe("The deltaWriter.apply() function", () => {
           {
             Operation: "InsertAfter",
             Path: ["myArray", 2],
-            Value: "INS"
-          }
-        )
+            Value: "INS",
+          },
+        ),
       ).toEqual({ valid: true, feedData: { myArray: [1, 2, 3, "INS"] } });
     });
   });
@@ -1552,10 +1560,10 @@ describe("The deltaWriter.apply() function", () => {
   describe("when invoked with a DeleteFirst delta operation", () => {
     it("should return invalid if the path reference does not exist", () => {
       expect(
-        deltaWriter.apply({}, { Operation: "DeleteFirst", Path: ["foo"] })
+        deltaWriter.apply({}, { Operation: "DeleteFirst", Path: ["foo"] }),
       ).toEqual({
         valid: false,
-        reason: "Path references a non-existent object property."
+        reason: "Path references a non-existent object property.",
       });
     });
 
@@ -1563,8 +1571,8 @@ describe("The deltaWriter.apply() function", () => {
       expect(
         deltaWriter.apply(
           { foo: "abc" },
-          { Operation: "DeleteFirst", Path: ["foo"] }
-        )
+          { Operation: "DeleteFirst", Path: ["foo"] },
+        ),
       ).toEqual({ valid: false, reason: "Path must reference an array." });
     });
 
@@ -1572,11 +1580,11 @@ describe("The deltaWriter.apply() function", () => {
       expect(
         deltaWriter.apply(
           { myArray: [] },
-          { Operation: "DeleteFirst", Path: ["myArray"] }
-        )
+          { Operation: "DeleteFirst", Path: ["myArray"] },
+        ),
       ).toEqual({
         valid: false,
-        reason: "Path must reference a non-empty array."
+        reason: "Path must reference a non-empty array.",
       });
     });
 
@@ -1586,9 +1594,9 @@ describe("The deltaWriter.apply() function", () => {
           { myArray: [1, 2, 3] },
           {
             Operation: "DeleteFirst",
-            Path: ["myArray"]
-          }
-        )
+            Path: ["myArray"],
+          },
+        ),
       ).toEqual({ valid: true, feedData: { myArray: [2, 3] } });
     });
 
@@ -1598,9 +1606,9 @@ describe("The deltaWriter.apply() function", () => {
           { myArray: [1] },
           {
             Operation: "DeleteFirst",
-            Path: ["myArray"]
-          }
-        )
+            Path: ["myArray"],
+          },
+        ),
       ).toEqual({ valid: true, feedData: { myArray: [] } });
     });
   });
@@ -1608,10 +1616,10 @@ describe("The deltaWriter.apply() function", () => {
   describe("when invoked with a DeleteLast delta operation", () => {
     it("should return invalid if the path reference does not exist", () => {
       expect(
-        deltaWriter.apply({}, { Operation: "DeleteLast", Path: ["foo"] })
+        deltaWriter.apply({}, { Operation: "DeleteLast", Path: ["foo"] }),
       ).toEqual({
         valid: false,
-        reason: "Path references a non-existent object property."
+        reason: "Path references a non-existent object property.",
       });
     });
 
@@ -1619,8 +1627,8 @@ describe("The deltaWriter.apply() function", () => {
       expect(
         deltaWriter.apply(
           { foo: "abc" },
-          { Operation: "DeleteLast", Path: ["foo"] }
-        )
+          { Operation: "DeleteLast", Path: ["foo"] },
+        ),
       ).toEqual({ valid: false, reason: "Path must reference an array." });
     });
 
@@ -1628,11 +1636,11 @@ describe("The deltaWriter.apply() function", () => {
       expect(
         deltaWriter.apply(
           { myArray: [] },
-          { Operation: "DeleteLast", Path: ["myArray"] }
-        )
+          { Operation: "DeleteLast", Path: ["myArray"] },
+        ),
       ).toEqual({
         valid: false,
-        reason: "Path must reference a non-empty array."
+        reason: "Path must reference a non-empty array.",
       });
     });
 
@@ -1642,9 +1650,9 @@ describe("The deltaWriter.apply() function", () => {
           { myArray: [1, 2, 3] },
           {
             Operation: "DeleteLast",
-            Path: ["myArray"]
-          }
-        )
+            Path: ["myArray"],
+          },
+        ),
       ).toEqual({ valid: true, feedData: { myArray: [1, 2] } });
     });
 
@@ -1654,9 +1662,9 @@ describe("The deltaWriter.apply() function", () => {
           { myArray: [1] },
           {
             Operation: "DeleteLast",
-            Path: ["myArray"]
-          }
-        )
+            Path: ["myArray"],
+          },
+        ),
       ).toEqual({ valid: true, feedData: { myArray: [] } });
     });
   });

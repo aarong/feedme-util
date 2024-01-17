@@ -12,7 +12,7 @@ describe("The feed-deltas validator", () => {
 
     it("should return invalid if invalid delta - not first", () => {
       expect(vFeedDeltas([{ Operation: "Delete", Path: [] }, "INVALID"])).toBe(
-        "Element 1 > Not an object."
+        "Element 1 > Not an object.",
       );
     });
   });
@@ -30,8 +30,8 @@ describe("The feed-deltas validator", () => {
       expect(
         vFeedDeltas([
           { Operation: "Delete", Path: [] },
-          { Operation: "Delete", Path: [] }
-        ])
+          { Operation: "Delete", Path: [] },
+        ]),
       ).toBe("");
     });
   });

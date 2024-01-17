@@ -12,7 +12,7 @@ describe("The diagnostics validator", () => {
 
     it("should return invalid if JSON expressiblity check is explicitly enabled and value is not a JSON-expressible object", () => {
       expect(vDiagnostics({ Arg: undefined }, true)).toBe(
-        "Not JSON-expressible."
+        "Not JSON-expressible.",
       );
     });
   });

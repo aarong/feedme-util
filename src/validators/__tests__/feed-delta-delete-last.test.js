@@ -9,16 +9,16 @@ describe("The feed-delta-delete-last validator", () => {
     it("should return invalid if missing Operation", () => {
       expect(
         vFeedDeltaDeleteLast({
-          Path: []
-        })
+          Path: [],
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
     it("should return invalid if missing Path", () => {
       expect(
         vFeedDeltaDeleteLast({
-          Operation: "DeleteLast"
-        })
+          Operation: "DeleteLast",
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -27,8 +27,8 @@ describe("The feed-delta-delete-last validator", () => {
         vFeedDeltaDeleteLast({
           Operation: "DeleteLast",
           Path: [],
-          Extraneous: "INVALID"
-        })
+          Extraneous: "INVALID",
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -36,8 +36,8 @@ describe("The feed-delta-delete-last validator", () => {
       expect(
         vFeedDeltaDeleteLast({
           Operation: "INVALID",
-          Path: []
-        })
+          Path: [],
+        }),
       ).toBe("Operation > Not 'DeleteLast'.");
     });
 
@@ -45,8 +45,8 @@ describe("The feed-delta-delete-last validator", () => {
       expect(
         vFeedDeltaDeleteLast({
           Operation: "DeleteLast",
-          Path: "INVALID"
-        })
+          Path: "INVALID",
+        }),
       ).toBe("Path > Not an array.");
     });
   });
@@ -56,8 +56,8 @@ describe("The feed-delta-delete-last validator", () => {
       expect(
         vFeedDeltaDeleteLast({
           Operation: "DeleteLast",
-          Path: []
-        })
+          Path: [],
+        }),
       ).toBe("");
     });
   });

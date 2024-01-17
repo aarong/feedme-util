@@ -14,7 +14,7 @@ const MESSAGE_VALIDATORS = {
   FeedOpenResponse: vFeedOpenResponse,
   FeedCloseResponse: vFeedCloseResponse,
   FeedAction: vFeedAction,
-  FeedTermination: vFeedTermination
+  FeedTermination: vFeedTermination,
 };
 
 /**
@@ -25,7 +25,7 @@ const MESSAGE_VALIDATORS = {
  */
 export default function validateServerMessage(
   value,
-  checkJsonExpressible = true
+  checkJsonExpressible = true,
 ) {
   // Validate value type
   if (!check.object(value)) {
@@ -41,7 +41,7 @@ export default function validateServerMessage(
   // Strictly speaking, not all sub-validators require checkJsonExpressible
   const err = MESSAGE_VALIDATORS[value.MessageType](
     value,
-    checkJsonExpressible
+    checkJsonExpressible,
   );
   if (err) {
     return `(${value.MessageType} Message) ${err}`;

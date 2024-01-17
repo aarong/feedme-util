@@ -8,19 +8,19 @@ describe("The feed-open-response validator", () => {
 
     it("should return invalid if missing MessageType", () => {
       expect(vFeedOpenResponse({ Success: true })).toBe(
-        "MessageType > Missing or not 'FeedOpenResponse'."
+        "MessageType > Missing or not 'FeedOpenResponse'.",
       );
     });
 
     it("should return invalid if missing Success", () => {
       expect(vFeedOpenResponse({ MessageType: "FeedOpenResponse" })).toBe(
-        "Success > Missing or not boolean."
+        "Success > Missing or not boolean.",
       );
     });
 
     it("should return invalid if invalid MessageType", () => {
       expect(vFeedOpenResponse({ MessageType: "INVALID", Success: true })).toBe(
-        "MessageType > Missing or not 'FeedOpenResponse'."
+        "MessageType > Missing or not 'FeedOpenResponse'.",
       );
     });
 
@@ -28,20 +28,20 @@ describe("The feed-open-response validator", () => {
       expect(
         vFeedOpenResponse({
           MessageType: "FeedOpenResponse",
-          Success: "INVALID"
-        })
+          Success: "INVALID",
+        }),
       ).toBe("Success > Missing or not boolean.");
     });
 
     it("should return invalid if invalid FeedOpenResponse success message", () => {
       expect(
-        vFeedOpenResponse({ MessageType: "FeedOpenResponse", Success: true })
+        vFeedOpenResponse({ MessageType: "FeedOpenResponse", Success: true }),
       ).toBe("(Success) Missing or extraneous property.");
     });
 
     it("should return invalid if invalid FeedOpenResponse failure message", () => {
       expect(
-        vFeedOpenResponse({ MessageType: "FeedOpenResponse", Success: false })
+        vFeedOpenResponse({ MessageType: "FeedOpenResponse", Success: false }),
       ).toBe("(Failure) Missing or extraneous property.");
     });
   });
@@ -54,8 +54,8 @@ describe("The feed-open-response validator", () => {
           Success: true,
           FeedName: "FEED_NAME",
           FeedArgs: {},
-          FeedData: {}
-        })
+          FeedData: {},
+        }),
       ).toBe("");
     });
 
@@ -67,8 +67,8 @@ describe("The feed-open-response validator", () => {
           FeedName: "FEED_NAME",
           FeedArgs: {},
           ErrorCode: "ERROR_CODE",
-          ErrorData: {}
-        })
+          ErrorData: {},
+        }),
       ).toBe("");
     });
   });

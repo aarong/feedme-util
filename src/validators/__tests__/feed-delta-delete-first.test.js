@@ -9,16 +9,16 @@ describe("The feed-delta-delete-first validator", () => {
     it("should return invalid if missing Operation", () => {
       expect(
         vFeedDeltaDeleteFirst({
-          Path: []
-        })
+          Path: [],
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
     it("should return invalid if missing Path", () => {
       expect(
         vFeedDeltaDeleteFirst({
-          Operation: "DeleteFirst"
-        })
+          Operation: "DeleteFirst",
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -27,8 +27,8 @@ describe("The feed-delta-delete-first validator", () => {
         vFeedDeltaDeleteFirst({
           Operation: "DeleteFirst",
           Path: [],
-          Extraneous: "INVALID"
-        })
+          Extraneous: "INVALID",
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -36,8 +36,8 @@ describe("The feed-delta-delete-first validator", () => {
       expect(
         vFeedDeltaDeleteFirst({
           Operation: "INVALID",
-          Path: []
-        })
+          Path: [],
+        }),
       ).toBe("Operation > Not 'DeleteFirst'.");
     });
 
@@ -45,8 +45,8 @@ describe("The feed-delta-delete-first validator", () => {
       expect(
         vFeedDeltaDeleteFirst({
           Operation: "DeleteFirst",
-          Path: "INVALID"
-        })
+          Path: "INVALID",
+        }),
       ).toBe("Path > Not an array.");
     });
   });
@@ -56,8 +56,8 @@ describe("The feed-delta-delete-first validator", () => {
       expect(
         vFeedDeltaDeleteFirst({
           Operation: "DeleteFirst",
-          Path: []
-        })
+          Path: [],
+        }),
       ).toBe("");
     });
   });

@@ -13,92 +13,92 @@ describe("The feed-delta validator", () => {
     it("should return invalid if invalid Operation", () => {
       expect(
         vFeedDelta({
-          Operation: "INVALID"
-        })
+          Operation: "INVALID",
+        }),
       ).toBe("Operation > Missing or invalid.");
     });
 
     it("should return invalid if invalid Set delta", () => {
       expect(vFeedDelta({ Operation: "Set" })).toBe(
-        "(Set Delta) Missing or extraneous property."
+        "(Set Delta) Missing or extraneous property.",
       );
     });
 
     it("should return invalid if invalid Delete delta", () => {
       expect(vFeedDelta({ Operation: "Delete" })).toBe(
-        "(Delete Delta) Missing or extraneous property."
+        "(Delete Delta) Missing or extraneous property.",
       );
     });
 
     it("should return invalid if invalid DeleteValue delta", () => {
       expect(vFeedDelta({ Operation: "DeleteValue" })).toBe(
-        "(DeleteValue Delta) Missing or extraneous property."
+        "(DeleteValue Delta) Missing or extraneous property.",
       );
     });
 
     it("should return invalid if invalid Prepend delta", () => {
       expect(vFeedDelta({ Operation: "Prepend" })).toBe(
-        "(Prepend Delta) Missing or extraneous property."
+        "(Prepend Delta) Missing or extraneous property.",
       );
     });
 
     it("should return invalid if invalid Append delta", () => {
       expect(vFeedDelta({ Operation: "Append" })).toBe(
-        "(Append Delta) Missing or extraneous property."
+        "(Append Delta) Missing or extraneous property.",
       );
     });
 
     it("should return invalid if invalid Increment delta", () => {
       expect(vFeedDelta({ Operation: "Increment" })).toBe(
-        "(Increment Delta) Missing or extraneous property."
+        "(Increment Delta) Missing or extraneous property.",
       );
     });
 
     it("should return invalid if invalid Decrement delta", () => {
       expect(vFeedDelta({ Operation: "Decrement" })).toBe(
-        "(Decrement Delta) Missing or extraneous property."
+        "(Decrement Delta) Missing or extraneous property.",
       );
     });
 
     it("should return invalid if invalid Toggle delta", () => {
       expect(vFeedDelta({ Operation: "Toggle" })).toBe(
-        "(Toggle Delta) Missing or extraneous property."
+        "(Toggle Delta) Missing or extraneous property.",
       );
     });
 
     it("should return invalid if invalid InsertFirst delta", () => {
       expect(vFeedDelta({ Operation: "InsertFirst" })).toBe(
-        "(InsertFirst Delta) Missing or extraneous property."
+        "(InsertFirst Delta) Missing or extraneous property.",
       );
     });
 
     it("should return invalid if invalid InsertLast delta", () => {
       expect(vFeedDelta({ Operation: "InsertLast" })).toBe(
-        "(InsertLast Delta) Missing or extraneous property."
+        "(InsertLast Delta) Missing or extraneous property.",
       );
     });
 
     it("should return invalid if invalid InsertBefore delta", () => {
       expect(vFeedDelta({ Operation: "InsertBefore" })).toBe(
-        "(InsertBefore Delta) Missing or extraneous property."
+        "(InsertBefore Delta) Missing or extraneous property.",
       );
     });
 
     it("should return invalid if invalid InsertAfter delta", () => {
       expect(vFeedDelta({ Operation: "InsertAfter" })).toBe(
-        "(InsertAfter Delta) Missing or extraneous property."
+        "(InsertAfter Delta) Missing or extraneous property.",
       );
     });
 
     it("should return invalid if invalid DeleteFirst delta", () => {
       expect(vFeedDelta({ Operation: "DeleteFirst" })).toBe(
-        "(DeleteFirst Delta) Missing or extraneous property."
+        "(DeleteFirst Delta) Missing or extraneous property.",
       );
     });
 
     it("should return invalid if invalid DeleteLast delta", () => {
       expect(vFeedDelta({ Operation: "DeleteLast" })).toBe(
-        "(DeleteLast Delta) Missing or extraneous property."
+        "(DeleteLast Delta) Missing or extraneous property.",
       );
     });
   });
@@ -109,8 +109,8 @@ describe("The feed-delta validator", () => {
         vFeedDelta({
           Operation: "Set",
           Path: [],
-          Value: "VALUE"
-        })
+          Value: "VALUE",
+        }),
       ).toBe("");
     });
 
@@ -118,8 +118,8 @@ describe("The feed-delta validator", () => {
       expect(
         vFeedDelta({
           Operation: "Delete",
-          Path: []
-        })
+          Path: [],
+        }),
       ).toBe("");
     });
 
@@ -128,8 +128,8 @@ describe("The feed-delta validator", () => {
         vFeedDelta({
           Operation: "DeleteValue",
           Path: [],
-          Value: "VALUE"
-        })
+          Value: "VALUE",
+        }),
       ).toBe("");
     });
 
@@ -138,8 +138,8 @@ describe("The feed-delta validator", () => {
         vFeedDelta({
           Operation: "Prepend",
           Path: [],
-          Value: "VALUE"
-        })
+          Value: "VALUE",
+        }),
       ).toBe("");
     });
 
@@ -148,8 +148,8 @@ describe("The feed-delta validator", () => {
         vFeedDelta({
           Operation: "Append",
           Path: [],
-          Value: "VALUE"
-        })
+          Value: "VALUE",
+        }),
       ).toBe("");
     });
 
@@ -158,8 +158,8 @@ describe("The feed-delta validator", () => {
         vFeedDelta({
           Operation: "Increment",
           Path: [],
-          Value: 1
-        })
+          Value: 1,
+        }),
       ).toBe("");
     });
 
@@ -168,8 +168,8 @@ describe("The feed-delta validator", () => {
         vFeedDelta({
           Operation: "Decrement",
           Path: [],
-          Value: 1
-        })
+          Value: 1,
+        }),
       ).toBe("");
     });
 
@@ -177,8 +177,8 @@ describe("The feed-delta validator", () => {
       expect(
         vFeedDelta({
           Operation: "Toggle",
-          Path: []
-        })
+          Path: [],
+        }),
       ).toBe("");
     });
 
@@ -187,8 +187,8 @@ describe("The feed-delta validator", () => {
         vFeedDelta({
           Operation: "InsertFirst",
           Path: [],
-          Value: "VALUE"
-        })
+          Value: "VALUE",
+        }),
       ).toBe("");
     });
 
@@ -197,8 +197,8 @@ describe("The feed-delta validator", () => {
         vFeedDelta({
           Operation: "InsertLast",
           Path: [],
-          Value: "VALUE"
-        })
+          Value: "VALUE",
+        }),
       ).toBe("");
     });
 
@@ -207,8 +207,8 @@ describe("The feed-delta validator", () => {
         vFeedDelta({
           Operation: "InsertBefore",
           Path: [],
-          Value: "VALUE"
-        })
+          Value: "VALUE",
+        }),
       ).toBe("");
     });
 
@@ -217,8 +217,8 @@ describe("The feed-delta validator", () => {
         vFeedDelta({
           Operation: "InsertAfter",
           Path: [],
-          Value: "VALUE"
-        })
+          Value: "VALUE",
+        }),
       ).toBe("");
     });
 
@@ -226,8 +226,8 @@ describe("The feed-delta validator", () => {
       expect(
         vFeedDelta({
           Operation: "DeleteFirst",
-          Path: []
-        })
+          Path: [],
+        }),
       ).toBe("");
     });
 
@@ -235,8 +235,8 @@ describe("The feed-delta validator", () => {
       expect(
         vFeedDelta({
           Operation: "DeleteLast",
-          Path: []
-        })
+          Path: [],
+        }),
       ).toBe("");
     });
   });

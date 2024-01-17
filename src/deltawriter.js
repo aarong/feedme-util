@@ -23,13 +23,13 @@ export default deltaWriter;
  */
 deltaWriter._checkPathElement = function _checkPathElement(
   feedDataNode,
-  pathElement
+  pathElement,
 ) {
   if (check.string(pathElement) && !check.object(feedDataNode)) {
     return {
       valid: false,
       reason:
-        "Path references an object property but feed data node is not an object."
+        "Path references an object property but feed data node is not an object.",
     };
   }
 
@@ -37,7 +37,7 @@ deltaWriter._checkPathElement = function _checkPathElement(
     return {
       valid: false,
       reason:
-        "Path references an array element but feed data node is not an array."
+        "Path references an array element but feed data node is not an array.",
     };
   }
 
@@ -55,7 +55,7 @@ deltaWriter._checkPathElement = function _checkPathElement(
  */
 deltaWriter._checkChildExists = function _checkChildExists(
   feedDataNode,
-  pathElement
+  pathElement,
 ) {
   const result = deltaWriter._checkPathElement(feedDataNode, pathElement);
   if (!result.valid) {
@@ -65,14 +65,14 @@ deltaWriter._checkChildExists = function _checkChildExists(
   if (check.string(pathElement) && !(pathElement in feedDataNode)) {
     return {
       valid: false,
-      reason: "Path references a non-existent object property."
+      reason: "Path references a non-existent object property.",
     };
   }
 
   if (check.number(pathElement) && pathElement >= feedDataNode.length) {
     return {
       valid: false,
-      reason: "Path references a non-existent array element."
+      reason: "Path references a non-existent array element.",
     };
   }
 
@@ -124,7 +124,7 @@ deltaWriter._getNode = function _getNode(feedData, path) {
 deltaWriter._getParentNode = function _getParentNode(
   feedData,
   path,
-  childMustExist = true
+  childMustExist = true,
 ) {
   if (path.length === 0) {
     return { valid: false, reason: "Path must not reference feed data root." };
@@ -205,7 +205,7 @@ deltaWriter._operations.Set = function set(feedData, delta) {
     if (!check.object(delta.Value)) {
       return {
         valid: false,
-        reason: "Feed data root may only be set to an object."
+        reason: "Feed data root may only be set to an object.",
       };
     }
     return { valid: true, feedData: delta.Value };
@@ -215,7 +215,7 @@ deltaWriter._operations.Set = function set(feedData, delta) {
   const result = deltaWriter._getParentNode(
     feedData,
     delta.Path,
-    false // Child not required to exist
+    false, // Child not required to exist
   );
   if (!result.valid) {
     return result;
@@ -225,7 +225,7 @@ deltaWriter._operations.Set = function set(feedData, delta) {
   if (check.array(parentNode) && childPathElement > parentNode.length) {
     return {
       valid: false,
-      reason: "Cannot set a non-contiguous element of an array."
+      reason: "Cannot set a non-contiguous element of an array.",
     };
   }
   parentNode[childPathElement] = delta.Value;
@@ -241,7 +241,7 @@ deltaWriter._operations.Delete = function delete_(feedData, delta) {
   const result = deltaWriter._getParentNode(
     feedData,
     delta.Path,
-    true // Child must exist
+    true, // Child must exist
   );
   if (!result.valid) {
     return result;
@@ -275,11 +275,11 @@ deltaWriter._operations.DeleteValue = function deleteValue(feedData, delta) {
       }
     });
   } else if (check.array(parentNode)) {
-    _remove(parentNode, val => _isEqual(val, delta.Value));
+    _remove(parentNode, (val) => _isEqual(val, delta.Value));
   } else {
     return {
       valid: false,
-      reason: "Path must refer to an array or an object."
+      reason: "Path must refer to an array or an object.",
     };
   }
   return { valid: true, feedData };
@@ -294,7 +294,7 @@ deltaWriter._operations.Prepend = function prepend(feedData, delta) {
   const result = deltaWriter._getParentNode(
     feedData,
     delta.Path,
-    true // Child must exist
+    true, // Child must exist
   );
   if (!result.valid) {
     return result;
@@ -318,7 +318,7 @@ deltaWriter._operations.Append = function append(feedData, delta) {
   const result = deltaWriter._getParentNode(
     feedData,
     delta.Path,
-    true // Child must exist
+    true, // Child must exist
   );
   if (!result.valid) {
     return result;
@@ -342,7 +342,7 @@ deltaWriter._operations.Increment = function increment(feedData, delta) {
   const result = deltaWriter._getParentNode(
     feedData,
     delta.Path,
-    true // Child must exist
+    true, // Child must exist
   );
   if (!result.valid) {
     return result;
@@ -366,7 +366,7 @@ deltaWriter._operations.Decrement = function decrement(feedData, delta) {
   const result = deltaWriter._getParentNode(
     feedData,
     delta.Path,
-    true // Child must exist
+    true, // Child must exist
   );
   if (!result.valid) {
     return result;
@@ -390,7 +390,7 @@ deltaWriter._operations.Toggle = function toggle(feedData, delta) {
   const result = deltaWriter._getParentNode(
     feedData,
     delta.Path,
-    true // Child must exist
+    true, // Child must exist
   );
   if (!result.valid) {
     return result;
@@ -454,7 +454,7 @@ deltaWriter._operations.InsertBefore = function insertBefore(feedData, delta) {
   const result = deltaWriter._getParentNode(
     feedData,
     delta.Path,
-    true // Child must exist
+    true, // Child must exist
   );
   if (!result.valid) {
     return result;
@@ -477,7 +477,7 @@ deltaWriter._operations.InsertAfter = function insertAfter(feedData, delta) {
   const result = deltaWriter._getParentNode(
     feedData,
     delta.Path,
-    true // Child must exist
+    true, // Child must exist
   );
   if (!result.valid) {
     return result;

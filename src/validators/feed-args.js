@@ -13,7 +13,7 @@ export default function validateFeedArgs(value) {
 
   // Check child value types
   let err = "";
-  Object.values(value).some(arg => {
+  Object.values(value).some((arg) => {
     if (!check.string(arg)) {
       err = "One or more properties is not a string.";
     }

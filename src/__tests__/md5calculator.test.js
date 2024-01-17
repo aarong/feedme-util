@@ -10,11 +10,7 @@ Node's built-in crypto component is used here.
 */
 
 // Convenience function
-const md5 = str =>
-  crypto
-    .createHash("md5")
-    .update(str)
-    .digest("base64");
+const md5 = (str) => crypto.createHash("md5").update(str).digest("base64");
 
 describe("The md5Calculator._canonicalJson() function", () => {
   it("should return correctly for base cases", () => {
@@ -29,7 +25,7 @@ describe("The md5Calculator._canonicalJson() function", () => {
     expect(md5Calculator._canonicalJson({})).toEqual("{}");
     expect(md5Calculator._canonicalJson({ a: 1 })).toEqual('{"a":1}');
     expect(md5Calculator._canonicalJson({ b: 1, a: 1 })).toEqual(
-      '{"a":1,"b":1}'
+      '{"a":1,"b":1}',
     );
   });
   it("should return correctly for array case", () => {
@@ -39,11 +35,11 @@ describe("The md5Calculator._canonicalJson() function", () => {
   it("should return correctly on recurse", () => {
     const o = {
       b: [1, 2],
-      a: { y: false, x: true }
+      a: { y: false, x: true },
     };
     o["c\\"] = 1;
     expect(md5Calculator._canonicalJson(o)).toEqual(
-      '{"a":{"x":true,"y":false},"b":[1,2],"c\\\\":1}'
+      '{"a":{"x":true,"y":false},"b":[1,2],"c\\\\":1}',
     );
   });
 });
@@ -62,11 +58,11 @@ describe("The md5Calculator.calculate() function", () => {
   it("should return a correct hash on a complex object", () => {
     const o = {
       b: [1, null],
-      a: { y: false, x: true }
+      a: { y: false, x: true },
     };
     o["c\\"] = 1;
     expect(md5Calculator.calculate(o)).toEqual(
-      md5('{"a":{"x":true,"y":false},"b":[1,null],"c\\\\":1}')
+      md5('{"a":{"x":true,"y":false},"b":[1,null],"c\\\\":1}'),
     );
   });
 });

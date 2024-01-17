@@ -11,8 +11,8 @@ describe("The action-response-success validator", () => {
         vActionResponseSuccess({
           Success: true,
           CallbackId: "CALLBACK_ID",
-          ActionData: {}
-        })
+          ActionData: {},
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -21,8 +21,8 @@ describe("The action-response-success validator", () => {
         vActionResponseSuccess({
           MessageType: "ActionResponse",
           CallbackId: "CALLBACK_ID",
-          ActionData: {}
-        })
+          ActionData: {},
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -31,8 +31,8 @@ describe("The action-response-success validator", () => {
         vActionResponseSuccess({
           MessageType: "ActionResponse",
           Success: true,
-          ActionData: {}
-        })
+          ActionData: {},
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -41,8 +41,8 @@ describe("The action-response-success validator", () => {
         vActionResponseSuccess({
           MessageType: "ActionResponse",
           Success: true,
-          CallbackId: "CALLBACK_ID"
-        })
+          CallbackId: "CALLBACK_ID",
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -53,8 +53,8 @@ describe("The action-response-success validator", () => {
           Success: true,
           CallbackId: "CALLBACK_ID",
           ActionData: {},
-          Extraneous: "INVALID"
-        })
+          Extraneous: "INVALID",
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -64,8 +64,8 @@ describe("The action-response-success validator", () => {
           MessageType: "INVALID",
           Success: true,
           CallbackId: "CALLBACK_ID",
-          ActionData: {}
-        })
+          ActionData: {},
+        }),
       ).toBe("MessageType > Not 'ActionResponse'.");
     });
 
@@ -75,8 +75,8 @@ describe("The action-response-success validator", () => {
           MessageType: "ActionResponse",
           Success: false,
           CallbackId: "CALLBACK_ID",
-          ActionData: {}
-        })
+          ActionData: {},
+        }),
       ).toBe("Success > Not true.");
     });
 
@@ -86,8 +86,8 @@ describe("The action-response-success validator", () => {
           MessageType: "ActionResponse",
           Success: true,
           CallbackId: 123,
-          ActionData: {}
-        })
+          ActionData: {},
+        }),
       ).toBe("CallbackId > Not a string.");
     });
 
@@ -97,8 +97,8 @@ describe("The action-response-success validator", () => {
           MessageType: "ActionResponse",
           Success: true,
           CallbackId: "CALLBACK_ID",
-          ActionData: { Data: undefined }
-        })
+          ActionData: { Data: undefined },
+        }),
       ).toBe("ActionData > Not JSON-expressible.");
     });
 
@@ -109,10 +109,10 @@ describe("The action-response-success validator", () => {
             MessageType: "ActionResponse",
             Success: true,
             CallbackId: "CALLBACK_ID",
-            ActionData: { Data: undefined }
+            ActionData: { Data: undefined },
           },
-          true
-        )
+          true,
+        ),
       ).toBe("ActionData > Not JSON-expressible.");
     });
   });
@@ -124,8 +124,8 @@ describe("The action-response-success validator", () => {
           MessageType: "ActionResponse",
           Success: true,
           CallbackId: "CALLBACK_ID",
-          ActionData: { Action: "Data" }
-        })
+          ActionData: { Action: "Data" },
+        }),
       ).toBe("");
     });
 
@@ -136,10 +136,10 @@ describe("The action-response-success validator", () => {
             MessageType: "ActionResponse",
             Success: true,
             CallbackId: "CALLBACK_ID",
-            ActionData: { Action: "Data" }
+            ActionData: { Action: "Data" },
           },
-          true
-        )
+          true,
+        ),
       ).toBe("");
     });
 
@@ -150,10 +150,10 @@ describe("The action-response-success validator", () => {
             MessageType: "ActionResponse",
             Success: true,
             CallbackId: "CALLBACK_ID",
-            ActionData: { Action: "Data" }
+            ActionData: { Action: "Data" },
           },
-          false
-        )
+          false,
+        ),
       ).toBe("");
     });
 
@@ -164,10 +164,10 @@ describe("The action-response-success validator", () => {
             MessageType: "ActionResponse",
             Success: true,
             CallbackId: "CALLBACK_ID",
-            ActionData: { Data: undefined }
+            ActionData: { Data: undefined },
           },
-          false
-        )
+          false,
+        ),
       ).toBe("");
     });
   });

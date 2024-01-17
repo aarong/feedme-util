@@ -12,8 +12,8 @@ describe("The action-response-failure validator", () => {
           Success: false,
           CallbackId: "CALLBACK_ID",
           ErrorCode: "ERROR_CODE",
-          ErrorData: {}
-        })
+          ErrorData: {},
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -23,8 +23,8 @@ describe("The action-response-failure validator", () => {
           MessageType: "ActionResponse",
           CallbackId: "CALLBACK_ID",
           ErrorCode: "ERROR_CODE",
-          ErrorData: {}
-        })
+          ErrorData: {},
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -34,8 +34,8 @@ describe("The action-response-failure validator", () => {
           MessageType: "ActionResponse",
           Success: false,
           ErrorCode: "ERROR_CODE",
-          ErrorData: {}
-        })
+          ErrorData: {},
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -45,8 +45,8 @@ describe("The action-response-failure validator", () => {
           MessageType: "ActionResponse",
           Success: false,
           CallbackId: "CALLBACK_ID",
-          ErrorData: {}
-        })
+          ErrorData: {},
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -56,8 +56,8 @@ describe("The action-response-failure validator", () => {
           MessageType: "ActionResponse",
           Success: false,
           CallbackId: "CALLBACK_ID",
-          ErrorCode: "ERROR_CODE"
-        })
+          ErrorCode: "ERROR_CODE",
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -69,8 +69,8 @@ describe("The action-response-failure validator", () => {
           CallbackId: "CALLBACK_ID",
           ErrorCode: "ERROR_CODE",
           ErrorData: {},
-          Extraneous: "INVALID"
-        })
+          Extraneous: "INVALID",
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -81,8 +81,8 @@ describe("The action-response-failure validator", () => {
           Success: false,
           CallbackId: "CALLBACK_ID",
           ErrorCode: "ERROR_CODE",
-          ErrorData: {}
-        })
+          ErrorData: {},
+        }),
       ).toBe("MessageType > Not 'ActionResponse'.");
     });
 
@@ -93,8 +93,8 @@ describe("The action-response-failure validator", () => {
           Success: true,
           CallbackId: "CALLBACK_ID",
           ErrorCode: "ERROR_CODE",
-          ErrorData: {}
-        })
+          ErrorData: {},
+        }),
       ).toBe("Success > Not false.");
     });
 
@@ -105,8 +105,8 @@ describe("The action-response-failure validator", () => {
           Success: false,
           CallbackId: 123,
           ErrorCode: "ERROR_CODE",
-          ErrorData: {}
-        })
+          ErrorData: {},
+        }),
       ).toBe("CallbackId > Not a string.");
     });
 
@@ -117,8 +117,8 @@ describe("The action-response-failure validator", () => {
           Success: false,
           CallbackId: "CALLBACK_ID",
           ErrorCode: 123,
-          ErrorData: {}
-        })
+          ErrorData: {},
+        }),
       ).toBe("ErrorCode > Not a string.");
     });
 
@@ -129,8 +129,8 @@ describe("The action-response-failure validator", () => {
           Success: false,
           CallbackId: "CALLBACK_ID",
           ErrorCode: "ERROR_CODE",
-          ErrorData: { Data: undefined }
-        })
+          ErrorData: { Data: undefined },
+        }),
       ).toBe("ErrorData > Not JSON-expressible.");
     });
 
@@ -142,10 +142,10 @@ describe("The action-response-failure validator", () => {
             Success: false,
             CallbackId: "CALLBACK_ID",
             ErrorCode: "ERROR_CODE",
-            ErrorData: { Data: undefined }
+            ErrorData: { Data: undefined },
           },
-          true
-        )
+          true,
+        ),
       ).toBe("ErrorData > Not JSON-expressible.");
     });
   });
@@ -158,8 +158,8 @@ describe("The action-response-failure validator", () => {
           Success: false,
           CallbackId: "CALLBACK_ID",
           ErrorCode: "ERROR_CODE",
-          ErrorData: { Error: "Data" }
-        })
+          ErrorData: { Error: "Data" },
+        }),
       ).toBe("");
     });
 
@@ -171,10 +171,10 @@ describe("The action-response-failure validator", () => {
             Success: false,
             CallbackId: "CALLBACK_ID",
             ErrorCode: "ERROR_CODE",
-            ErrorData: { Error: "Data" }
+            ErrorData: { Error: "Data" },
           },
-          true
-        )
+          true,
+        ),
       ).toBe("");
     });
 
@@ -186,10 +186,10 @@ describe("The action-response-failure validator", () => {
             Success: false,
             CallbackId: "CALLBACK_ID",
             ErrorCode: "ERROR_CODE",
-            ErrorData: { Error: "Data" }
+            ErrorData: { Error: "Data" },
           },
-          false
-        )
+          false,
+        ),
       ).toBe("");
     });
 
@@ -201,10 +201,10 @@ describe("The action-response-failure validator", () => {
             Success: false,
             CallbackId: "CALLBACK_ID",
             ErrorCode: "ERROR_CODE",
-            ErrorData: { Data: undefined }
+            ErrorData: { Data: undefined },
           },
-          false
-        )
+          false,
+        ),
       ).toBe("");
     });
   });

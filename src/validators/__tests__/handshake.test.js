@@ -9,16 +9,16 @@ describe("The handshake validator", () => {
     it("should return invalid if missing MessageType", () => {
       expect(
         vHandshake({
-          Versions: ["0.1"]
-        })
+          Versions: ["0.1"],
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
     it("should return invalid if missing Versions", () => {
       expect(
         vHandshake({
-          MessageType: "Handshake"
-        })
+          MessageType: "Handshake",
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -27,8 +27,8 @@ describe("The handshake validator", () => {
         vHandshake({
           MessageType: "Handshake",
           Versions: ["0.1"],
-          Extraneous: "INVALID"
-        })
+          Extraneous: "INVALID",
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -36,8 +36,8 @@ describe("The handshake validator", () => {
       expect(
         vHandshake({
           MessageType: "INVALID",
-          Versions: ["0.1"]
-        })
+          Versions: ["0.1"],
+        }),
       ).toBe("MessageType > Not 'Handshake'.");
     });
 
@@ -45,8 +45,8 @@ describe("The handshake validator", () => {
       expect(
         vHandshake({
           MessageType: "Handshake",
-          Versions: "INVALID"
-        })
+          Versions: "INVALID",
+        }),
       ).toBe("Versions > Not an array.");
     });
   });
@@ -56,8 +56,8 @@ describe("The handshake validator", () => {
       expect(
         vHandshake({
           MessageType: "Handshake",
-          Versions: ["0.1"]
-        })
+          Versions: ["0.1"],
+        }),
       ).toBe("");
     });
   });

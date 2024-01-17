@@ -13,8 +13,8 @@ describe("The feed-open-response-failure validator", () => {
           FeedName: "FEED_NAME",
           FeedArgs: {},
           ErrorCode: "ERROR_CODE",
-          ErrorData: {}
-        })
+          ErrorData: {},
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -25,8 +25,8 @@ describe("The feed-open-response-failure validator", () => {
           FeedName: "FEED_NAME",
           FeedArgs: {},
           ErrorCode: "ERROR_CODE",
-          ErrorData: {}
-        })
+          ErrorData: {},
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -37,8 +37,8 @@ describe("The feed-open-response-failure validator", () => {
           Success: false,
           FeedArgs: {},
           ErrorCode: "ERROR_CODE",
-          ErrorData: {}
-        })
+          ErrorData: {},
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -49,8 +49,8 @@ describe("The feed-open-response-failure validator", () => {
           Success: false,
           FeedName: "FEED_NAME",
           ErrorCode: "ERROR_CODE",
-          ErrorData: {}
-        })
+          ErrorData: {},
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -61,8 +61,8 @@ describe("The feed-open-response-failure validator", () => {
           Success: false,
           FeedName: "FEED_NAME",
           FeedArgs: {},
-          ErrorData: {}
-        })
+          ErrorData: {},
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -73,8 +73,8 @@ describe("The feed-open-response-failure validator", () => {
           Success: false,
           FeedName: "FEED_NAME",
           FeedArgs: {},
-          ErrorCode: "ERROR_CODE"
-        })
+          ErrorCode: "ERROR_CODE",
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -87,8 +87,8 @@ describe("The feed-open-response-failure validator", () => {
           FeedArgs: {},
           ErrorCode: "ERROR_CODE",
           ErrorData: {},
-          Extraneous: "INVALID"
-        })
+          Extraneous: "INVALID",
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -100,8 +100,8 @@ describe("The feed-open-response-failure validator", () => {
           FeedName: "FEED_NAME",
           FeedArgs: {},
           ErrorCode: "ERROR_CODE",
-          ErrorData: {}
-        })
+          ErrorData: {},
+        }),
       ).toBe("MessageType > Not 'FeedOpenResponse'.");
     });
 
@@ -113,8 +113,8 @@ describe("The feed-open-response-failure validator", () => {
           FeedName: "FEED_NAME",
           FeedArgs: {},
           ErrorCode: "ERROR_CODE",
-          ErrorData: {}
-        })
+          ErrorData: {},
+        }),
       ).toBe("Success > Not false.");
     });
 
@@ -126,8 +126,8 @@ describe("The feed-open-response-failure validator", () => {
           FeedName: 123,
           FeedArgs: {},
           ErrorCode: "ERROR_CODE",
-          ErrorData: {}
-        })
+          ErrorData: {},
+        }),
       ).toBe("FeedName > Not a string.");
     });
 
@@ -139,8 +139,8 @@ describe("The feed-open-response-failure validator", () => {
           FeedName: "FEED_NAME",
           FeedArgs: "INVALID",
           ErrorCode: "ERROR_CODE",
-          ErrorData: {}
-        })
+          ErrorData: {},
+        }),
       ).toBe("FeedArgs > Not an object.");
     });
 
@@ -152,8 +152,8 @@ describe("The feed-open-response-failure validator", () => {
           FeedName: "FEED_NAME",
           FeedArgs: {},
           ErrorCode: 123,
-          ErrorData: {}
-        })
+          ErrorData: {},
+        }),
       ).toBe("ErrorCode > Not a string.");
     });
 
@@ -165,8 +165,8 @@ describe("The feed-open-response-failure validator", () => {
           FeedName: "FEED_NAME",
           FeedArgs: {},
           ErrorCode: "ERROR_CODE",
-          ErrorData: { Data: undefined }
-        })
+          ErrorData: { Data: undefined },
+        }),
       ).toBe("ErrorData > Not JSON-expressible.");
     });
 
@@ -179,10 +179,10 @@ describe("The feed-open-response-failure validator", () => {
             FeedName: "FEED_NAME",
             FeedArgs: {},
             ErrorCode: "ERROR_CODE",
-            ErrorData: { Data: undefined }
+            ErrorData: { Data: undefined },
           },
-          true
-        )
+          true,
+        ),
       ).toBe("ErrorData > Not JSON-expressible.");
     });
   });
@@ -196,8 +196,8 @@ describe("The feed-open-response-failure validator", () => {
           FeedName: "FEED_NAME",
           FeedArgs: {},
           ErrorCode: "ERROR_CODE",
-          ErrorData: { Error: "Data" }
-        })
+          ErrorData: { Error: "Data" },
+        }),
       ).toBe("");
     });
 
@@ -210,10 +210,10 @@ describe("The feed-open-response-failure validator", () => {
             FeedName: "FEED_NAME",
             FeedArgs: {},
             ErrorCode: "ERROR_CODE",
-            ErrorData: { Error: "Data" }
+            ErrorData: { Error: "Data" },
           },
-          true
-        )
+          true,
+        ),
       ).toBe("");
     });
 
@@ -226,10 +226,10 @@ describe("The feed-open-response-failure validator", () => {
             FeedName: "FEED_NAME",
             FeedArgs: {},
             ErrorCode: "ERROR_CODE",
-            ErrorData: { Error: "Data" }
+            ErrorData: { Error: "Data" },
           },
-          false
-        )
+          false,
+        ),
       ).toBe("");
     });
 
@@ -242,10 +242,10 @@ describe("The feed-open-response-failure validator", () => {
             FeedName: "FEED_NAME",
             FeedArgs: {},
             ErrorCode: "ERROR_CODE",
-            ErrorData: { Data: undefined }
+            ErrorData: { Data: undefined },
           },
-          false
-        )
+          false,
+        ),
       ).toBe("");
     });
   });

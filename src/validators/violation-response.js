@@ -12,7 +12,7 @@ const MESSAGE_KEYS = ["MessageType", "Diagnostics"].sort();
  */
 export default function validateViolationResponse(
   value,
-  checkJsonExpressible = true
+  checkJsonExpressible = true,
 ) {
   // Validate value type - never tripped by server-message validator
   if (!check.object(value)) {

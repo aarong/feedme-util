@@ -110,7 +110,7 @@ FeedNameArgs.prototype._fromSerial = function _fromSerial(feedSerial) {
   }
 
   // Check feed name, feed arg keys, and feed arg values are all strings
-  if (_some(jsonArray, element => !check.string(element))) {
+  if (_some(jsonArray, (element) => !check.string(element))) {
     this._error = "Feed serial JSON array includes non-string element.";
     return; // Stop
   }
@@ -136,7 +136,7 @@ FeedNameArgs.prototype._fromSerial = function _fromSerial(feedSerial) {
  */
 FeedNameArgs.prototype._fromNameArgs = function _fromNameArgs(
   feedName,
-  feedArgs
+  feedArgs,
 ) {
   // Check feed name - empty is spec-valid
   if (!check.string(feedName)) {
@@ -147,7 +147,7 @@ FeedNameArgs.prototype._fromNameArgs = function _fromNameArgs(
   // Check feed args
   if (
     !check.object(feedArgs) || // Args is an object?
-    _some(feedArgs, argVal => !check.string(argVal)) // Values are strings?
+    _some(feedArgs, (argVal) => !check.string(argVal)) // Values are strings?
   ) {
     this._error = "Invalid feed arguments object.";
     return; // Stop
@@ -205,7 +205,7 @@ FeedNameArgs.prototype.serial = function serial() {
   if (!this._feedSerial) {
     const serialArr = [this._feedName];
     const sortedArgNames = Object.keys(this._feedArgs).sort();
-    _each(sortedArgNames, argName => {
+    _each(sortedArgNames, (argName) => {
       serialArr.push(argName, this._feedArgs[argName]);
     });
     this._feedSerial = JSON.stringify(serialArr);

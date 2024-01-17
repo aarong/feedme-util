@@ -11,9 +11,9 @@ import { glob } from "glob";
 
   // Copy files to build folder
   await Promise.all(
-    ["package.json", "LICENSE", "README.md"].map(file =>
-      fs.copyFile(file, `build/${file}`)
-    )
+    ["package.json", "LICENSE", "README.md"].map((file) =>
+      fs.copyFile(file, `build/${file}`),
+    ),
   );
 
   // Transpile for Node
@@ -25,31 +25,32 @@ import { glob } from "glob";
   // You can only produce external sourcemaps using the CLI, so I write
   // the maps to file myself and append a reference in the transpiled source
   const srcFiles = await glob("**/!(*.test).js", { cwd: "src" });
+
   await Promise.all(
-    srcFiles.map(file =>
+    srcFiles.map((file) =>
       (async () => {
         console.log(`Transpiling ${file}`);
 
         // Transpile and produce source maps
         const transpile = await babel.transformFileAsync(`src/${file}`, {
           presets: [["@babel/preset-env"]],
-          // plugins: ["add-module-exports"], // No .default()
+          plugins: ["add-module-exports"], // No .default()
           sourceMaps: true,
-          sourceRoot: "../src"
+          sourceRoot: "../src",
         });
 
         // Write transpiled source
         await fs.writeFile(
           `build/${file}`,
-          `${transpile.code}\n//# sourceMappingURL=${file}.map\n`
+          `${transpile.code}\n//# sourceMappingURL=${file}.map\n`,
         );
 
         // Write source maps
         await fs.writeFile(
           `build/${file}.map`,
-          JSON.stringify(Object.assign(transpile.map, { file }))
+          JSON.stringify(Object.assign(transpile.map, { file })),
         );
-      })()
-    )
+      })(),
+    ),
   );
 })();

@@ -11,8 +11,8 @@ describe("The action validator", () => {
         vAction({
           ActionName: "ACTION_NAME",
           ActionArgs: {},
-          CallbackId: "CALLBACK_ID"
-        })
+          CallbackId: "CALLBACK_ID",
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -21,8 +21,8 @@ describe("The action validator", () => {
         vAction({
           MessageType: "Action",
           ActionArgs: {},
-          CallbackId: "CALLBACK_ID"
-        })
+          CallbackId: "CALLBACK_ID",
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -31,8 +31,8 @@ describe("The action validator", () => {
         vAction({
           MessageType: "Action",
           ActionName: "ACTION_NAME",
-          CallbackId: "CALLBACK_ID"
-        })
+          CallbackId: "CALLBACK_ID",
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -41,8 +41,8 @@ describe("The action validator", () => {
         vAction({
           MessageType: "Action",
           ActionName: "ACTION_NAME",
-          ActionArgs: {}
-        })
+          ActionArgs: {},
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -53,8 +53,8 @@ describe("The action validator", () => {
           ActionName: "ACTION_NAME",
           ActionArgs: {},
           CallbackId: "CALLBACK_ID",
-          Extraneous: "INVALID"
-        })
+          Extraneous: "INVALID",
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -64,8 +64,8 @@ describe("The action validator", () => {
           MessageType: "INVALID",
           ActionName: "ACTION_NAME",
           ActionArgs: {},
-          CallbackId: "CALLBACK_ID"
-        })
+          CallbackId: "CALLBACK_ID",
+        }),
       ).toBe("MessageType > Not 'Action'.");
     });
 
@@ -75,8 +75,8 @@ describe("The action validator", () => {
           MessageType: "Action",
           ActionName: 123,
           ActionArgs: {},
-          CallbackId: "CALLBACK_ID"
-        })
+          CallbackId: "CALLBACK_ID",
+        }),
       ).toBe("ActionName > Not a string.");
     });
 
@@ -86,8 +86,8 @@ describe("The action validator", () => {
           MessageType: "Action",
           ActionName: "ACTION_NAME",
           ActionArgs: "INVALID",
-          CallbackId: "CALLBACK_ID"
-        })
+          CallbackId: "CALLBACK_ID",
+        }),
       ).toBe("ActionArgs > Not an object.");
     });
 
@@ -97,8 +97,8 @@ describe("The action validator", () => {
           MessageType: "Action",
           ActionName: "ACTION_NAME",
           ActionArgs: {},
-          CallbackId: 123
-        })
+          CallbackId: 123,
+        }),
       ).toBe("CallbackId > Not a string.");
     });
 
@@ -108,8 +108,8 @@ describe("The action validator", () => {
           MessageType: "Action",
           ActionName: "ACTION_NAME",
           ActionArgs: { Arg: undefined },
-          CallbackId: "CALLBACK_ID"
-        })
+          CallbackId: "CALLBACK_ID",
+        }),
       ).toBe("ActionArgs > Not JSON-expressible.");
     });
 
@@ -120,10 +120,10 @@ describe("The action validator", () => {
             MessageType: "Action",
             ActionName: "ACTION_NAME",
             ActionArgs: { Arg: undefined },
-            CallbackId: "CALLBACK_ID"
+            CallbackId: "CALLBACK_ID",
           },
-          true
-        )
+          true,
+        ),
       ).toBe("ActionArgs > Not JSON-expressible.");
     });
   });
@@ -135,8 +135,8 @@ describe("The action validator", () => {
           MessageType: "Action",
           ActionName: "ACTION_NAME",
           ActionArgs: {},
-          CallbackId: "CALLBACK_ID"
-        })
+          CallbackId: "CALLBACK_ID",
+        }),
       ).toBe("");
     });
 
@@ -147,10 +147,10 @@ describe("The action validator", () => {
             MessageType: "Action",
             ActionName: "ACTION_NAME",
             ActionArgs: {},
-            CallbackId: "CALLBACK_ID"
+            CallbackId: "CALLBACK_ID",
           },
-          true
-        )
+          true,
+        ),
       ).toBe("");
     });
 
@@ -161,10 +161,10 @@ describe("The action validator", () => {
             MessageType: "Action",
             ActionName: "ACTION_NAME",
             ActionArgs: {},
-            CallbackId: "CALLBACK_ID"
+            CallbackId: "CALLBACK_ID",
           },
-          false
-        )
+          false,
+        ),
       ).toBe("");
     });
 
@@ -175,10 +175,10 @@ describe("The action validator", () => {
             MessageType: "Action",
             ActionName: "ACTION_NAME",
             ActionArgs: { Arg: undefined },
-            CallbackId: "CALLBACK_ID"
+            CallbackId: "CALLBACK_ID",
           },
-          false
-        )
+          false,
+        ),
       ).toBe("");
     });
   });

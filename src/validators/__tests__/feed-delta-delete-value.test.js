@@ -10,8 +10,8 @@ describe("The feed-delta-delete-value validator", () => {
       expect(
         vFeedDeltaDeleteValue({
           Path: [],
-          Value: "VALUE"
-        })
+          Value: "VALUE",
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -19,8 +19,8 @@ describe("The feed-delta-delete-value validator", () => {
       expect(
         vFeedDeltaDeleteValue({
           Operation: "DeleteValue",
-          Value: "VALUE"
-        })
+          Value: "VALUE",
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -28,8 +28,8 @@ describe("The feed-delta-delete-value validator", () => {
       expect(
         vFeedDeltaDeleteValue({
           Operation: "DeleteValue",
-          Path: []
-        })
+          Path: [],
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -39,8 +39,8 @@ describe("The feed-delta-delete-value validator", () => {
           Operation: "DeleteValue",
           Path: [],
           Value: "VALUE",
-          Extraneous: "INVALID"
-        })
+          Extraneous: "INVALID",
+        }),
       ).toBe("Missing or extraneous property.");
     });
 
@@ -49,8 +49,8 @@ describe("The feed-delta-delete-value validator", () => {
         vFeedDeltaDeleteValue({
           Operation: "INVALID",
           Path: [],
-          Value: "VALUE"
-        })
+          Value: "VALUE",
+        }),
       ).toBe("Operation > Not 'DeleteValue'.");
     });
 
@@ -59,8 +59,8 @@ describe("The feed-delta-delete-value validator", () => {
         vFeedDeltaDeleteValue({
           Operation: "DeleteValue",
           Path: "INVALID",
-          Value: "VALUE"
-        })
+          Value: "VALUE",
+        }),
       ).toBe("Path > Not an array.");
     });
 
@@ -69,8 +69,8 @@ describe("The feed-delta-delete-value validator", () => {
         vFeedDeltaDeleteValue({
           Operation: "DeleteValue",
           Path: [],
-          Value: undefined
-        })
+          Value: undefined,
+        }),
       ).toBe("Value > Not JSON-expressible.");
     });
 
@@ -80,10 +80,10 @@ describe("The feed-delta-delete-value validator", () => {
           {
             Operation: "DeleteValue",
             Path: [],
-            Value: undefined
+            Value: undefined,
           },
-          true
-        )
+          true,
+        ),
       ).toBe("Value > Not JSON-expressible.");
     });
   });
@@ -94,8 +94,8 @@ describe("The feed-delta-delete-value validator", () => {
         vFeedDeltaDeleteValue({
           Operation: "DeleteValue",
           Path: [],
-          Value: "VALUE"
-        })
+          Value: "VALUE",
+        }),
       ).toBe("");
     });
 
@@ -105,10 +105,10 @@ describe("The feed-delta-delete-value validator", () => {
           {
             Operation: "DeleteValue",
             Path: [],
-            Value: "VALUE"
+            Value: "VALUE",
           },
-          true
-        )
+          true,
+        ),
       ).toBe("");
     });
 
@@ -118,10 +118,10 @@ describe("The feed-delta-delete-value validator", () => {
           {
             Operation: "DeleteValue",
             Path: [],
-            Value: "VALUE"
+            Value: "VALUE",
           },
-          false
-        )
+          false,
+        ),
       ).toBe("");
     });
 
@@ -131,10 +131,10 @@ describe("The feed-delta-delete-value validator", () => {
           {
             Operation: "DeleteValue",
             Path: [],
-            Value: undefined
+            Value: undefined,
           },
-          false
-        )
+          false,
+        ),
       ).toBe("");
     });
   });
