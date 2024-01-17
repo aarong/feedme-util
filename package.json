@@ -8,7 +8,6 @@
     "pretest": "npm run lint",
     "test": "jest",
     "coverage": "jest --coverage",
-    "coveralls": "jest --coverage --coverageReporters=text-lcov | coveralls",
     "docs": "documentation build src/index.js -f html -o docs --access public --access private --access undefined --sort-order alpha",
     "prebuild": "npm run test",
     "build": "babel-node build.js"
@@ -25,7 +24,6 @@
     "@babel/preset-env": "^7.23.8",
     "@babel/register": "^7.0.0",
     "babel-plugin-add-module-exports": "^1.0.4",
-    "coveralls": "^3.1.1",
     "documentation": "^14.0.2",
     "eslint": "^8.56.0",
     "eslint-config-airbnb-base": "^15.0.0",
